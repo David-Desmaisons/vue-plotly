@@ -1,0 +1,47 @@
+{
+  "name": "vue-ploty.js",
+  "version": "0.1.0",
+  "private": false,
+  "scripts": {
+    "serve": "vue-cli-service serve ./example/main.js --open",
+    "build": "vue-cli-service build --name vue-ploty.js --entry ./src/index.js --target lib",
+    "lint": "vue-cli-service lint",
+    "doc:build": "npx vuedoc.md --section API --output ./README.md ./src/components/Ploty.vue",
+    "prepublishOnly": "npm run lint && npm run build && npm run doc:build",
+    "test:unit": "vue-cli-service test:unit"
+  },
+  "dependencies": {
+    "vue": "^2.6.6"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.5.0",
+    "@vue/cli-plugin-eslint": "^3.5.0",
+    "@vue/cli-plugin-unit-jest": "^3.5.0",
+    "@vue/cli-service": "^3.5.0",
+    "@vue/eslint-config-prettier": "^4.0.1",
+    "@vue/test-utils": "1.0.0-beta.29",
+    "@vuedoc/md": "^1.5.0",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-eslint": "^10.0.1",
+    "babel-jest": "^23.6.0",
+    "eslint": "^5.8.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "less": "^3.0.4",
+    "less-loader": "^4.1.0",
+    "vue-cli-plugin-component": "^1.10.5",
+    "vue-template-compiler": "^2.5.21"
+  },
+  "files": [
+    "dist/*.css",
+    "dist/*.map",
+    "dist/*.js",
+    "src/*"
+  ],
+  "keywords": [
+    "vue",
+    "component"
+  ],
+  "license": "MIT",
+  "main": "dist/vue-ploty.js.umd.js",
+  "module": "dist/vue-ploty.js.common.min.js"
+}
