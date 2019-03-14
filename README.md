@@ -1,6 +1,8 @@
 
 # vue-ploty.js
 [![GitHub open issues](https://img.shields.io/github/issues/David-Desmaisons/vue-plotly.js.svg)](https://github.com/David-Desmaisons/vue-plotly.js/issues)
+[![CircleCI](https://circleci.com/gh/David-Desmaisons/vue-plotly.js.svg?style=shield)](https://circleci.com/gh/David-Desmaisons/vue-plotly.js)
+[![codecov](https://codecov.io/gh/David-Desmaisons/vue-plotly.js/branch/master/graph/badge.svg)](https://codecov.io/gh/David-Desmaisons/vue-plotly.js)
 [![Npm version](https://img.shields.io/npm/v/vue-ploty.js.svg)](https://www.npmjs.com/package/vue-ploty.js)
 [![MIT License](https://img.shields.io/github/license/David-Desmaisons/vue-plotly.js.svg)](https://github.com/David-Desmaisons/vue-plotly.js/blob/master/LICENSE)
 
