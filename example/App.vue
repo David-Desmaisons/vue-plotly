@@ -1,10 +1,6 @@
 <template>
   <div id="app">
-    <ploty
-      :responsive="true"
-      :data="data"
-      class="ploty"
-    />
+    <ploty :responsive="true" :data="data" class="item"/>
   </div>
 </template>
 
@@ -41,11 +37,10 @@ export default {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
   margin-top: 60px;
 
-  .ploty {
+  .item {
     width: 50%;
   }
 }
