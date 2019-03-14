@@ -1,5 +1,5 @@
 <template>
-  <div></div>
+  <div :id="id"/>
 </template>
 <script>
 import Plotly from "plotly.js";
@@ -7,6 +7,7 @@ import events from "./events.js";
 import methods from "./methods.js";
 
 export default {
+  inheritAttrs: false,
   props: {
     options: {
       type: Object
@@ -16,6 +17,11 @@ export default {
     },
     layout: {
       type: Object
+    },
+    id: {
+      type: String,
+      required: false,
+      default: null
     }
   },
   data() {
@@ -30,11 +36,17 @@ export default {
     });
   },
   watch: {
-    data() {
-      this.newPlot();
+    data: {
+      handler() {
+        this.newPlot();
+      },
+      deep: true
     },
-    options() {
-      this.newPlot();
+    options: {
+      handler() {
+        this.newPlot();
+      },
+      deep: true
     },
     layout() {
       this.relayout();
