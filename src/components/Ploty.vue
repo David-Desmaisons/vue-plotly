@@ -9,9 +9,6 @@ import methods from "./methods.js";
 export default {
   inheritAttrs: false,
   props: {
-    options: {
-      type: Object
-    },
     data: {
       type: Array
     },
@@ -26,12 +23,12 @@ export default {
   },
   data() {
     return {
-      internalLayout: this.layout,
+      internalLayout: { ...this.layout },
       needsReplot: true
     };
   },
   mounted() {
-    Plotly.newPlot(this.$el, this.data, this.internalLayout, this.options);
+    Plotly.newPlot(this.$el, this.data, this.internalLayout, this.$attrs);
     events.forEach(evt => {
       this.$el.on(evt.completeName, evt.handler(this));
     });
@@ -43,7 +40,7 @@ export default {
       },
       deep: true
     },
-    options: {
+    $attrs: {
       handler() {
         this.scheduleRePlot();
       },
@@ -88,15 +85,10 @@ export default {
       };
     },
     plot() {
-      return Plotly.plot(
-        this.$el,
-        this.data,
-        this.internalLayout,
-        this.options
-      );
+      return Plotly.plot(this.$el, this.data, this.internalLayout, this.$attrs);
     },
     newPlot() {
-      Plotly.react(this.$el, this.data, this.internalLayout, this.options);
+      Plotly.react(this.$el, this.data, this.internalLayout, this.$attrs);
     }
   }
 };

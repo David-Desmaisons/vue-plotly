@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <ploty
-      :options="{ responsive: true }"
+      :responsive="true"
       :data="data"
       class="ploty"
     />
