@@ -7,7 +7,7 @@
     "build": "vue-cli-service build --name vue-ploty.js --entry ./src/index.js --target lib",
     "lint": "vue-cli-service lint",
     "doc:build": "npx vuedoc.md --section API --output ./README.md ./src/components/Ploty.vue",
-    "prepublishOnly": "npm run lint && npm run build && npm run doc:build",
+    "prepublishOnly": "npm run lint && npm run build",
     "test:unit": "vue-cli-service test:unit --coverage"
   },
   "dependencies": {
