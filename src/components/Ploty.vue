@@ -23,12 +23,11 @@ export default {
   },
   data() {
     return {
-      internalLayout: { ...this.layout },
       scheduled: null
     };
   },
   mounted() {
-    Plotly.newPlot(this.$el, this.data, this.internalLayout, this.$attrs);
+    Plotly.newPlot(this.$el, this.data, this.layout, this.$attrs);
     events.forEach(evt => {
       this.$el.on(evt.completeName, evt.handler(this));
     });
@@ -97,10 +96,10 @@ export default {
       };
     },
     plot() {
-      return Plotly.plot(this.$el, this.data, this.internalLayout, this.$attrs);
+      return Plotly.plot(this.$el, this.data, this.layout, this.$attrs);
     },
     newPlot() {
-      Plotly.react(this.$el, this.data, this.internalLayout, this.$attrs);
+      Plotly.react(this.$el, this.data, this.layout, this.$attrs);
     }
   }
 };
