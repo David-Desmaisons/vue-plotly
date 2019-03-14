@@ -1,5 +1,8 @@
 <template>
   <div id="app">
+    <div class="item">
+      <highlight-code lang="javascript" :code="code.simple"/>
+    </div>
     <ploty :responsive="true" :data="data" class="item"/>
   </div>
 </template>
@@ -26,7 +29,11 @@ export default {
     };
 
     return {
-      data: [trace1, trace2]
+      data: [trace1, trace2],
+      code: {
+        simple: `<ploty :responsive="true" :data="data" class="item">
+<ploty/>`
+      }
     };
   }
 };

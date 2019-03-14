@@ -13,7 +13,8 @@
   },
   "dependencies": {
     "plotly.js": "^1.45.2",
-    "vue": "^2.6.9"
+    "vue": "^2.6.9",
+    "vue-highlight.js": "^3.1.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.5.0",
@@ -29,6 +30,7 @@
     "codecov": "^3.2.0",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0",
+    "highlight.js": "^9.15.6",
     "ify-loader": "^1.1.0",
     "jest-canvas-mock": "^2.0.0-beta.1",
     "less": "^3.0.4",
