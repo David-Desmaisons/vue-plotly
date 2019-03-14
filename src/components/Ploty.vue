@@ -1,5 +1,5 @@
 <template>
-  <div :id="id"/>
+  <div :id="id" />
 </template>
 <script>
 import Plotly from "plotly.js";
@@ -48,9 +48,6 @@ export default {
         this.scheduleRePlot();
       },
       deep: true
-    },
-    layout() {
-      this.relayout();
     }
   },
   beforeDestroy() {
