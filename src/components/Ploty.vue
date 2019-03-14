@@ -1,5 +1,5 @@
 <template>
-  <div :id="id" />
+  <div :id="id"/>
 </template>
 <script>
 import Plotly from "plotly.js";
@@ -24,7 +24,7 @@ export default {
   data() {
     return {
       internalLayout: { ...this.layout },
-      needsReplot: true
+      scheduled: null
     };
   },
   mounted() {
@@ -36,13 +36,19 @@ export default {
   watch: {
     data: {
       handler() {
-        this.scheduleRePlot();
+        this.schedule({ reploat: true });
       },
       deep: true
     },
     $attrs: {
       handler() {
-        this.scheduleRePlot();
+        this.schedule({ reploat: true });
+      },
+      deep: true
+    },
+    layout: {
+      handler() {
+        this.schedule({ relayout: true });
       },
       deep: true
     }
@@ -53,14 +59,20 @@ export default {
   },
   methods: {
     ...methods,
-    scheduleRePlot() {
-      if (this.needsReplot) {
+    schedule(context) {
+      const { scheduled } = this;
+      if (scheduled) {
+        Object.assign(scheduled, context);
         return;
       }
-      this.needsReplot = true;
+      this.scheduled = context;
       this.$nextTick(() => {
-        this.newPlot();
-        this.needsReplot = false;
+        const {
+          scheduled: { reploat, relayout }
+        } = this;
+        reploat && this.newPlot();
+        relayout && this.relayout();
+        this.scheduled = null;
       });
     },
     toImage(options) {
