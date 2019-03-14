@@ -1,6 +1,6 @@
 import { shallowMount } from "@vue/test-utils";
 import Plotlyjs from "plotly.js";
-jest.genMockFromModule('plotly.js');
+//jest.mock('plotly.js');
 import Ploty from "@/components/Ploty.vue";
 const { error } = console;
 
@@ -13,7 +13,9 @@ describe("Ploty.vue", () => {
     console.error = error;
   })
   it("renders a div", () => {
-    const wrapper = shallowMount(Ploty);
+    const wrapper = shallowMount(Ploty, {
+      attachToDocument: true
+    });
     expect(wrapper.is('div')).toBe(true);
   });
 });
