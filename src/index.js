@@ -1,5 +1,3 @@
-import Ploty from './components/Ploty.vue';
+import Ploty from "./components/Ploty.vue";
 
-export {
-    Ploty
-}
+export { Ploty };

@@ -1,12 +1,19 @@
 import { shallowMount } from "@vue/test-utils";
-import HelloWorld from "@/components/HelloWorld.vue";
+import Plotlyjs from "plotly.js";
+jest.genMockFromModule('plotly.js');
+import Ploty from "@/components/Ploty.vue";
+const { error } = console;
 
-describe("HelloWorld.vue", () => {
-  it("renders props.msg when passed", () => {
-    const msg = "new message";
-    const wrapper = shallowMount(HelloWorld, {
-      propsData: { msg }
-    });
-    expect(wrapper.text()).toMatch(msg);
+
+describe("Ploty.vue", () => {
+  beforeEach(() => {
+    console.error = () => { };
+  })
+  afterEach(() => {
+    console.error = error;
+  })
+  it("renders a div", () => {
+    const wrapper = shallowMount(Ploty);
+    expect(wrapper.is('div')).toBe(true);
   });
 });

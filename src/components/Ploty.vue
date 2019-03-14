@@ -1,57 +1,83 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://www.npmjs.com/package/vue-cli-plugin-component" target="_blank" rel="noopener">component</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
-  </div>
+  <div></div>
 </template>
-
 <script>
-export default {
-  name: 'Ploty',
-  props: {
-    msg: String
-  }
-}
-</script>
+import Plotly from "plotly.js";
+import events from "./events.js";
+import methods from "./methods.js";
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="less">
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-</style>
+export default {
+  props: {
+    options: {
+      type: Object
+    },
+    data: {
+      type: Array
+    },
+    layout: {
+      type: Object
+    }
+  },
+  data() {
+    return {
+      internalLayout: this.layout
+    };
+  },
+  mounted() {
+    Plotly.newPlot(this.$el, this.data, this.internalLayout, this.options);
+    events.forEach(evt => {
+      this.$el.on(evt.completeName, evt.handler(this));
+    });
+  },
+  watch: {
+    data() {
+      this.newPlot();
+    },
+    options() {
+      this.newPlot();
+    },
+    layout() {
+      this.relayout();
+    }
+  },
+  beforeDestroy() {
+    events.forEach(event => this.$el.removeAllListeners(event.completeName));
+    Plotly.purge(this.$el);
+  },
+  methods: {
+    ...methods,
+    toImage(options) {
+      const allOptions = Object.assign(this.getOptions(), options);
+      return Plotly.toImage(this.$el, allOptions);
+    },
+    downloadImage(options) {
+      const filename = `plot--${new Date().toISOString()}`;
+      const allOptions = Object.assign(
+        this.getOptions(),
+        { filename },
+        options
+      );
+      return Plotly.downloadImage(this.$el, allOptions);
+    },
+    getOptions() {
+      const { $el } = this;
+      return {
+        format: "png",
+        width: $el.clientWidth,
+        height: $el.clientHeight
+      };
+    },
+    plot() {
+      return Plotly.plot(
+        this.$el,
+        this.data,
+        this.internalLayout,
+        this.options
+      );
+    },
+    newPlot() {
+      Plotly.react(this.$el, this.data, this.internalLayout, this.options);
+    }
+  }
+};
+</script>
