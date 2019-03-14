@@ -26,7 +26,8 @@ export default {
   },
   data() {
     return {
-      internalLayout: this.layout
+      internalLayout: this.layout,
+      needsReplot: true
     };
   },
   mounted() {
@@ -38,13 +39,13 @@ export default {
   watch: {
     data: {
       handler() {
-        this.newPlot();
+        this.scheduleRePlot();
       },
       deep: true
     },
     options: {
       handler() {
-        this.newPlot();
+        this.scheduleRePlot();
       },
       deep: true
     },
@@ -58,6 +59,16 @@ export default {
   },
   methods: {
     ...methods,
+    scheduleRePlot() {
+      if (this.needsReplot) {
+        return;
+      }
+      this.needsReplot = true;
+      this.$nextTick(() => {
+        this.newPlot();
+        this.needsReplot = false;
+      });
+    },
     toImage(options) {
       const allOptions = Object.assign(this.getOptions(), options);
       return Plotly.toImage(this.$el, allOptions);
