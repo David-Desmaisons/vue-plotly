@@ -56,7 +56,6 @@ export default {
         values: [40, 10, 50],
         rotation: 90,
         textinfo: "none",
-        textposition: "inside",
         marker: {
           colors: [
             "orange",
@@ -65,7 +64,7 @@ export default {
           ]
         },
         labels: ["remaing", "done", ""],
-        hoverinfo: "label+value+percent",
+        hoverinfo: "label+value",
         hole: 0.5,
         type: "pie",
         showlegend: false
