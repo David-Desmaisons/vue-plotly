@@ -30,12 +30,7 @@ export default {
     };
   },
   mounted() {
-    Plotly.newPlot(
-      this.$el,
-      this.data,
-      this.innerLayout,
-      this.getGraphOptions()
-    );
+    Plotly.newPlot(this.$el, this.data, this.innerLayout, this.options);
     events.forEach(evt => {
       this.$el.on(evt.completeName, evt.handler(this));
     });
@@ -47,14 +42,25 @@ export default {
       },
       deep: true
     },
-    $attrs: {
-      handler() {
+    options: {
+      handler(value, old) {
+        if (JSON.stringify(value) === JSON.stringify(old)) {
+          return;
+        }
         this.schedule({ replot: true });
       },
       deep: true
     },
     layout() {
       this.schedule({ relayout: true });
+    }
+  },
+  computed: {
+    options() {
+      return Object.keys(this.$attrs).reduce((acc, key) => {
+        acc[camelize(key)] = this.$attrs[key];
+        return acc;
+      }, {});
     }
   },
   beforeDestroy() {
@@ -76,7 +82,7 @@ export default {
         } = this;
         this.scheduled = null;
         if (replot) {
-          this.react(relayout ? this.layout : null);
+          this.react(relayout ? this.layout : this.innerLayout);
           return;
         }
         this.relayout(this.layout);
@@ -103,27 +109,11 @@ export default {
         height: $el.clientHeight
       };
     },
-    getGraphOptions() {
-      return Object.keys(this.$attrs).reduce((acc, key) => {
-        acc[camelize(key)] = this.$attrs[key];
-        return acc;
-      }, {});
-    },
     plot() {
-      return Plotly.plot(
-        this.$el,
-        this.data,
-        this.innerLayout,
-        this.getGraphOptions()
-      );
+      return Plotly.plot(this.$el, this.data, this.innerLayout, this.options);
     },
     react(layout) {
-      Plotly.react(
-        this.$el,
-        this.data,
-        layout || this.innerLayout,
-        this.getGraphOptions()
-      );
+      Plotly.react(this.$el, this.data, layout, this.options);
     }
   }
 };

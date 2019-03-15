@@ -18,7 +18,7 @@
       />
     </div>
 
-    <input v-model="title" />
+    <input v-model="title" type="text"/>
 
     <plotly
       v-bind="graphs.gauge.attr"
