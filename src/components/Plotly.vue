@@ -47,11 +47,8 @@ export default {
       },
       deep: true
     },
-    layout: {
-      handler() {
-        this.schedule({ relayout: true });
-      },
-      deep: true
+    layout() {
+      this.schedule({ relayout: true });
     }
   },
   beforeDestroy() {
