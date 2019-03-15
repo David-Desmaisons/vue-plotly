@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import Plotly from "@/components/Plotly.vue";
+import {Plotly} from "@/index.js";
 
 export default {
   name: "app",
@@ -66,7 +66,7 @@ export default {
             plot_bgcolor: "#d3d3d3",
             paper_bgcolor: "#d3d3d3"
           },
-          code: `<plotly :responsive="true" :data="data" :display-mode-bar="true" class="item">
+          code: `<plotly :responsive="true" :data="data" :display-mode-bar="false" class="item">
 <plotly/>`
         },
         contour: {
