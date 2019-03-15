@@ -15,7 +15,7 @@ module.exports = {
   testMatch: [
     "**/tests/unit/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)"
   ],
-  collectCoverageFrom: ["<rootDir>/src/components/*.*"],
+  collectCoverageFrom: ["<rootDir>/src/**/*.*"],
   testURL: "http://localhost/",
   setupFiles: ["jest-canvas-mock", "<rootDir>/tests/helpers/mockUrl.js"]
 };

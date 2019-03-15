@@ -5,6 +5,7 @@
 import Plotly from "plotly.js";
 import events from "./events.js";
 import methods from "./methods.js";
+import { camelize } from "@/utils/helper";
 
 export default {
   inheritAttrs: false,
@@ -75,25 +76,31 @@ export default {
       });
     },
     toImage(options) {
-      const allOptions = Object.assign(this.getOptions(), options);
+      const allOptions = Object.assign(this.getPrintOptions(), options);
       return Plotly.toImage(this.$el, allOptions);
     },
     downloadImage(options) {
       const filename = `plot--${new Date().toISOString()}`;
       const allOptions = Object.assign(
-        this.getOptions(),
+        this.getPrintOptions(),
         { filename },
         options
       );
       return Plotly.downloadImage(this.$el, allOptions);
     },
-    getOptions() {
+    getPrintOptions() {
       const { $el } = this;
       return {
         format: "png",
         width: $el.clientWidth,
         height: $el.clientHeight
       };
+    },
+    getGraphOptions() {
+      return Object.keys(this.$attrs).reduce((acc, key) => {
+        acc[camelize(key)] = this.$attrs[key];
+        return acc;
+      }, {});
     },
     plot() {
       return Plotly.plot(this.$el, this.data, this.layout, this.$attrs);

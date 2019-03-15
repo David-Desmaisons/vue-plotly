@@ -1,9 +1,22 @@
 <template>
   <div id="app">
-    <div class="item">
-      <highlight-code lang="javascript" :code="code.simple"/>
+    <div
+      v-for="key in order"
+      :key="key"
+    >
+      <div class="item">
+        <highlight-code
+          lang="javascript"
+          :code="graphs[key].code"
+        />
+      </div>
+      <ploty
+        v-bind="graphs[key].attr"
+        :data="graphs[key].data"
+        :layout="graphs[key].layout"
+        class="item"
+      />
     </div>
-    <ploty :responsive="true" :data="data" class="item"/>
   </div>
 </template>
 
@@ -28,11 +41,43 @@ export default {
       type: "scatter"
     };
 
+    var dataCountour = [
+      {
+        z: [
+          [10, 10.625, 12.5, 15.625, 20],
+          [5.625, 6.25, 8.125, 11.25, 15.625],
+          [2.5, 3.125, 5, 8.125, 12.5],
+          [0.625, 1.25, 3.125, 6.25, 10.625],
+          [0, 0.625, 2.5, 5.625, 10]
+        ],
+        x: [-9, -6, -5, -3, -1],
+        y: [0, 1, 4, 5, 7],
+        type: "contour"
+      }
+    ];
+
     return {
-      data: [trace1, trace2],
-      code: {
-        simple: `<ploty :responsive="true" :data="data" class="item">
+      order: ["simple", "contour"],
+      graphs: {
+        simple: {
+          data: [trace1, trace2],
+          attr: { responsive: true, displayModeBar: false },
+          layout: {
+            plot_bgcolor: "#d3d3d3",
+            paper_bgcolor: "#d3d3d3"
+          },
+          code: `<ploty :responsive="true" :data="data" :display-mode-bar="true" class="item">
 <ploty/>`
+        },
+        contour: {
+          data: dataCountour,
+          attr: { responsive: true },
+          layout: {
+            title: "Setting the X and Y Coordinates in a Contour Plot"
+          },
+          code: `<ploty :responsive="true" :data="data" class="item">
+<ploty/>`
+        }
       }
     };
   }
