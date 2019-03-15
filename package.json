@@ -1,6 +1,6 @@
 {
   "name": "vue-plotly",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "private": false,
   "scripts": {
     "serve": "vue-cli-service serve ./example/main.js --open",
@@ -13,8 +13,7 @@
   },
   "dependencies": {
     "plotly.js": "^1.45.2",
-    "vue": "^2.6.9",
-    "vue-highlight.js": "^3.1.0"
+    "vue": "^2.6.9"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.5.0",
@@ -36,6 +35,7 @@
     "less": "^3.0.4",
     "less-loader": "^4.1.0",
     "vue-cli-plugin-component": "^1.10.5",
+    "vue-highlight.js": "^3.1.0",
     "vue-server-renderer": "^2.6.9",
     "vue-template-compiler": "^2.6.9"
   },
