@@ -104,7 +104,12 @@ export default {
       }, {});
     },
     plot() {
-      return Plotly.plot(this.$el, this.data, this.layout, this.getGraphOptions());
+      return Plotly.plot(
+        this.$el,
+        this.data,
+        this.layout,
+        this.getGraphOptions()
+      );
     },
     newPlot() {
       Plotly.react(this.$el, this.data, this.layout, this.getGraphOptions());

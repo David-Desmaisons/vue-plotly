@@ -1,10 +1,10 @@
 {
-  "name": "vue-plotly.js",
-  "version": "0.2.0",
+  "name": "vue-plotly",
+  "version": "0.3.0",
   "private": false,
   "scripts": {
     "serve": "vue-cli-service serve ./example/main.js --open",
-    "build": "vue-cli-service build --name vue-plotly.js --entry ./src/index.js --target lib",
+    "build": "vue-cli-service build --name vue-plotly --entry ./src/index.js --target lib",
     "lint": "vue-cli-service lint",
     "doc:build": "npx vuedoc.md --section API --output ./README.md ./src/components/Plotly.vue",
     "prepublishOnly": "npm run lint && npm run build",
@@ -50,6 +50,6 @@
     "component"
   ],
   "license": "MIT",
-  "main": "dist/vue-plotly.js.umd.js",
-  "module": "dist/vue-plotly.js.common.min.js"
+  "main": "dist/vue-plotly.umd.js",
+  "module": "dist/vue-plotly.common.min.js"
 }
