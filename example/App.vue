@@ -1,14 +1,8 @@
 <template>
   <div id="app">
-    <div
-      v-for="key in order"
-      :key="key"
-    >
+    <div v-for="key in order" :key="key">
       <div class="item">
-        <highlight-code
-          lang="javascript"
-          :code="graphs[key].code"
-        />
+        <highlight-code lang="javascript" :code="graphs[key].code"/>
       </div>
       <plotly
         v-bind="graphs[key].attr"
@@ -21,7 +15,7 @@
 </template>
 
 <script>
-import {Plotly} from "@/index.js";
+import { Plotly } from "@/index.js";
 
 export default {
   name: "app",
@@ -56,17 +50,39 @@ export default {
       }
     ];
 
+    var dataGauge = [
+      {
+        name:"40%",
+        values: [40, 10, 50],
+        rotation: 90,
+        textinfo: "none",
+        textposition: "inside",
+        marker: {
+          colors: [
+            "orange",
+            "yellow",
+            "transparent"
+          ]
+        },
+        labels: ["remaing", "done", ""],
+        hoverinfo: "label+value+percent",
+        hole: 0.5,
+        type: "pie",
+        showlegend: false
+      }
+    ];
+
     return {
-      order: ["simple", "contour"],
+      order: ["simple", "contour", "gauge"],
       graphs: {
         simple: {
           data: [trace1, trace2],
-          attr: { responsive: true, displayModeBar: false },
+          attr: { responsive: true, displayModeBar: true },
           layout: {
             plot_bgcolor: "#d3d3d3",
             paper_bgcolor: "#d3d3d3"
           },
-          code: `<plotly :responsive="true" :data="data" :display-mode-bar="false" class="item">
+          code: `<plotly :responsive="true" :data="data" :display-mode-bar="true" class="item">
 <plotly/>`
         },
         contour: {
@@ -76,6 +92,15 @@ export default {
             title: "Setting the X and Y Coordinates in a Contour Plot"
           },
           code: `<plotly :responsive="true" :data="data" class="item">
+<plotly/>`
+        },
+        gauge: {
+          data: dataGauge,
+          attr: { responsive: true, displayModeBar: false },
+          layout: {
+            title: "Gauge"
+          },
+          code: `<plotly :responsive="true" :data="data" :display-mode-bar="false" class="item">
 <plotly/>`
         }
       }
