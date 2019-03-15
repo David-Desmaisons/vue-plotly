@@ -10,7 +10,7 @@
           :code="graphs[key].code"
         />
       </div>
-      <ploty
+      <plotly
         v-bind="graphs[key].attr"
         :data="graphs[key].data"
         :layout="graphs[key].layout"
@@ -21,12 +21,12 @@
 </template>
 
 <script>
-import Ploty from "@/components/Ploty.vue";
+import Plotly from "@/components/Plotly.vue";
 
 export default {
   name: "app",
   components: {
-    Ploty
+    Plotly
   },
   data() {
     var trace1 = {
@@ -66,8 +66,8 @@ export default {
             plot_bgcolor: "#d3d3d3",
             paper_bgcolor: "#d3d3d3"
           },
-          code: `<ploty :responsive="true" :data="data" :display-mode-bar="true" class="item">
-<ploty/>`
+          code: `<plotly :responsive="true" :data="data" :display-mode-bar="true" class="item">
+<plotly/>`
         },
         contour: {
           data: dataCountour,
@@ -75,8 +75,8 @@ export default {
           layout: {
             title: "Setting the X and Y Coordinates in a Contour Plot"
           },
-          code: `<ploty :responsive="true" :data="data" class="item">
-<ploty/>`
+          code: `<plotly :responsive="true" :data="data" class="item">
+<plotly/>`
         }
       }
     };

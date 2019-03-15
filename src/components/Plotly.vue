@@ -8,6 +8,7 @@ import methods from "./methods.js";
 import { camelize } from "@/utils/helper";
 
 export default {
+  name: "plotly",
   inheritAttrs: false,
   props: {
     data: {
@@ -28,7 +29,7 @@ export default {
     };
   },
   mounted() {
-    Plotly.newPlot(this.$el, this.data, this.layout, this.$attrs);
+    Plotly.newPlot(this.$el, this.data, this.layout, this.getGraphOptions());
     events.forEach(evt => {
       this.$el.on(evt.completeName, evt.handler(this));
     });
@@ -103,10 +104,10 @@ export default {
       }, {});
     },
     plot() {
-      return Plotly.plot(this.$el, this.data, this.layout, this.$attrs);
+      return Plotly.plot(this.$el, this.data, this.layout, this.getGraphOptions());
     },
     newPlot() {
-      Plotly.react(this.$el, this.data, this.layout, this.$attrs);
+      Plotly.react(this.$el, this.data, this.layout, this.getGraphOptions());
     }
   }
 };

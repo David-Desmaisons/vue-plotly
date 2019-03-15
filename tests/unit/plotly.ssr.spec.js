@@ -4,15 +4,15 @@
 
 const Vue = require("vue");
 const renderer = require("vue-server-renderer").createRenderer();
-const Ploty = require("@/components/Ploty").default;
-Vue.component("ploty", Ploty);
+const Plotly = require("@/components/Plotly").default;
+Vue.component("plotly", Plotly);
 const app = new Vue({
   name: "test-app",
-  template: `<ploty></ploty>`
+  template: `<plotly></plotly>`
 });
 let html;
 
-describe("Ploty.vue in a ssr context", () => {
+describe("Plotly.vue in a ssr context", () => {
   beforeEach(async () => {
     html = await renderer.renderToString(app);
   });

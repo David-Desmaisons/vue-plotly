@@ -1,7 +1,7 @@
 module.exports = {
   chainWebpack: config => {
     config.module
-      .rule("js-ploty")
+      .rule("js-plotly")
       .test(/\.js$/)
       .use("ify-loader")
       .loader("ify-loader")

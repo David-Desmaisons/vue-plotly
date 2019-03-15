@@ -1,6 +1,6 @@
 import Plotly from "plotly.js";
 
-const plotyFunctions = [
+const plotlyFunctions = [
   "restyle",
   "relayout",
   "update",
@@ -12,7 +12,7 @@ const plotyFunctions = [
   "purge"
 ];
 
-const methods = plotyFunctions.reduce((all, functionName) => {
+const methods = plotlyFunctions.reduce((all, functionName) => {
   all[functionName] = function(...args) {
     return Plotly[functionName].apply(Plotly, [this.$el, ...args]);
   };
