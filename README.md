@@ -23,7 +23,7 @@ export default {
 
 ## Installation
 ```
-npm install vue-plotly-js
+npm install vue-plotly
 ```
 
 ## Project setup
