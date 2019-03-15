@@ -25,11 +25,17 @@ export default {
   },
   data() {
     return {
-      scheduled: null
+      scheduled: null,
+      innerLayout: { ...this.layout }
     };
   },
   mounted() {
-    Plotly.newPlot(this.$el, this.data, this.layout, this.getGraphOptions());
+    Plotly.newPlot(
+      this.$el,
+      this.data,
+      this.innerLayout,
+      this.getGraphOptions()
+    );
     events.forEach(evt => {
       this.$el.on(evt.completeName, evt.handler(this));
     });
@@ -37,13 +43,13 @@ export default {
   watch: {
     data: {
       handler() {
-        this.schedule({ reploat: true });
+        this.schedule({ replot: true });
       },
       deep: true
     },
     $attrs: {
       handler() {
-        this.schedule({ reploat: true });
+        this.schedule({ replot: true });
       },
       deep: true
     },
@@ -66,11 +72,14 @@ export default {
       this.scheduled = context;
       this.$nextTick(() => {
         const {
-          scheduled: { reploat, relayout }
+          scheduled: { replot, relayout }
         } = this;
-        reploat && this.newPlot();
-        relayout && this.relayout();
         this.scheduled = null;
+        if (replot) {
+          this.react(relayout ? this.layout : null);
+          return;
+        }
+        this.relayout(this.layout);
       });
     },
     toImage(options) {
@@ -104,12 +113,17 @@ export default {
       return Plotly.plot(
         this.$el,
         this.data,
-        this.layout,
+        this.innerLayout,
         this.getGraphOptions()
       );
     },
-    newPlot() {
-      Plotly.react(this.$el, this.data, this.layout, this.getGraphOptions());
+    react(layout) {
+      Plotly.react(
+        this.$el,
+        this.data,
+        layout || this.innerLayout,
+        this.getGraphOptions()
+      );
     }
   }
 };

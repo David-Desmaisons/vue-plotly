@@ -1,8 +1,14 @@
 <template>
   <div id="app">
-    <div v-for="key in order" :key="key">
+    <div
+      v-for="key in order"
+      :key="key"
+    >
       <div class="item">
-        <highlight-code lang="javascript" :code="graphs[key].code"/>
+        <highlight-code
+          lang="javascript"
+          :code="graphs[key].code"
+        />
       </div>
       <plotly
         v-bind="graphs[key].attr"
@@ -11,6 +17,16 @@
         class="item"
       />
     </div>
+
+    <input v-model="title" />
+
+    <plotly
+      v-bind="graphs.gauge.attr"
+      :data="graphs.gauge.data"
+      :layout="gaugeLayout"
+      class="item"
+    />
+
   </div>
 </template>
 
@@ -52,16 +68,12 @@ export default {
 
     var dataGauge = [
       {
-        name:"40%",
+        name: "40%",
         values: [40, 10, 50],
         rotation: 90,
         textinfo: "none",
         marker: {
-          colors: [
-            "orange",
-            "yellow",
-            "transparent"
-          ]
+          colors: ["orange", "yellow", "transparent"]
         },
         labels: ["remaing", "done", ""],
         hoverinfo: "label+value",
@@ -72,7 +84,8 @@ export default {
     ];
 
     return {
-      order: ["simple", "contour", "gauge"],
+      title: "Gauge",
+      order: ["simple", "contour"],
       graphs: {
         simple: {
           data: [trace1, trace2],
@@ -96,14 +109,18 @@ export default {
         gauge: {
           data: dataGauge,
           attr: { responsive: true, displayModeBar: false },
-          layout: {
-            title: "Gauge"
-          },
           code: `<plotly :responsive="true" :data="data" :display-mode-bar="false" class="item">
 <plotly/>`
         }
       }
     };
+  },
+  computed: {
+    gaugeLayout() {
+      return {
+        title: this.title
+      };
+    }
   }
 };
 </script>
