@@ -97,7 +97,7 @@ export default {
     ];
 
     return {
-      title: "Gauge",
+      title: "Pie chart",
       order: ["simple", "contour", "histogram"],
       graphs: {
         simple: {
