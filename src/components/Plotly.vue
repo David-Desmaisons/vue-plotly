@@ -1,15 +1,19 @@
 <template>
-  <div :id="id" />
+  <div :id="id" v-resize:debounce.100="onResize" />
 </template>
 <script>
 import Plotly from "plotly.js";
 import events from "./events.js";
 import methods from "./methods.js";
 import { camelize } from "@/utils/helper";
+import resize from "vue-resize-directive";
 
 export default {
   name: "plotly",
   inheritAttrs: false,
+  directives: {
+    resize
+  },
   props: {
     data: {
       type: Array
@@ -69,6 +73,9 @@ export default {
   },
   methods: {
     ...methods,
+    onResize() {
+      Plotly.Plots.resize(this.$el);
+    },
     schedule(context) {
       const { scheduled } = this;
       if (scheduled) {

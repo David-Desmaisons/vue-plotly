@@ -7,7 +7,10 @@ import 'highlight.js/styles/mono-blue.css';
 import javascript from 'highlight.js/lib/languages/javascript';
 import vue from 'vue-highlight.js/lib/languages/vue';
 import css from 'highlight.js/lib/languages/css';
+import VueDraggableResizable from 'vue-draggable-resizable'
+import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
 
+Vue.component('vue-draggable-resizable', VueDraggableResizable)
 
 Vue.use(VueHighlightJS, {
   languages: {

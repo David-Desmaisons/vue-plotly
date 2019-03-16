@@ -18,14 +18,18 @@
       />
     </div>
 
-    <input v-model="title" type="text"/>
-
-    <plotly
-      v-bind="graphs.gauge.attr"
-      :data="graphs.gauge.data"
-      :layout="gaugeLayout"
-      class="item"
+    <input
+      v-model="title"
+      type="text"
     />
+
+    <div class="item">
+        <plotly
+          v-bind="graphs.pie.attr"
+          :data="graphs.pie.data"
+          :layout="pieLayout"
+        />
+    </div>
 
   </div>
 </template>
@@ -66,17 +70,26 @@ export default {
       }
     ];
 
-    var dataGauge = [
+    var x = [];
+    for (var i = 0; i < 500; i++) {
+      x[i] = Math.random();
+    }
+    var trace = {
+      x: x,
+      type: "histogram"
+    };
+
+    var pie = [
       {
         name: "40%",
-        values: [40, 10, 50],
+        values: [40, 10, 30],
         rotation: 90,
         textinfo: "none",
         marker: {
-          colors: ["orange", "yellow", "transparent"]
+          colors: ["orange", "yellow", "BLUE"]
         },
-        labels: ["remaing", "done", ""],
-        hoverinfo: "label+value",
+        labels: ["remaing", "done", "doing"],
+        hoverinfo: "label+value+percent",
         hole: 0.5,
         type: "pie",
         showlegend: false
@@ -85,7 +98,7 @@ export default {
 
     return {
       title: "Gauge",
-      order: ["simple", "contour"],
+      order: ["simple", "contour", "histogram"],
       graphs: {
         simple: {
           data: [trace1, trace2],
@@ -94,8 +107,7 @@ export default {
             plot_bgcolor: "#d3d3d3",
             paper_bgcolor: "#d3d3d3"
           },
-          code: `<plotly :responsive="true" :data="data" :display-mode-bar="true" class="item">
-<plotly/>`
+          code: `<plotly :responsive="true" :data="data" :display-mode-bar="true" class="item"/>`
         },
         contour: {
           data: dataCountour,
@@ -103,11 +115,15 @@ export default {
           layout: {
             title: "Setting the X and Y Coordinates in a Contour Plot"
           },
-          code: `<plotly :responsive="true" :data="data" class="item">
-<plotly/>`
+          code: `<plotly :responsive="true" :data="data" class="item"/>`
         },
-        gauge: {
-          data: dataGauge,
+        histogram: {
+          data: [trace],
+          attr: { responsive: true },
+          code: ""
+        },
+        pie: {
+          data: pie,
           attr: { responsive: true, displayModeBar: false },
           code: `<plotly :responsive="true" :data="data" :display-mode-bar="false" class="item">
 <plotly/>`
@@ -116,9 +132,16 @@ export default {
     };
   },
   computed: {
-    gaugeLayout() {
+    pieLayout() {
       return {
-        title: this.title
+        font: {
+          color: "white"
+        },
+        title: {
+          text: this.title
+        },
+        plot_bgcolor: "black",
+        paper_bgcolor: "black"
       };
     }
   }
