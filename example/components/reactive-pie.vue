@@ -25,7 +25,7 @@
     />
 
     <plotly
-      :responsive=true
+      responsive
       :display-mode-bar="false"
       :data="data"
       :layout="layout"
@@ -50,7 +50,7 @@ export default {
   name: "Generic",
   data() {
     return {
-      code: `<plotly :responsive="true" :data="data" :display-mode-bar="true" class="item"/>`,
+      code: `<plotly responsive :data="data"/>`,
       data: [pie],
       title: "pie"
     };

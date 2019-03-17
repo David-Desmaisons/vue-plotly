@@ -47,7 +47,7 @@ export default {
   props,
   data() {
     return {
-      code: `<plotly :responsive="true" :data="data" :display-mode-bar="true" class="item"/>`
+      code: `<plotly :data="data" :layout="layout" responsive display-mode-bar/>`
     };
   }
 };

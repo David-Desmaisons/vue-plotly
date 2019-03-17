@@ -140,7 +140,7 @@ export default {
 }
 
 #features {
-  font-size: 20px;
+  font-size: 18px;
   ul {
     li {
       list-style-type: none;

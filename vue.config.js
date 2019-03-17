@@ -1,4 +1,5 @@
 module.exports = {
+  publicPath: "./",
   chainWebpack: config => {
     config.module
       .rule("js-plotly")
