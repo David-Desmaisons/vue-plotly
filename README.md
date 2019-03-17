@@ -46,15 +46,15 @@ export default {
 
 - `data` ***Array*** (*optional*) 
 
-  Data to be displayed
+  [Data to be displayed](https://plot.ly/javascript/reference/)
 
 - `layout` ***Object*** (*optional*) 
 
-  Graphic layout
+  Graphic [layout](https://plot.ly/javascript/reference/#layout)
 
 - `id` ***String*** (*optional*) 
 
-  Id of the html root element of the component.
+  Id of the root HTML element of the component.
 
 - Others:
 
