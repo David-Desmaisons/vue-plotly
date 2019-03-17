@@ -6,24 +6,30 @@ let wrapper;
 let vm;
 let layout;
 let data;
+let attrs;
 const id = "id";
+
+function shallowMountPlotty() {
+  jest.clearAllMocks();
+  return shallowMount(Plotly, {
+    propsData: {
+      layout,
+      data,
+      id
+    },
+    attrs,
+    attachToDocument: true
+  });
+}
 
 describe("Plotly.vue", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
     layout = {};
     data = [];
-    wrapper = shallowMount(Plotly, {
-      propsData: {
-        layout,
-        data,
-        id
-      },
-      attrs: {
-        "display-mode-bar": true
-      },
-      attachToDocument: true
-    });
+    attrs = {
+      "display-mode-bar": true
+    }
+    wrapper = shallowMountPlotty();
     vm = wrapper.vm;
   });
 
@@ -41,7 +47,20 @@ describe("Plotly.vue", () => {
 
   it("calls plotly newPlot", () => {
     expect(plotlyjs.newPlot).toHaveBeenCalledWith(vm.$el, data, layout, {
-      displayModeBar: true
+      displayModeBar: true,
+      responsive: false
+    });
+    expect(plotlyjs.newPlot.mock.calls.length).toBe(1);
+  });
+
+  it("overrides responsive attribute", () => {
+    attrs = {
+      responsive: true
+    };
+    wrapper = shallowMountPlotty();
+
+    expect(plotlyjs.newPlot).toHaveBeenCalledWith(vm.$el, data, layout, {
+      responsive: false
     });
     expect(plotlyjs.newPlot.mock.calls.length).toBe(1);
   });

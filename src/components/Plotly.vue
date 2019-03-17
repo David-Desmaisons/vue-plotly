@@ -1,5 +1,8 @@
 <template>
-  <div :id="id" v-resize:debounce.100="onResize" />
+  <div
+    :id="id"
+    v-resize:debounce.100="onResize"
+  />
 </template>
 <script>
 import Plotly from "plotly.js";
@@ -62,10 +65,12 @@ export default {
   },
   computed: {
     options() {
-      return Object.keys(this.$attrs).reduce((acc, key) => {
+      const optionsFromAttrs = Object.keys(this.$attrs).reduce((acc, key) => {
         acc[camelize(key)] = this.$attrs[key];
         return acc;
       }, {});
+
+      return Object.assign(optionsFromAttrs, {responsive: false});
     }
   },
   beforeDestroy() {
