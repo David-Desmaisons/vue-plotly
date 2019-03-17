@@ -4,11 +4,10 @@
   "private": false,
   "scripts": {
     "serve": "vue-cli-service serve ./example/main.js --open",
-    "build:example": "vue-cli-service build --entry ./example/main.js --dest docs --mode development",
+    "build:doc": "vue-cli-service build --entry ./example/main.js --dest docs --mode development",
     "build": "vue-cli-service build --name vue-plotly --entry ./src/index.js --target lib",
     "lint": "vue-cli-service lint",
-    "doc:build": "npx vuedoc.md --section API --output ./README.md ./src/components/Plotly.vue",
-    "prepublishOnly": "npm run lint && npm run build && npm run build:example",
+    "prepublishOnly": "npm run lint && npm run build && npm run build:doc",
     "test:unit": "vue-cli-service test:unit --coverage",
     "test:coverage": "vue-cli-service test:unit --coverage --verbose && codecov"
   },

@@ -54,15 +54,30 @@
           id="features"
         >
 
-          <p>Vue.plotly is a thin vue wrapper for <a
+          <p><a
+              href="https://github.com/David-Desmaisons/vue-plotly"
+              target="_blank"
+            >Vue.plotly</a> is a thin vue wrapper for <a
               href="https://plot.ly/javascript/"
               target="_blank"
             >plotly.js</a></p>
-          <span>It provides all Plotly methods and events and</span>
-          <ul>
-            <li><i class="fa fa-bolt"></i>data reactivity</li>
-            <li><i class="fa fa-arrows-alt"></i>redraw on resizing</li>
-          </ul>
+          <div class="row align-items-start">
+            <div
+              class="col"
+              v-for="(data,idx) in features"
+              :key="idx"
+            >
+              <div
+                class="card  text-center"
+                style="width: 18rem;"
+              >
+                <div class="card-body">
+                  <h5 class="card-title"><i :class="`fa ${data.icon}`"></i></h5>
+                  <p class="card-text">{{data.text}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -107,6 +122,11 @@ export default {
   },
   data() {
     return {
+      features: [
+        { text: "plotly.js methods and events", icon: "fa-bar-chart" },
+        { text: "Data reactivity", icon: "fa-bolt" },
+        { text: "Redraw on resizing", icon: "fa-arrows-alt" }
+      ],
       generics: [simple, contour, histogram, pie],
       selected: simple
     };
@@ -144,14 +164,6 @@ export default {
 
 #features {
   font-size: 18px;
-  ul {
-    li {
-      list-style-type: none;
-      i {
-        margin-right: 10px;
-      }
-    }
-  }
 }
 
 #select {

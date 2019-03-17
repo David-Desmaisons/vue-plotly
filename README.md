@@ -6,6 +6,17 @@
 [![Npm version](https://img.shields.io/npm/v/vue-plotly.svg)](https://www.npmjs.com/package/vue-plotly)
 [![MIT License](https://img.shields.io/github/license/David-Desmaisons/vue-plotly.svg)](https://github.com/David-Desmaisons/vue-plotly/blob/master/LICENSE)
 
+<h2>Vue.plotly is a thin vue wrapper for <a
+              href="https://plot.ly/javascript/"
+              target="_blank"
+            >plotly.js</a></h2>
+<span>It provides:</span>
+<ul>
+  <li>all plotly.js methods and events</li>
+  <li>data reactivity</li>
+  <li>Redraw on resizing</li>
+</ul>
+
 ## Usage
 ```HTML
 <Plotly :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
@@ -30,6 +41,24 @@ export default {
 }
 ```
 ## API
+
+#### Props 
+
+- `data` ***Array*** (*optional*) 
+
+  Data to be displayed
+
+- `layout` ***Object*** (*optional*) 
+
+  Graphic layout
+
+- `id` ***String*** (*optional*) 
+
+  Id of the html root element of the component.
+
+- Others:
+
+  Plotly component implements the [transparent wrapper pattern](https://zendev.com/2018/05/31/transparent-wrapper-components-in-vue.html):<br>All other props will be passed as plotly graphic [option](https://plot.ly/javascript/configuration-options/).
 
 ## Installation
 ```
