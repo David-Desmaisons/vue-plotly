@@ -66,21 +66,34 @@
         </div>
       </div>
 
-      <div
-        v-for="(example, idx) in generics"
-        :key="idx"
-        class="card example"
-      >
+      <div class="card example">
         <div class="card-header">
-          {{example.display}}
+
+          <div class="form-group row selector">
+            <select
+              v-model="selected"
+              class="form-control col"
+              id="select"
+            >
+              <option
+                v-for="(example, idx) in generics"
+                :key="idx"
+                :value="example"
+              >{{example.display}}</option>
+            </select>
+          </div>
         </div>
+
         <generic
           class="card-body"
-          v-bind="example.data"
+          v-bind="selected.data"
         />
       </div>
 
-      <div class="card example">
+      <div
+        v-if="true"
+        class="card example"
+      >
         <div class="card-header">
           Pie with dynamic layout
         </div>
@@ -105,7 +118,8 @@ export default {
   },
   data() {
     return {
-      generics: [simple, contour, histogram]
+      generics: [simple, contour, histogram],
+      selected: simple
     };
   }
 };
@@ -149,5 +163,9 @@ export default {
       }
     }
   }
+}
+
+#select {
+  background-color:lightblue;
 }
 </style>

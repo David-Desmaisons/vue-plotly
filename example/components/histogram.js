@@ -11,7 +11,7 @@ export default {
   display: "Histogram",
   data: {
     data: [trace],
-    attr: { responsive: true },
+    attr: { },
     layout:{}
   }
 };

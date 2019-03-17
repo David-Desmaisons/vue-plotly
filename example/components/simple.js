@@ -14,7 +14,7 @@ export default {
   display: "Simple example",
   data: {
     data: [trace1, trace2],
-    attr: { responsive: true, displayModeBar: true },
+    attr: { displayModeBar: true },
     layout: {
       plot_bgcolor: "#d3d3d3",
       paper_bgcolor: "#d3d3d3"
