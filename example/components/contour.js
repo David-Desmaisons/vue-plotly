@@ -15,7 +15,9 @@ export default {
         type: "contour"
       }
     ],
-    attr: { },
+    attr: {
+      displayModeBar: false
+    },
     layout: {
       title: "Setting the X and Y Coordinates in a Contour Plot"
     },

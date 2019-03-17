@@ -8,13 +8,14 @@
     />
 
     Data:
-    <highlight-code auto
+    <highlight-code
+      auto
       lang="javascript"
       :code="JSON.stringify(data)"
     />
 
     Layout:
-    <highlight-code 
+    <highlight-code
       lang="javascript"
       :code="JSON.stringify(layout)"
     />
@@ -45,10 +46,11 @@ const props = {
 export default {
   name: "Generic",
   props,
-  data() {
-    return {
-      code: `<plotly :data="data" :layout="layout" responsive display-mode-bar/>`
-    };
+   computed: {
+    code() {
+      const fromAttr = Object.keys(this.attr).map(key => `:${key}="${this.attr[key]}"`).join(" ");
+      return `<plotly :data="data" :layout="layout" ${fromAttr}/>`
+    }
   }
 };
 </script>

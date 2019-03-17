@@ -89,36 +89,25 @@
           v-bind="selected.data"
         />
       </div>
-
-      <div
-        v-if="true"
-        class="card example"
-      >
-        <div class="card-header">
-          Pie with dynamic layout
-        </div>
-        <reactive-pie class="card-body" />
-      </div>
     </div>
   </div>
 </template>
 
 <script>
 import generic from "./components/generic.vue";
-import reactivePie from "./components/reactive-pie.vue";
 import simple from "./components/simple.js";
 import contour from "./components/contour.js";
 import histogram from "./components/histogram.js";
+import pie from "./components/pie.js";
 
 export default {
   name: "app",
   components: {
-    reactivePie,
     generic
   },
   data() {
     return {
-      generics: [simple, contour, histogram],
+      generics: [simple, contour, histogram, pie],
       selected: simple
     };
   }
@@ -166,6 +155,6 @@ export default {
 }
 
 #select {
-  background-color:lightblue;
+  background-color: lightblue;
 }
 </style>
