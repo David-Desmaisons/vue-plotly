@@ -28,7 +28,7 @@ describe("Plotly.vue", () => {
     data = [];
     attrs = {
       "display-mode-bar": true
-    }
+    };
     wrapper = shallowMountPlotty();
     vm = wrapper.vm;
   });
