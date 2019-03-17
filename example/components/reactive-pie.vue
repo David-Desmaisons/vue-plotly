@@ -26,7 +26,7 @@
 
     <plotly
       :responsive=true
-      :display-mode-bar=false
+      :display-mode-bar="false"
       :data="data"
       :layout="layout"
     />
