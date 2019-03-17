@@ -1,9 +1,17 @@
 <template>
   <div>
-    <input
-      v-model="title"
-      type="text"
-    />
+    <form>
+      <div class="form-group">
+        <label for="title">Chart title</label>
+        <input
+          v-model="title"
+          type="text"
+          class="form-control"
+          id="title"
+          placeholder="Enter chart title"
+        >
+      </div>
+    </form>
 
     Markup:
     <highlight-code
