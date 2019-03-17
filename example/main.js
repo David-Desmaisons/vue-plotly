@@ -9,8 +9,14 @@ import vue from 'vue-highlight.js/lib/languages/vue';
 import css from 'highlight.js/lib/languages/css';
 import VueDraggableResizable from 'vue-draggable-resizable'
 import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
+import "bootstrap/dist/css/bootstrap.min.css";
+import "font-awesome/css/font-awesome.css";
+import { Plotly } from "@/index.js";
 
-Vue.component('vue-draggable-resizable', VueDraggableResizable)
+
+Vue.component('vue-draggable-resizable', VueDraggableResizable);
+Vue.component('plotly', Plotly)
+
 
 Vue.use(VueHighlightJS, {
   languages: {

@@ -1,149 +1,112 @@
 <template>
   <div id="app">
-    <div
-      v-for="key in order"
-      :key="key"
+    <a
+      href="https://github.com/David-Desmaisons/vue-plotly"
+      target="_blank"
     >
-      <div class="item">
-        <highlight-code
-          lang="javascript"
-          :code="graphs[key].code"
+      <img
+        style="position: fixed; top: 0; right: 0; border: 0; z-index:99999"
+        width="149"
+        height="149"
+        src="https://github.blog/wp-content/uploads/2008/12/forkme_right_gray_6d6d6d.png?resize=149%2C149"
+        class="attachment-full size-full"
+        alt="Fork me on GitHub"
+        data-recalc-dims="1"
+      />
+    </a>
+
+    <div class="container ">
+      <div>
+        <div class="logo">
+          <img
+            alt="Vue.draggable logo"
+            src="./assets/logo.png"
+          />
+          <h1>vue.plotly</h1>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <a
+            target="_blank"
+            href="https://github.com/David-Desmaisons/vue-plotly/issues"
+          ><img src="https://img.shields.io/github/issues/David-Desmaisons/vue-plotly.svg" /></a>
+          <a
+            target="_blank"
+            href="https://circleci.com/gh/David-Desmaisons/vue-plotly"
+          ><img src="https://circleci.com/gh/David-Desmaisons/vue-plotly.svg?style=shield" /></a>
+          <a
+            target="_blank"
+            href="https://codecov.io/gh/David-Desmaisons/vue-plotly"
+          ><img src="https://codecov.io/gh/David-Desmaisons/vue-plotly/branch/master/graph/badge.svg" /></a>
+          <a
+            target="_blank"
+            href="https://www.npmjs.com/package/vue-plotly"
+          ><img src="https://img.shields.io/npm/v/vue-plotly.svg" /></a>
+          <a
+            target="_blank"
+            href="https://github.com/David-Desmaisons/vue-plotly/blob/master/LICENSE"
+          ><img src="https://img.shields.io/github/license/David-Desmaisons/vue-plotly.svg" /></a>
+        </div>
+        <div
+          class="card-body"
+          id="features"
+        >
+
+          <p>Vue.plotly is a thin vue wrapper for <a
+              href="https://plot.ly/javascript/"
+              target="_blank"
+            >plotly.js</a></p>
+          <span>It provides all Plotly methods and events and</span>
+          <ul>
+            <li><i class="fa fa-bolt"></i>data reactivity</li>
+            <li><i class="fa fa-arrows-alt"></i>redraw on resizing</li>
+          </ul>
+        </div>
+      </div>
+
+      <div
+        v-for="(example, idx) in generics"
+        :key="idx"
+        class="card example"
+      >
+        <div class="card-header">
+          {{example.display}}
+        </div>
+        <generic
+          class="card-body"
+          v-bind="example.data"
         />
       </div>
-      <plotly
-        v-bind="graphs[key].attr"
-        :data="graphs[key].data"
-        :layout="graphs[key].layout"
-        class="item"
-      />
+
+      <div class="card example">
+        <div class="card-header">
+          Pie with dynamic layout
+        </div>
+        <reactive-pie class="card-body" />
+      </div>
     </div>
-
-    <input
-      v-model="title"
-      type="text"
-    />
-
-    <div class="item">
-        <plotly
-          v-bind="graphs.pie.attr"
-          :data="graphs.pie.data"
-          :layout="pieLayout"
-        />
-    </div>
-
   </div>
 </template>
 
 <script>
-import { Plotly } from "@/index.js";
+import generic from "./components/generic.vue";
+import reactivePie from "./components/reactive-pie.vue";
+import simple from "./components/simple.js";
+import contour from "./components/contour.js";
+import histogram from "./components/histogram.js";
 
 export default {
   name: "app",
   components: {
-    Plotly
+    reactivePie,
+    generic
   },
   data() {
-    var trace1 = {
-      x: [1, 2, 3, 4],
-      y: [10, 15, 13, 17],
-      type: "scatter"
-    };
-
-    var trace2 = {
-      x: [1, 2, 3, 4],
-      y: [16, 5, 11, 9],
-      type: "scatter"
-    };
-
-    var dataCountour = [
-      {
-        z: [
-          [10, 10.625, 12.5, 15.625, 20],
-          [5.625, 6.25, 8.125, 11.25, 15.625],
-          [2.5, 3.125, 5, 8.125, 12.5],
-          [0.625, 1.25, 3.125, 6.25, 10.625],
-          [0, 0.625, 2.5, 5.625, 10]
-        ],
-        x: [-9, -6, -5, -3, -1],
-        y: [0, 1, 4, 5, 7],
-        type: "contour"
-      }
-    ];
-
-    var x = [];
-    for (var i = 0; i < 500; i++) {
-      x[i] = Math.random();
-    }
-    var trace = {
-      x: x,
-      type: "histogram"
-    };
-
-    var pie = [
-      {
-        name: "40%",
-        values: [40, 10, 30],
-        rotation: 90,
-        textinfo: "none",
-        marker: {
-          colors: ["orange", "yellow", "BLUE"]
-        },
-        labels: ["remaing", "done", "doing"],
-        hoverinfo: "label+value+percent",
-        hole: 0.5,
-        type: "pie",
-        showlegend: false
-      }
-    ];
-
     return {
-      title: "Pie chart",
-      order: ["simple", "contour", "histogram"],
-      graphs: {
-        simple: {
-          data: [trace1, trace2],
-          attr: { responsive: true, displayModeBar: true },
-          layout: {
-            plot_bgcolor: "#d3d3d3",
-            paper_bgcolor: "#d3d3d3"
-          },
-          code: `<plotly :responsive="true" :data="data" :display-mode-bar="true" class="item"/>`
-        },
-        contour: {
-          data: dataCountour,
-          attr: { responsive: true },
-          layout: {
-            title: "Setting the X and Y Coordinates in a Contour Plot"
-          },
-          code: `<plotly :responsive="true" :data="data" class="item"/>`
-        },
-        histogram: {
-          data: [trace],
-          attr: { responsive: true },
-          code: ""
-        },
-        pie: {
-          data: pie,
-          attr: { responsive: true, displayModeBar: false },
-          code: `<plotly :responsive="true" :data="data" :display-mode-bar="false" class="item">
-<plotly/>`
-        }
-      }
+      generics: [simple, contour, histogram]
     };
-  },
-  computed: {
-    pieLayout() {
-      return {
-        font: {
-          color: "white"
-        },
-        title: {
-          text: this.title
-        },
-        plot_bgcolor: "black",
-        paper_bgcolor: "black"
-      };
-    }
   }
 };
 </script>
@@ -156,8 +119,35 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 
-  .item {
-    width: 50%;
+  .logo {
+    text-align: center;
+    img {
+      width: 100px;
+    }
+  }
+
+  .example {
+    margin-top: 50px;
+  }
+
+  .card {
+    .card-header {
+      a {
+        margin-right: 5px;
+      }
+    }
+  }
+}
+
+#features {
+  font-size: 20px;
+  ul {
+    li {
+      list-style-type: none;
+      i {
+        margin-right: 10px;
+      }
+    }
   }
 }
 </style>
