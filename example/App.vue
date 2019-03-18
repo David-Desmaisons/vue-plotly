@@ -16,38 +16,39 @@
     </a>
 
     <div class="container ">
-      <div>
-        <div class="logo">
-          <img
-            alt="Vue.draggable logo"
-            src="./assets/logo.png"
-          />
-          <h1>vue.plotly</h1>
-        </div>
-      </div>
-
       <div class="card">
         <div class="card-header">
-          <a
-            target="_blank"
-            href="https://github.com/David-Desmaisons/vue-plotly/issues"
-          ><img src="https://img.shields.io/github/issues/David-Desmaisons/vue-plotly.svg" /></a>
-          <a
-            target="_blank"
-            href="https://circleci.com/gh/David-Desmaisons/vue-plotly"
-          ><img src="https://circleci.com/gh/David-Desmaisons/vue-plotly.svg?style=shield" /></a>
-          <a
-            target="_blank"
-            href="https://codecov.io/gh/David-Desmaisons/vue-plotly"
-          ><img src="https://codecov.io/gh/David-Desmaisons/vue-plotly/branch/master/graph/badge.svg" /></a>
-          <a
-            target="_blank"
-            href="https://www.npmjs.com/package/vue-plotly"
-          ><img src="https://img.shields.io/npm/v/vue-plotly.svg" /></a>
-          <a
-            target="_blank"
-            href="https://github.com/David-Desmaisons/vue-plotly/blob/master/LICENSE"
-          ><img src="https://img.shields.io/github/license/David-Desmaisons/vue-plotly.svg" /></a>
+
+          <div class="logo">
+            <img
+              alt="Vue.draggable logo"
+              src="./assets/logo.png"
+            />
+            <h1>vue.plotly</h1>
+          </div>
+
+          <div>
+            <a
+              target="_blank"
+              href="https://github.com/David-Desmaisons/vue-plotly/issues"
+            ><img src="https://img.shields.io/github/issues/David-Desmaisons/vue-plotly.svg" /></a>
+            <a
+              target="_blank"
+              href="https://circleci.com/gh/David-Desmaisons/vue-plotly"
+            ><img src="https://circleci.com/gh/David-Desmaisons/vue-plotly.svg?style=shield" /></a>
+            <a
+              target="_blank"
+              href="https://codecov.io/gh/David-Desmaisons/vue-plotly"
+            ><img src="https://codecov.io/gh/David-Desmaisons/vue-plotly/branch/master/graph/badge.svg" /></a>
+            <a
+              target="_blank"
+              href="https://www.npmjs.com/package/vue-plotly"
+            ><img src="https://img.shields.io/npm/v/vue-plotly.svg" /></a>
+            <a
+              target="_blank"
+              href="https://github.com/David-Desmaisons/vue-plotly/blob/master/LICENSE"
+            ><img src="https://img.shields.io/github/license/David-Desmaisons/vue-plotly.svg" /></a>
+          </div>
         </div>
         <div
           class="card-body"
