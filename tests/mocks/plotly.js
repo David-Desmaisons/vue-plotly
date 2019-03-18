@@ -1,4 +1,7 @@
 export default {
+  Plots: {
+    resize: jest.fn(),
+  },
   plot: jest.fn(),
   newPlot: jest.fn(element => {
     element.on = jest.fn();

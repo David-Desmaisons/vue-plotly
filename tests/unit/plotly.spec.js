@@ -1,6 +1,9 @@
 import { shallowMount } from "@vue/test-utils";
 import Plotly from "@/components/Plotly.vue";
 import plotlyjs from "plotly.js";
+import resize from "vue-resize-directive";
+jest.mock('vue-resize-directive');
+
 
 let wrapper;
 let vm;
@@ -39,9 +42,16 @@ const events = [
   "Unhover"
 ];
 
+// const localVue = createLocalVue()
+// localVue.directive('resize', {
+//   bind() { console.log("here"); },
+//   inserted()  { console.log("here"); }
+// })
+
 function shallowMountPlotty() {
   jest.clearAllMocks();
   return shallowMount(Plotly, {
+    //    localVue,
     propsData: {
       layout,
       data,
@@ -62,6 +72,27 @@ describe("Plotly.vue", () => {
     wrapper = shallowMountPlotty();
     vm = wrapper.vm;
   });
+
+  it("calls resize directive", () => {
+    const { mock: { calls } } = resize.inserted;
+    expect(calls.length).toBe(1);
+    const [call] = calls;
+    expect(call[0]).toBe(vm.$el);
+    expect(call[1]).toMatchObject({
+      arg: "debounce",
+      name: "resize",
+      rawName: "v-resize:debounce.100",
+      expression: "onResize"
+    });
+  })
+
+  it("call plotly resize when resized", () => {
+    const { mock: { calls: [call] } } = resize.inserted;
+    const { value: callBackResize } = call[1];
+    callBackResize();
+
+    expect(plotlyjs.Plots.resize).toHaveBeenCalledWith(vm.$el);
+  })
 
   it("renders a div", () => {
     expect(wrapper.is("div")).toBe(true);
@@ -110,7 +141,6 @@ describe("Plotly.vue", () => {
       callBack(parameter);
 
       expect(wrapper.emitted()).toEqual({
-        "hook:mounted": [[]],
         [evtName]: [[parameter]]
       });
     }
