@@ -2,6 +2,7 @@ import { shallowMount } from "@vue/test-utils";
 import Plotly from "@/components/Plotly.vue";
 import plotlyjs from "plotly.js";
 import resize from "vue-resize-directive";
+import plotly from "../mocks/plotly";
 jest.mock("vue-resize-directive");
 
 let wrapper;
@@ -77,31 +78,21 @@ describe("Plotly.vue", () => {
     vm = wrapper.vm;
   });
 
-  it("calls resize directive", () => {
-    const {
-      mock: { calls }
-    } = resize.inserted;
-    expect(calls.length).toBe(1);
-    const [call] = calls;
-    expect(call[0]).toBe(vm.$el);
-    expect(call[1]).toMatchObject({
-      arg: "debounce",
-      name: "resize",
-      rawName: "v-resize:debounce.100",
-      expression: "onResize"
-    });
-  });
-
-  it("call plotly resize when resized", () => {
-    const {
-      mock: {
-        calls: [call]
+  it("defines props", () => {
+    const props = {
+      data: {
+        type: Array
+      },
+      layout: {
+        type: Object
+      },
+      id: {
+        type: String,
+        required: false,
+        default: null
       }
-    } = resize.inserted;
-    const { value: callBackResize } = call[1];
-    callBackResize();
-
-    expect(plotlyjs.Plots.resize).toHaveBeenCalledWith(vm.$el);
+    };
+    expect(Plotly.props).toEqual(props);
   });
 
   it("renders a div", () => {
@@ -134,6 +125,33 @@ describe("Plotly.vue", () => {
       responsive: false
     });
     expect(plotlyjs.newPlot.mock.calls.length).toBe(1);
+  });
+
+  it("calls resize directive", () => {
+    const {
+      mock: { calls }
+    } = resize.inserted;
+    expect(calls.length).toBe(1);
+    const [call] = calls;
+    expect(call[0]).toBe(vm.$el);
+    expect(call[1]).toMatchObject({
+      arg: "debounce",
+      name: "resize",
+      rawName: "v-resize:debounce.100",
+      expression: "onResize"
+    });
+  });
+
+  it("call plotly resize when resized", () => {
+    const {
+      mock: {
+        calls: [call]
+      }
+    } = resize.inserted;
+    const { value: callBackResize } = call[1];
+    callBackResize();
+
+    expect(plotlyjs.Plots.resize).toHaveBeenCalledWith(vm.$el);
   });
 
   test.each(events)(
