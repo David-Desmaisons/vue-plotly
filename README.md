@@ -8,7 +8,7 @@
 [![Npm version](https://img.shields.io/npm/v/vue-plotly.svg)](https://www.npmjs.com/package/vue-plotly)
 [![MIT License](https://img.shields.io/github/license/David-Desmaisons/vue-plotly.svg)](https://github.com/David-Desmaisons/vue-plotly/blob/master/LICENSE)
 
-<h2>Vue.plotly is a thin vue wrapper for <a
+<h2>Thin vue wrapper for <a
               href="https://plot.ly/javascript/"
               target="_blank"
             >plotly.js</a></h2>
