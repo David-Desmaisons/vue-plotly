@@ -103,7 +103,3 @@ npm run test:unit
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
-### Update the API section of README.md with generated documentation
-```
-npm run doc:build
-```
