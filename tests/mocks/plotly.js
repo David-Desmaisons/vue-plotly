@@ -1,6 +1,6 @@
 export default {
   Plots: {
-    resize: jest.fn(),
+    resize: jest.fn()
   },
   plot: jest.fn(),
   newPlot: jest.fn(element => {
@@ -11,5 +11,10 @@ export default {
   relayout: jest.fn(),
   restyle: jest.fn(),
   update: jest.fn(),
-  purge: jest.fn()
+  purge: jest.fn(),
+  addTraces: jest.fn(),
+  deleteTraces: jest.fn(),
+  moveTraces: jest.fn(),
+  extendTraces: jest.fn(),
+  prependTraces: jest.fn()
 };

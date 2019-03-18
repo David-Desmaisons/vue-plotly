@@ -2,8 +2,7 @@ import { shallowMount } from "@vue/test-utils";
 import Plotly from "@/components/Plotly.vue";
 import plotlyjs from "plotly.js";
 import resize from "vue-resize-directive";
-jest.mock('vue-resize-directive');
-
+jest.mock("vue-resize-directive");
 
 let wrapper;
 let vm;
@@ -42,16 +41,21 @@ const events = [
   "Unhover"
 ];
 
-// const localVue = createLocalVue()
-// localVue.directive('resize', {
-//   bind() { console.log("here"); },
-//   inserted()  { console.log("here"); }
-// })
+const methods = [
+  "restyle",
+  "relayout",
+  "update",
+  "addTraces",
+  "deleteTraces",
+  "moveTraces",
+  "extendTraces",
+  "prependTraces",
+  "purge"
+];
 
 function shallowMountPlotty() {
   jest.clearAllMocks();
   return shallowMount(Plotly, {
-    //    localVue,
     propsData: {
       layout,
       data,
@@ -74,7 +78,9 @@ describe("Plotly.vue", () => {
   });
 
   it("calls resize directive", () => {
-    const { mock: { calls } } = resize.inserted;
+    const {
+      mock: { calls }
+    } = resize.inserted;
     expect(calls.length).toBe(1);
     const [call] = calls;
     expect(call[0]).toBe(vm.$el);
@@ -84,15 +90,19 @@ describe("Plotly.vue", () => {
       rawName: "v-resize:debounce.100",
       expression: "onResize"
     });
-  })
+  });
 
   it("call plotly resize when resized", () => {
-    const { mock: { calls: [call] } } = resize.inserted;
+    const {
+      mock: {
+        calls: [call]
+      }
+    } = resize.inserted;
     const { value: callBackResize } = call[1];
     callBackResize();
 
     expect(plotlyjs.Plots.resize).toHaveBeenCalledWith(vm.$el);
-  })
+  });
 
   it("renders a div", () => {
     expect(wrapper.is("div")).toBe(true);
@@ -128,9 +138,13 @@ describe("Plotly.vue", () => {
 
   test.each(events)(
     "listens to plotly event %s and transform it in a vue event",
-    (evt) => {
+    evt => {
       const evtName = evt.toLowerCase();
-      const { on: { mock: { calls } } } = vm.$el;
+      const {
+        on: {
+          mock: { calls }
+        }
+      } = vm.$el;
       const call = calls.find(c => c[0] === `plotly_${evtName}`);
 
       expect(call).not.toBeUndefined();
@@ -144,12 +158,26 @@ describe("Plotly.vue", () => {
         [evtName]: [[parameter]]
       });
     }
-  )
+  );
 
   it(`register all the ${events.length} plotly events`, () => {
-    const { on: { mock: { calls } } } = vm.$el;
+    const {
+      on: {
+        mock: { calls }
+      }
+    } = vm.$el;
     expect(calls.length).toBe(events.length);
-  })
+  });
+
+  test.each(methods)(
+    "defines plotly method %s", (methodName) => {
+      expect(methodName in vm).toBe(true);
+      const parameters = [1, 2, 3];
+      vm[methodName](...parameters);
+
+      expect(plotlyjs[methodName]).toHaveBeenCalledWith(vm.$el, 1, 2, 3);
+    }
+  );
 
   describe("when destroyed", () => {
     beforeEach(() => {
@@ -160,14 +188,20 @@ describe("Plotly.vue", () => {
       expect(plotlyjs.purge).toHaveBeenCalledWith(vm.$el);
     });
 
-    test.each(events)("unlisten to plotly event %s", (evtName) => {
+    test.each(events)("unlisten to plotly event %s", evtName => {
       const { removeAllListeners } = vm.$el;
-      expect(removeAllListeners).toHaveBeenCalledWith(`plotly_${evtName.toLowerCase()}`);
+      expect(removeAllListeners).toHaveBeenCalledWith(
+        `plotly_${evtName.toLowerCase()}`
+      );
     });
 
     it(`unlisten to all the ${events.length} plotly events`, () => {
-      const { removeAllListeners: { mock: { calls } } } = vm.$el;
+      const {
+        removeAllListeners: {
+          mock: { calls }
+        }
+      } = vm.$el;
       expect(calls.length).toBe(events.length);
-    })
+    });
   });
 });
