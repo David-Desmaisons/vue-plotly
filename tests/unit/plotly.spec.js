@@ -2,7 +2,6 @@ import { shallowMount } from "@vue/test-utils";
 import Plotly from "@/components/Plotly.vue";
 import plotlyjs from "plotly.js";
 import resize from "vue-resize-directive";
-import plotly from "../mocks/plotly";
 jest.mock("vue-resize-directive");
 
 let wrapper;
@@ -197,6 +196,24 @@ describe("Plotly.vue", () => {
     }
   );
 
+  describe.each([
+    [(wrapper) => wrapper.setProps({ data: [{ data: "novo" }] })]
+  ])(
+    "when data changes",
+    (changeData) => {
+      beforeEach(async () => {
+        changeData(wrapper);
+        await vm.$nextTick();
+      });
+
+      it("calls plotly react", () => {
+        expect(plotlyjs.react).toHaveBeenCalledWith(vm.$el, [{ data: "novo" }], vm.layout, {
+          displayModeBar: true,
+          responsive: false
+        });
+      });
+    })
+
   describe("when destroyed", () => {
     beforeEach(() => {
       wrapper.destroy();
@@ -206,14 +223,14 @@ describe("Plotly.vue", () => {
       expect(plotlyjs.purge).toHaveBeenCalledWith(vm.$el);
     });
 
-    test.each(events)("unlisten to plotly event %s", evtName => {
+    test.each(events)("unlistens to plotly event %s", evtName => {
       const { removeAllListeners } = vm.$el;
       expect(removeAllListeners).toHaveBeenCalledWith(
         `plotly_${evtName.toLowerCase()}`
       );
     });
 
-    it(`unlisten to all the ${events.length} plotly events`, () => {
+    it(`unlistens to all the ${events.length} plotly events`, () => {
       const {
         removeAllListeners: {
           mock: { calls }
