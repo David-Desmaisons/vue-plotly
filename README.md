@@ -46,7 +46,7 @@ export default {
 
 - `data` ***Array*** (*optional*) 
 
-  [Data to be displayed](https://plot.ly/javascript/reference/)
+  [Data](https://plot.ly/javascript/reference/) to be displayed
 
 - `layout` ***Object*** (*optional*) 
 
