@@ -27,7 +27,7 @@
             <h1>vue.plotly</h1>
           </div>
 
-          <div>
+          <div id="badges">
             <a
               target="_blank"
               href="https://github.com/David-Desmaisons/vue-plotly/issues"
@@ -169,5 +169,9 @@ export default {
 
 #select {
   background-color: lightblue;
+}
+
+#badges {
+  text-align: center;
 }
 </style>
