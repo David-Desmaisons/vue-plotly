@@ -16,5 +16,7 @@ export default {
   deleteTraces: jest.fn(),
   moveTraces: jest.fn(),
   extendTraces: jest.fn(),
-  prependTraces: jest.fn()
+  prependTraces: jest.fn(),
+  toImage: jest.fn(),
+  downloadImage: jest.fn()
 };

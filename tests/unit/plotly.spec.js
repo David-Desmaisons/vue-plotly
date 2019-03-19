@@ -264,7 +264,7 @@ describe("Plotly.vue", () => {
     beforeEach(() => {
       console.error = () => { };
       jest.clearAllMocks();
-      const attrs = Object.assign({}, vm.$attrs );
+      const attrs = Object.assign({}, vm.$attrs);
       vm.$attrs = attrs;
     });
     afterEach(() => {
@@ -329,6 +329,35 @@ describe("Plotly.vue", () => {
     it("does not calls plotly relayout", async () => {
       await vm.$nextTick();
       expect(plotlyjs.relayout).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("when calling toImage", () => {
+    beforeEach(() => {
+      vm.toImage({ option: 1 });
+    });
+
+    it("calls Plotly toImage", () => {
+      const { clientWidth: width, clientHeight: height } = vm.$el;
+      expect(plotlyjs.toImage).toHaveBeenCalledWith(vm.$el, { width, height, option: 1, format: "png" });
+    });
+  });
+
+  describe("when calling downloadImage", () => {
+    beforeEach(() => {
+      vm.downloadImage({ option: 1 });
+    });
+
+    it("calls Plotly toImage", () => {
+      const { clientWidth: width, clientHeight: height } = vm.$el;
+      const { downloadImage } = plotlyjs;
+      expect(downloadImage).toHaveBeenCalled();
+      const { mock: { calls: [call] } } = downloadImage;
+
+      expect(call.length).toBe(2);
+      expect(call[0]).toBe(vm.$el);
+      expect(call[1]).toMatchObject({ width, height, option: 1, format: "png" });
+      expect(call[1].filename).not.toBeUndefined();
     });
   });
 
