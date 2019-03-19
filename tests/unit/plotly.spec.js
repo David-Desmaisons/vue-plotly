@@ -244,7 +244,7 @@ describe("Plotly.vue", () => {
     });
     afterEach(() => {
       console.error = error;
-    })
+    });
 
     it("calls plotly react once in the next tick", async () => {
       await vm.$nextTick();
@@ -256,7 +256,32 @@ describe("Plotly.vue", () => {
       await vm.$nextTick();
       expect(plotlyjs.relayout).not.toHaveBeenCalled();
     });
-  })
+  });
+
+  describe("when attrs changes to same value", () => {
+    const { error } = console;
+
+    beforeEach(() => {
+      console.error = () => { };
+      jest.clearAllMocks();
+      const attrs = Object.assign({}, vm.$attrs );
+      vm.$attrs = attrs;
+    });
+    afterEach(() => {
+      console.error = error;
+    });
+
+    it("does not calls plotly react", async () => {
+      await vm.$nextTick();
+      expect(plotlyjs.react).not.toHaveBeenCalled();
+    });
+
+    it("does not calls plotly relayout", async () => {
+      await vm.$nextTick();
+      expect(plotlyjs.relayout).not.toHaveBeenCalled();
+    });
+
+  });
 
   describe("when layout changes", () => {
     const updateLayout = () => wrapper.setProps({ layout: { novo: "layout" } });
@@ -284,7 +309,6 @@ describe("Plotly.vue", () => {
       });
     })
   });
-
 
   describe("when layout changes and data changes", () => {
     beforeEach(() => {
