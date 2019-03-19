@@ -197,11 +197,11 @@ describe("Plotly.vue", () => {
   );
 
   describe.each([
-    [(wrapper) => wrapper.setProps({ data: [{ data: "novo" }] })]
+    ["data", (wrapper) => wrapper.setProps({ data: [{ data: "novo" }] })],
+    ["attr", (wrapper) => wrapper.vm.$attrs = { displayModeBar: "hover" }]
   ])(
-    "when data changes",
-    (changeData) => {
-
+    "when %p changes",
+    (_, changeData) => {
       describe.each([
         ["once", changeData],
         ["twice", wrapper => {
@@ -209,17 +209,20 @@ describe("Plotly.vue", () => {
           changeData(wrapper);
         }]
       ])("%s in the same tick", (_, update) => {
+        const { error } = console;
+
         beforeEach(() => {
+          console.error = () => { };
           jest.clearAllMocks();
           update(wrapper);
         });
+        afterEach(() => {
+          console.error = error;
+        })
 
         it("calls plotly react once in the next tick", async () => {
           await vm.$nextTick();
-          expect(plotlyjs.react).toHaveBeenCalledWith(vm.$el, [{ data: "novo" }], vm.layout, {
-            displayModeBar: true,
-            responsive: false
-          });
+          expect(plotlyjs.react).toHaveBeenCalledWith(vm.$el, vm.data, vm.layout, vm.options);
           expect(plotlyjs.react.mock.calls.length).toBe(1);
         });
 
@@ -229,6 +232,31 @@ describe("Plotly.vue", () => {
         });
       })
     });
+
+  describe("when attrs and props changes in the same tick", () => {
+    const { error } = console;
+
+    beforeEach(() => {
+      console.error = () => { };
+      jest.clearAllMocks();
+      wrapper.setProps({ data: [{ data: "novo" }] });
+      wrapper.vm.$attrs = { displayModeBar: "hover" };
+    });
+    afterEach(() => {
+      console.error = error;
+    })
+
+    it("calls plotly react once in the next tick", async () => {
+      await vm.$nextTick();
+      expect(plotlyjs.react).toHaveBeenCalledWith(vm.$el, vm.data, vm.layout, vm.options);
+      expect(plotlyjs.react.mock.calls.length).toBe(1);
+    });
+
+    it("does not calls plotly relayout", async () => {
+      await vm.$nextTick();
+      expect(plotlyjs.relayout).not.toHaveBeenCalled();
+    });
+  })
 
   describe("when layout changes", () => {
     const updateLayout = () => wrapper.setProps({ layout: { novo: "layout" } });
@@ -256,6 +284,7 @@ describe("Plotly.vue", () => {
       });
     })
   });
+
 
   describe("when layout changes and data changes", () => {
     beforeEach(() => {
