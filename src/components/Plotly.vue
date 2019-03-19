@@ -119,9 +119,6 @@ export default {
         height: $el.clientHeight
       };
     },
-    plot() {
-      return Plotly.plot(this.$el, this.data, this.innerLayout, this.options);
-    },
     react(layout) {
       Plotly.react(this.$el, this.data, layout, this.options);
     }
