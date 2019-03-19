@@ -201,18 +201,83 @@ describe("Plotly.vue", () => {
   ])(
     "when data changes",
     (changeData) => {
-      beforeEach(async () => {
-        changeData(wrapper);
-        await vm.$nextTick();
+
+      describe.each([
+        ["once", changeData],
+        ["twice", wrapper => {
+          changeData(wrapper);
+          changeData(wrapper);
+        }]
+      ])("%s in the same tick", (_, update) => {
+        beforeEach(() => {
+          jest.clearAllMocks();
+          update(wrapper);
+        });
+
+        it("calls plotly react once in the next tick", async () => {
+          await vm.$nextTick();
+          expect(plotlyjs.react).toHaveBeenCalledWith(vm.$el, [{ data: "novo" }], vm.layout, {
+            displayModeBar: true,
+            responsive: false
+          });
+          expect(plotlyjs.react.mock.calls.length).toBe(1);
+        });
+
+        it("does not calls plotly relayout", async () => {
+          await vm.$nextTick();
+          expect(plotlyjs.relayout).not.toHaveBeenCalled();
+        });
+      })
+    });
+
+  describe("when layout changes", () => {
+    const updateLayout = () => wrapper.setProps({ layout: { novo: "layout" } });
+    describe.each([
+      ["once", updateLayout],
+      ["twice", () => {
+        updateLayout();
+        updateLayout();
+      }]
+    ])("%s in the same tick", (_, update) => {
+      beforeEach(() => {
+        jest.clearAllMocks();
+        update(wrapper);
       });
 
-      it("calls plotly react", () => {
-        expect(plotlyjs.react).toHaveBeenCalledWith(vm.$el, [{ data: "novo" }], vm.layout, {
-          displayModeBar: true,
-          responsive: false
-        });
+      it("calls plotly relayout once", async () => {
+        await vm.$nextTick();
+        expect(plotlyjs.relayout).toHaveBeenCalledWith(vm.$el, { novo: "layout" });
+        expect(plotlyjs.relayout.mock.calls.length).toBe(1);
+      });
+
+      it("does not calls plotly react", async () => {
+        await vm.$nextTick();
+        expect(plotlyjs.react).not.toHaveBeenCalled();
       });
     })
+  });
+
+  describe("when layout changes and data changes", () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+      wrapper.setProps({ layout: { novo: "layout" } });
+      wrapper.setProps({ data: { novo: "data" } });
+    });
+
+    it("calls plotly react once", async () => {
+      await vm.$nextTick();
+      expect(plotlyjs.react).toHaveBeenCalledWith(vm.$el, { novo: "data" }, { novo: "layout" }, {
+        displayModeBar: true,
+        responsive: false
+      });
+      expect(plotlyjs.react.mock.calls.length).toBe(1);
+    });
+
+    it("does not calls plotly relayout", async () => {
+      await vm.$nextTick();
+      expect(plotlyjs.relayout).not.toHaveBeenCalled();
+    });
+  });
 
   describe("when destroyed", () => {
     beforeEach(() => {
