@@ -49,7 +49,6 @@
 
 </template>
 <script>
-import jsonEditor from "vue-jsoneditor";
 import editor from "vue-json-editor";
 
 const props = {
@@ -62,7 +61,6 @@ const props = {
 export default {
   name: "Generic",
   components: {
-    jsonEditor,
     editor
   },
   props,
