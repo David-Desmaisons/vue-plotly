@@ -1,27 +1,43 @@
 <template>
   <div>
-    Markup:
-    <highlight-code
-      lang="javascript"
-      :code="code"
-    />
 
     <div class="row">
-
-      <div class="col-2">
-        Data:
-        <json-editor v-model="data.data" />
+      <div class="col-3">
+        <div class="col">
+          Markup:
+        </div>
       </div>
 
-      <div class="col-2">
-        Layout:
+      <div class="col-9">
         <highlight-code
           lang="javascript"
-          :code="JSON.stringify(data.layout)"
+          :code="code"
         />
       </div>
+    </div>
 
-      <div class="col-8">
+    <div class="row">
+      <div class="col-3">
+        <div class="col">
+          Data:
+          <editor
+            class="data"
+            v-model="data.data"
+            :show-btns="false"
+          />
+        </div>
+
+        <div class="col">
+          Layout:
+          <editor
+            class="layout"
+            v-model="data.layout"
+            :show-btns="false"
+          />
+        </div>
+      </div>
+
+      <div class="col-9">
         <plotly
           v-bind="data.attr"
           :data="data.data"
@@ -34,6 +50,7 @@
 </template>
 <script>
 import jsonEditor from "vue-jsoneditor";
+import editor from "vue-json-editor";
 
 const props = {
   data: {
@@ -45,7 +62,8 @@ const props = {
 export default {
   name: "Generic",
   components: {
-    jsonEditor
+    jsonEditor,
+    editor
   },
   props,
   computed: {
@@ -58,6 +76,19 @@ export default {
   }
 };
 </script>
-<style src="jsoneditor/dist/jsoneditor.css">
+<style>
+.layout .jsoneditor-vue {
+  height: 200px;
+}
+
+.data .jsoneditor-vue {
+  height: 200px;
+}
+
+.jsoneditor-vue div.jsoneditor-tree{
+  min-height:  200px;
+  margin-bottom: 10px;
+}
 </style>
+
 

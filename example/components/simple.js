@@ -11,7 +11,7 @@ const trace2 = {
 };
 
 export default {
-  display: "Simple example",
+  display: "Scatter",
   data: {
     data: [trace1, trace2],
     attr: { displayModeBar: true },
