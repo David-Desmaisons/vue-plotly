@@ -186,58 +186,62 @@ describe("Plotly.vue", () => {
     expect(calls.length).toBe(events.length);
   });
 
-  test.each(methods)(
-    "defines plotly method %s", (methodName) => {
-      expect(methodName in vm).toBe(true);
-      const parameters = [1, 2, 3];
-      vm[methodName](...parameters);
+  test.each(methods)("defines plotly method %s", methodName => {
+    expect(methodName in vm).toBe(true);
+    const parameters = [1, 2, 3];
+    vm[methodName](...parameters);
 
-      expect(plotlyjs[methodName]).toHaveBeenCalledWith(vm.$el, 1, 2, 3);
-    }
-  );
+    expect(plotlyjs[methodName]).toHaveBeenCalledWith(vm.$el, 1, 2, 3);
+  });
 
   describe.each([
-    ["data", (wrapper) => wrapper.setProps({ data: [{ data: "novo" }] })],
-    ["attr", (wrapper) => wrapper.vm.$attrs = { displayModeBar: "hover" }]
-  ])(
-    "when %p changes",
-    (_, changeData) => {
-      describe.each([
-        ["once", changeData],
-        ["twice", wrapper => {
+    ["data", wrapper => wrapper.setProps({ data: [{ data: "novo" }] })],
+    ["attr", wrapper => (wrapper.vm.$attrs = { displayModeBar: "hover" })]
+  ])("when %p changes", (_, changeData) => {
+    describe.each([
+      ["once", changeData],
+      [
+        "twice",
+        wrapper => {
           changeData(wrapper);
           changeData(wrapper);
-        }]
-      ])("%s in the same tick", (_, update) => {
-        const { error } = console;
+        }
+      ]
+    ])("%s in the same tick", (_, update) => {
+      const { error } = console;
 
-        beforeEach(() => {
-          console.error = () => { };
-          jest.clearAllMocks();
-          update(wrapper);
-        });
-        afterEach(() => {
-          console.error = error;
-        })
+      beforeEach(() => {
+        console.error = () => {};
+        jest.clearAllMocks();
+        update(wrapper);
+      });
+      afterEach(() => {
+        console.error = error;
+      });
 
-        it("calls plotly react once in the next tick", async () => {
-          await vm.$nextTick();
-          expect(plotlyjs.react).toHaveBeenCalledWith(vm.$el, vm.data, vm.layout, vm.options);
-          expect(plotlyjs.react.mock.calls.length).toBe(1);
-        });
+      it("calls plotly react once in the next tick", async () => {
+        await vm.$nextTick();
+        expect(plotlyjs.react).toHaveBeenCalledWith(
+          vm.$el,
+          vm.data,
+          vm.layout,
+          vm.options
+        );
+        expect(plotlyjs.react.mock.calls.length).toBe(1);
+      });
 
-        it("does not calls plotly relayout", async () => {
-          await vm.$nextTick();
-          expect(plotlyjs.relayout).not.toHaveBeenCalled();
-        });
-      })
+      it("does not calls plotly relayout", async () => {
+        await vm.$nextTick();
+        expect(plotlyjs.relayout).not.toHaveBeenCalled();
+      });
     });
+  });
 
   describe("when attrs and props changes in the same tick", () => {
     const { error } = console;
 
     beforeEach(() => {
-      console.error = () => { };
+      console.error = () => {};
       jest.clearAllMocks();
       wrapper.setProps({ data: [{ data: "novo" }] });
       wrapper.vm.$attrs = { displayModeBar: "hover" };
@@ -248,7 +252,12 @@ describe("Plotly.vue", () => {
 
     it("calls plotly react once in the next tick", async () => {
       await vm.$nextTick();
-      expect(plotlyjs.react).toHaveBeenCalledWith(vm.$el, vm.data, vm.layout, vm.options);
+      expect(plotlyjs.react).toHaveBeenCalledWith(
+        vm.$el,
+        vm.data,
+        vm.layout,
+        vm.options
+      );
       expect(plotlyjs.react.mock.calls.length).toBe(1);
     });
 
@@ -262,7 +271,7 @@ describe("Plotly.vue", () => {
     const { error } = console;
 
     beforeEach(() => {
-      console.error = () => { };
+      console.error = () => {};
       jest.clearAllMocks();
       const attrs = Object.assign({}, vm.$attrs);
       vm.$attrs = attrs;
@@ -280,17 +289,19 @@ describe("Plotly.vue", () => {
       await vm.$nextTick();
       expect(plotlyjs.relayout).not.toHaveBeenCalled();
     });
-
   });
 
   describe("when layout changes", () => {
     const updateLayout = () => wrapper.setProps({ layout: { novo: "layout" } });
     describe.each([
       ["once", updateLayout],
-      ["twice", () => {
-        updateLayout();
-        updateLayout();
-      }]
+      [
+        "twice",
+        () => {
+          updateLayout();
+          updateLayout();
+        }
+      ]
     ])("%s in the same tick", (_, update) => {
       beforeEach(() => {
         jest.clearAllMocks();
@@ -299,7 +310,9 @@ describe("Plotly.vue", () => {
 
       it("calls plotly relayout once", async () => {
         await vm.$nextTick();
-        expect(plotlyjs.relayout).toHaveBeenCalledWith(vm.$el, { novo: "layout" });
+        expect(plotlyjs.relayout).toHaveBeenCalledWith(vm.$el, {
+          novo: "layout"
+        });
         expect(plotlyjs.relayout.mock.calls.length).toBe(1);
       });
 
@@ -307,7 +320,7 @@ describe("Plotly.vue", () => {
         await vm.$nextTick();
         expect(plotlyjs.react).not.toHaveBeenCalled();
       });
-    })
+    });
   });
 
   describe("when layout changes and data changes", () => {
@@ -319,10 +332,15 @@ describe("Plotly.vue", () => {
 
     it("calls plotly react once", async () => {
       await vm.$nextTick();
-      expect(plotlyjs.react).toHaveBeenCalledWith(vm.$el, { novo: "data" }, { novo: "layout" }, {
-        displayModeBar: true,
-        responsive: false
-      });
+      expect(plotlyjs.react).toHaveBeenCalledWith(
+        vm.$el,
+        { novo: "data" },
+        { novo: "layout" },
+        {
+          displayModeBar: true,
+          responsive: false
+        }
+      );
       expect(plotlyjs.react.mock.calls.length).toBe(1);
     });
 
@@ -339,7 +357,12 @@ describe("Plotly.vue", () => {
 
     it("calls Plotly toImage", () => {
       const { clientWidth: width, clientHeight: height } = vm.$el;
-      expect(plotlyjs.toImage).toHaveBeenCalledWith(vm.$el, { width, height, option: 1, format: "png" });
+      expect(plotlyjs.toImage).toHaveBeenCalledWith(vm.$el, {
+        width,
+        height,
+        option: 1,
+        format: "png"
+      });
     });
   });
 
@@ -352,11 +375,20 @@ describe("Plotly.vue", () => {
       const { clientWidth: width, clientHeight: height } = vm.$el;
       const { downloadImage } = plotlyjs;
       expect(downloadImage).toHaveBeenCalled();
-      const { mock: { calls: [call] } } = downloadImage;
+      const {
+        mock: {
+          calls: [call]
+        }
+      } = downloadImage;
 
       expect(call.length).toBe(2);
       expect(call[0]).toBe(vm.$el);
-      expect(call[1]).toMatchObject({ width, height, option: 1, format: "png" });
+      expect(call[1]).toMatchObject({
+        width,
+        height,
+        option: 1,
+        format: "png"
+      });
       expect(call[1].filename).not.toBeUndefined();
     });
   });

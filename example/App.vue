@@ -25,6 +25,15 @@
               src="./assets/logo.png"
             />
             <h1>vue.plotly</h1>
+            <p><a
+                href="https://github.com/David-Desmaisons/vue-plotly"
+                target="_blank"
+              >Vue.plotly</a> is a thin vue wrapper for
+              <a
+                href="https://plot.ly/javascript/"
+                target="_blank"
+              >plotly.js</a>
+            </p>
           </div>
 
           <div id="badges">
@@ -49,60 +58,45 @@
               href="https://github.com/David-Desmaisons/vue-plotly/blob/master/LICENSE"
             ><img src="https://img.shields.io/github/license/David-Desmaisons/vue-plotly.svg" /></a>
           </div>
-        </div>
-        <div
-          class="card-body"
-          id="features"
-        >
 
-          <p><a
-              href="https://github.com/David-Desmaisons/vue-plotly"
-              target="_blank"
-            >Vue.plotly</a> is a thin vue wrapper for <a
-              href="https://plot.ly/javascript/"
-              target="_blank"
-            >plotly.js</a></p>
-          <div class="row align-items-start">
+          <div class="row justify-content-md-center">
             <div
-              class="col"
+              class="col-3 features"
               v-for="(data,idx) in features"
               :key="idx"
             >
-              <div
-                class="card  text-center"
-                style="width: 18rem;"
-              >
-                <div class="card-body">
-                  <h5 class="card-title"><i :class="`fa ${data.icon}`"></i></h5>
-                  <p class="card-text">{{data.text}}</p>
-                </div>
+              <div>
+                <h5 class="card-title"><i :class="`fa ${data.icon}`"></i></h5>
+                <p class="card-text">{{data.text}}</p>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="card example">
-        <div class="card-header">
-
-          <div class="form-group row selector">
-            <select
-              v-model="selected"
-              class="form-control col"
-              id="select"
-            >
-              <option
-                v-for="(example, idx) in generics"
-                :key="idx"
-                :value="example"
-              >{{example.display}}</option>
-            </select>
+      <div class="card">
+        <form>
+          <div class="form-group row">
+         
+            <div class="col-12">
+              <select
+                v-model="selected"
+                class="form-control col"
+                id="selector"
+              >
+                <option
+                  v-for="(example, idx) in generics"
+                  :key="idx"
+                  :value="example"
+                >{{example.display}}</option>
+              </select>
+            </div>
           </div>
-        </div>
+        </form>
 
         <generic
           class="card-body"
-          v-bind="selected.data"
+          :data="selected.data"
         />
       </div>
     </div>
@@ -137,21 +131,22 @@ export default {
 
 <style lang="less">
 #app {
+  @media (min-width: 1200px) {
+    .container {
+      max-width: 1400px;
+    }
+  }
+
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  margin-top: 60px;
 
   .logo {
     text-align: center;
     img {
-      width: 100px;
+      width: 70px;
     }
-  }
-
-  .example {
-    margin-top: 50px;
   }
 
   .card {
@@ -163,11 +158,23 @@ export default {
   }
 }
 
-#features {
+.features {
   font-size: 18px;
+  text-align: center;
 }
 
-#select {
+.graph-label {
+  text-align: center;
+  width: 100%;
+  height: 100%;
+}
+
+.label {
+  background: rgba(0, 0, 0, 0.03);
+  overflow: hidden;
+}
+
+.selector {
   background-color: lightblue;
 }
 
