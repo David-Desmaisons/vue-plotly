@@ -19,19 +19,19 @@
     <div class="row">
       <div class="col-3">
         <div class="col">
-          Data:
+          Layout:
           <editor
-            class="data"
-            v-model="data.data"
+            class="layout"
+            v-model="data.layout"
             :show-btns="false"
           />
         </div>
 
         <div class="col">
-          Layout:
+          Data:
           <editor
-            class="layout"
-            v-model="data.layout"
+            class="data"
+            v-model="data.data"
             :show-btns="false"
           />
         </div>
@@ -76,16 +76,15 @@ export default {
 </script>
 <style>
 .layout .jsoneditor-vue {
-  height: 200px;
+  height: 150px;
 }
 
 .data .jsoneditor-vue {
-  height: 200px;
+  height: 250px;
 }
 
 .jsoneditor-vue div.jsoneditor-tree{
-  min-height:  200px;
-  margin-bottom: 10px;
+  min-height:  100px;
 }
 </style>
 

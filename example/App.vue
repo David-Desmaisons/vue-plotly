@@ -74,7 +74,7 @@
         </div>
       </div>
 
-      <div class="card">
+      <div class="card main-card">
         <form>
           <div class="form-group row">
          
@@ -180,5 +180,9 @@ export default {
 
 #badges {
   text-align: center;
+}
+
+.main-card {
+  padding: 0;
 }
 </style>
