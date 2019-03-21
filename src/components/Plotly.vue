@@ -1,5 +1,8 @@
 <template>
-  <div :id="id" v-resize:debounce.100="onResize" />
+  <div
+    :id="id"
+    v-resize:debounce.100="onResize"
+  />
 </template>
 <script>
 import Plotly from "plotly.js";
@@ -56,7 +59,8 @@ export default {
       },
       deep: true
     },
-    layout() {
+    layout(layout) {
+      this.innerLayout = { ...layout };
       this.schedule({ relayout: true });
     }
   },
@@ -92,7 +96,7 @@ export default {
         } = this;
         this.scheduled = null;
         if (replot) {
-          this.react(relayout ? this.layout : this.innerLayout);
+          this.react();
           return;
         }
         this.relayout(this.layout);
@@ -120,7 +124,7 @@ export default {
       };
     },
     react(layout) {
-      Plotly.react(this.$el, this.data, layout, this.options);
+      Plotly.react(this.$el, this.data, this.innerLayout, this.options);
     }
   }
 };
