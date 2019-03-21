@@ -1,6 +1,6 @@
 {
   "name": "vue-plotly",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "private": false,
   "scripts": {
     "serve": "vue-cli-service serve ./example/main.js --open",
