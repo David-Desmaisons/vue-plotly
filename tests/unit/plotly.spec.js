@@ -211,7 +211,7 @@ describe("Plotly.vue", () => {
       const { error } = console;
 
       beforeEach(() => {
-        console.error = () => { };
+        console.error = () => {};
         jest.clearAllMocks();
         update(wrapper);
       });
@@ -241,7 +241,7 @@ describe("Plotly.vue", () => {
     const { error } = console;
 
     beforeEach(() => {
-      console.error = () => { };
+      console.error = () => {};
       jest.clearAllMocks();
       wrapper.setProps({ data: [{ data: "novo" }] });
       wrapper.vm.$attrs = { displayModeBar: "hover" };
@@ -271,7 +271,7 @@ describe("Plotly.vue", () => {
     const { error } = console;
 
     beforeEach(() => {
-      console.error = () => { };
+      console.error = () => {};
       jest.clearAllMocks();
       const attrs = Object.assign({}, vm.$attrs);
       vm.$attrs = attrs;
@@ -327,9 +327,19 @@ describe("Plotly.vue", () => {
   const changeLayout = () => wrapper.setProps({ layout: { novo: "layout" } });
 
   describe.each([
-    [() => { changeData(); changeLayout(); }],
-    [() => { changeLayout(); changeData(); }],
-  ])("when layout changes and data changes", (changes) => {
+    [
+      () => {
+        changeData();
+        changeLayout();
+      }
+    ],
+    [
+      () => {
+        changeLayout();
+        changeData();
+      }
+    ]
+  ])("when layout changes and data changes", changes => {
     beforeEach(() => {
       jest.clearAllMocks();
       changes();
