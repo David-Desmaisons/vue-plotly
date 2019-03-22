@@ -96,7 +96,7 @@ export default {
           this.react();
           return;
         }
-        this.relayout(this.layout);
+        this.relayout(this.innerLayout);
       });
     },
     toImage(options) {
