@@ -52,35 +52,13 @@
       </div>
 
       <div class="card main-card">
-        <form>
-          <div class="row">
-
-            <div class="col-12">
-              <select
-                v-model="selected"
-                class="form-control col"
-                id="selector"
-              >
-                <option
-                  v-for="(example, idx) in generics"
-                  :key="idx"
-                  :value="example"
-                >{{example.display}}</option>
-              </select>
-            </div>
-          </div>
-        </form>
-
-        <generic
-          class="card-body"
-          :data="selected.data"
-        />
+        <graphpicker />
       </div>
     </div>
 
     <footer class="footer fixed-bottom bg-dark">
       <div class="container">
-        <img src="https://plot.ly/gh-pages/documentation/static//images/browser_support.png"/>
+        <img src="https://plot.ly/gh-pages/documentation/static//images/browser_support.png" />
       </div>
     </footer>
 
@@ -88,16 +66,12 @@
 </template>
 
 <script>
-import generic from "./components/generic.vue";
-import simple from "./components/simple.js";
-import contour from "./components/contour.js";
-import histogram from "./components/histogram.js";
-import pie from "./components/pie.js";
+import graphpicker from "./components/graphpicker.vue";
 
 export default {
   name: "app",
   components: {
-    generic
+    graphpicker
   },
   data() {
     return {
@@ -105,10 +79,16 @@ export default {
         { text: "plotly.js methods and events", icon: "fa-bar-chart" },
         { text: "Data reactivity", icon: "fa-bolt" },
         { text: "Redraw on resizing", icon: "fa-arrows-alt" }
-      ],
-      generics: [simple, contour, histogram, pie],
-      selected: simple
+      ]
     };
+  },
+  computed: {
+    code() {
+      const fromAttr = Object.keys(this.data.attr)
+        .map(key => `:${key}="${this.data.attr[key]}"`)
+        .join(" ");
+      return `<plotly :data="data" :layout="layout" ${fromAttr}/>`;
+    }
   }
 };
 </script>
@@ -144,7 +124,7 @@ export default {
   .footer {
     text-align: center;
     img {
-      height: 30px;
+      height: 40px;
     }
   }
 }
