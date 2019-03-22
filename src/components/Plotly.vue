@@ -1,5 +1,8 @@
 <template>
-  <div :id="id" v-resize:debounce.100="onResize" />
+  <div
+    :id="id"
+    v-resize:debounce.100="onResize"
+  />
 </template>
 <script>
 import Plotly from "plotly.js";
@@ -83,7 +86,7 @@ export default {
     schedule(context) {
       const { scheduled } = this;
       if (scheduled) {
-        Object.assign(scheduled, context);
+        scheduled.replot = scheduled.replot || context.replot;
         return;
       }
       this.scheduled = context;

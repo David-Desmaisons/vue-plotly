@@ -24,39 +24,16 @@
               alt="Vue.draggable logo"
               src="./assets/logo.png"
             />
-            <h1>vue.plotly</h1>
             <p><a
+                class="title-link"
                 href="https://github.com/David-Desmaisons/vue-plotly"
                 target="_blank"
-              >Vue.plotly</a> is a thin vue wrapper for
+              ><span class="title">Vue.plotly</span></a>a thin vue wrapper for
               <a
                 href="https://plot.ly/javascript/"
                 target="_blank"
               >plotly.js</a>
             </p>
-          </div>
-
-          <div id="badges">
-            <a
-              target="_blank"
-              href="https://github.com/David-Desmaisons/vue-plotly/issues"
-            ><img src="https://img.shields.io/github/issues/David-Desmaisons/vue-plotly.svg" /></a>
-            <a
-              target="_blank"
-              href="https://circleci.com/gh/David-Desmaisons/vue-plotly"
-            ><img src="https://circleci.com/gh/David-Desmaisons/vue-plotly.svg?style=shield" /></a>
-            <a
-              target="_blank"
-              href="https://codecov.io/gh/David-Desmaisons/vue-plotly"
-            ><img src="https://codecov.io/gh/David-Desmaisons/vue-plotly/branch/master/graph/badge.svg" /></a>
-            <a
-              target="_blank"
-              href="https://www.npmjs.com/package/vue-plotly"
-            ><img src="https://img.shields.io/npm/v/vue-plotly.svg" /></a>
-            <a
-              target="_blank"
-              href="https://github.com/David-Desmaisons/vue-plotly/blob/master/LICENSE"
-            ><img src="https://img.shields.io/github/license/David-Desmaisons/vue-plotly.svg" /></a>
           </div>
 
           <div class="row justify-content-md-center">
@@ -66,7 +43,7 @@
               :key="idx"
             >
               <div>
-                <h5 class="card-title"><i :class="`fa ${data.icon}`"></i></h5>
+                <h4 class="big-icone"><i :class="`fa ${data.icon}`"></i></h4>
                 <p class="card-text">{{data.text}}</p>
               </div>
             </div>
@@ -76,8 +53,8 @@
 
       <div class="card main-card">
         <form>
-          <div class="form-group row">
-         
+          <div class="row">
+
             <div class="col-12">
               <select
                 v-model="selected"
@@ -100,6 +77,13 @@
         />
       </div>
     </div>
+
+    <footer class="footer fixed-bottom bg-dark">
+      <div class="container">
+        <img src="https://plot.ly/gh-pages/documentation/static//images/browser_support.png"/>
+      </div>
+    </footer>
+
   </div>
 </template>
 
@@ -145,7 +129,7 @@ export default {
   .logo {
     text-align: center;
     img {
-      width: 70px;
+      width: 80px;
     }
   }
 
@@ -154,6 +138,13 @@ export default {
       a {
         margin-right: 5px;
       }
+    }
+  }
+
+  .footer {
+    text-align: center;
+    img {
+      height: 30px;
     }
   }
 }
@@ -184,5 +175,22 @@ export default {
 
 .main-card {
   padding: 0;
+}
+
+footer.footer {
+  background: darkgray;
+}
+
+.big-icon {
+  margin-bottom: 0;
+}
+
+.title {
+  font-size: 30px;
+  color: black;
+}
+
+a.title-link:hover {
+  text-decoration: none;
 }
 </style>

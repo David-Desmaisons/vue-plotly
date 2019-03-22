@@ -4,21 +4,6 @@
     <div class="row">
       <div class="col-3">
         <div class="col">
-          Markup:
-        </div>
-      </div>
-
-      <div class="col-9">
-        <highlight-code
-          lang="javascript"
-          :code="code"
-        />
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-3">
-        <div class="col">
           Layout:
           <editor
             class="layout"
@@ -38,6 +23,16 @@
       </div>
 
       <div class="col-9">
+
+        <div class="row">
+          <div class="col">
+            <highlight-code
+              lang="javascript"
+              :code="code"
+            />
+          </div>
+        </div>
+
         <plotly
           v-bind="data.attr"
           :data="data.data"
@@ -80,11 +75,15 @@ export default {
 }
 
 .data .jsoneditor-vue {
-  height: 250px;
+  height: 300px;
 }
 
-.jsoneditor-vue div.jsoneditor-tree{
-  min-height:  100px;
+.jsoneditor-vue div.jsoneditor-tree {
+  min-height: 100px;
+}
+
+.mark-up {
+  margin-top: 8px;
 }
 </style>
 
