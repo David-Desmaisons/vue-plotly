@@ -19,6 +19,8 @@
   <li>Redraw on resizing</li>
 </ul>
 
+![example](./example/assets/demo.gif)
+
 ## Live example
 https://david-desmaisons.github.io/vue-plotly/
 
