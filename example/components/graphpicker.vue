@@ -68,6 +68,7 @@ import editor from "vue-json-editor";
 import simple from "./simple.js";
 import contour from "./contour.js";
 import histogram from "./histogram.js";
+import histogram2D from  "./2D-histogram.js"
 import pie from "./pie.js";
 
 export default {
@@ -77,7 +78,7 @@ export default {
   },
   data() {
     return {
-      generics: [simple, contour, histogram, pie],
+      generics: [simple, contour, histogram, pie, histogram2D],
       selected: simple
     };
   },
