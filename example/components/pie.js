@@ -12,7 +12,6 @@ const pie = {
   showlegend: false
 };
 
-
 export default {
   display: "Pie graph",
   data: {

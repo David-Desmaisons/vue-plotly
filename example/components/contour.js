@@ -20,6 +20,6 @@ export default {
     },
     layout: {
       title: "Setting the X and Y Coordinates in a Contour Plot"
-    },
+    }
   }
 };

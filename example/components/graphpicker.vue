@@ -1,22 +1,17 @@
 <template>
   <div>
     <div class="card-body">
-
       <div class="row">
         <div class="col-3">
-
           <div class="col">
             <form class="form-group">
-              <select
-                v-model="selected"
-                class="form-control col"
-                id="selector"
-              >
+              <select v-model="selected" class="form-control col" id="selector">
                 <option
                   v-for="(example, idx) in generics"
                   :key="idx"
                   :value="example"
-                >{{example.display}}</option>
+                  >{{ example.display }}</option
+                >
               </select>
             </form>
           </div>
@@ -41,13 +36,9 @@
         </div>
 
         <div class="col-9">
-
           <div class="row">
             <div class="col">
-              <highlight-code
-                lang="javascript"
-                :code="code"
-              />
+              <highlight-code lang="javascript" :code="code" />
             </div>
           </div>
 
@@ -60,7 +51,6 @@
         </div>
       </div>
     </div>
-
   </div>
 </template>
 <script>
@@ -68,7 +58,7 @@ import editor from "vue-json-editor";
 import simple from "./simple.js";
 import contour from "./contour.js";
 import histogram from "./histogram.js";
-import histogram2D from  "./2D-histogram.js"
+import histogram2D from "./2D-histogram.js";
 import pie from "./pie.js";
 
 export default {
