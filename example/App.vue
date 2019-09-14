@@ -53,7 +53,7 @@
     <footer class="footer fixed-bottom bg-dark">
       <div class="container">
         <img
-          src="https://plot.ly/gh-pages/documentation/static//images/browser_support.png"
+          src="https://plot.ly/gh-pages/documentation/static/images/browser_support.png"
         />
       </div>
     </footer>
