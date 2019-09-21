@@ -12,7 +12,7 @@
     "test:coverage": "vue-cli-service test:unit --coverage --verbose && codecov"
   },
   "dependencies": {
-    "plotly.js": "^1.49.4",
+    "plotly.js": "^1.49.5",
     "vue": "^2.6.10",
     "vue-resize-directive": "^1.2.0"
   },
@@ -28,9 +28,9 @@
     "babel-eslint": "^10.0.3",
     "babel-jest": "^23.6.0",
     "bootstrap": "^4.3.1",
-    "codecov": "^3.5.0",
-    "eslint": "^6.3.0",
-    "eslint-plugin-prettier": "^3.1.0",
+    "codecov": "^3.6.1",
+    "eslint": "^6.4.0",
+    "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-vue": "^5.2.3",
     "font-awesome": "^4.7.0",
     "highlight.js": "^9.15.10",
@@ -38,7 +38,7 @@
     "jest-canvas-mock": "^2.1.1",
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
-    "vue-cli-plugin-component": "^1.11.0",
+    "vue-cli-plugin-component": "^1.12.1",
     "vue-draggable-resizable": "^2.0.1",
     "vue-highlight.js": "^3.1.0",
     "vue-json-editor": "^1.4.0",
