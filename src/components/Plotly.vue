@@ -68,7 +68,7 @@ export default {
         return acc;
       }, {});
 
-      return Object.assign(optionsFromAttrs, { responsive: false });
+      return Object.assign(optionsFromAttrs);
     },
   },
   beforeDestroy() {
