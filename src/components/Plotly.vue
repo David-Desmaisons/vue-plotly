@@ -67,8 +67,10 @@ export default {
         acc[camelize(key)] = this.$attrs[key];
         return acc;
       }, {});
-
-      return Object.assign(optionsFromAttrs);
+      return {
+        responsive: false, // default
+        ...optionsFromAttrs, // overrides if specified
+      };
     },
   },
   beforeDestroy() {
