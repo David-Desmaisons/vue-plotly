@@ -104,14 +104,14 @@ describe("Plotly.vue", () => {
     expect(plotlyjs.newPlot.mock.calls.length).toBe(1);
   });
 
-  it("overrides responsive attribute", () => {
+  it("allows responsive to be overridden attribute", () => {
     attrs = {
       responsive: true
     };
     wrapper = shallowMountPlotty();
 
     expect(plotlyjs.newPlot).toHaveBeenCalledWith(vm.$el, data, layout, {
-      responsive: false
+      responsive: true
     });
     expect(plotlyjs.newPlot.mock.calls.length).toBe(1);
   });
