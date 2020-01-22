@@ -68,8 +68,8 @@ export default {
         return acc;
       }, {});
       return {
-        responsive: false, // default
-        ...optionsFromAttrs // overrides if specified
+        responsive: false,
+        ...optionsFromAttrs
       };
     }
   },
