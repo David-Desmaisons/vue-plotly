@@ -7,7 +7,7 @@ describe("camelize", () => {
     ["kebab-case", "kebabCase"],
     ["multi-hyphen-string", "multiHyphenString"],
     ["drag-class", "dragClass"],
-    ["test-", "test-"],
+    ["test-", "test-"]
   ])("transform %s into %s", (value, expected) => {
     const actual = camelize(value);
     expect(actual).toEqual(expected);

@@ -38,7 +38,7 @@ const events = [
   "SliderStart",
   "Transitioning",
   "TransitionInterrupted",
-  "Unhover",
+  "Unhover"
 ];
 
 const methods = ["restyle", "relayout", "update", "addTraces", "deleteTraces", "moveTraces", "extendTraces", "prependTraces", "purge"];
@@ -49,10 +49,10 @@ function shallowMountPlotty() {
     propsData: {
       layout,
       data,
-      id,
+      id
     },
     attrs,
-    attachToDocument: true,
+    attachToDocument: true
   });
 }
 
@@ -61,7 +61,7 @@ describe("Plotly.vue", () => {
     layout = {};
     data = [];
     attrs = {
-      "display-mode-bar": true,
+      "display-mode-bar": true
     };
     wrapper = shallowMountPlotty();
     vm = wrapper.vm;
@@ -70,16 +70,16 @@ describe("Plotly.vue", () => {
   it("defines props", () => {
     const props = {
       data: {
-        type: Array,
+        type: Array
       },
       layout: {
-        type: Object,
+        type: Object
       },
       id: {
         type: String,
         required: false,
-        default: null,
-      },
+        default: null
+      }
     };
     expect(Plotly.props).toEqual(props);
   });
@@ -99,26 +99,26 @@ describe("Plotly.vue", () => {
   it("calls plotly newPlot", () => {
     expect(plotlyjs.newPlot).toHaveBeenCalledWith(vm.$el, data, layout, {
       displayModeBar: true,
-      responsive: false,
+      responsive: false
     });
     expect(plotlyjs.newPlot.mock.calls.length).toBe(1);
   });
 
   it("overrides responsive attribute", () => {
     attrs = {
-      responsive: true,
+      responsive: true
     };
     wrapper = shallowMountPlotty();
 
     expect(plotlyjs.newPlot).toHaveBeenCalledWith(vm.$el, data, layout, {
-      responsive: false,
+      responsive: false
     });
     expect(plotlyjs.newPlot.mock.calls.length).toBe(1);
   });
 
   it("calls resize directive", () => {
     const {
-      mock: { calls },
+      mock: { calls }
     } = resize.inserted;
     expect(calls.length).toBe(1);
     const [call] = calls;
@@ -127,15 +127,15 @@ describe("Plotly.vue", () => {
       arg: "debounce",
       name: "resize",
       rawName: "v-resize:debounce.100",
-      expression: "onResize",
+      expression: "onResize"
     });
   });
 
   it("call plotly resize when resized", () => {
     const {
       mock: {
-        calls: [call],
-      },
+        calls: [call]
+      }
     } = resize.inserted;
     const { value: callBackResize } = call[1];
     callBackResize();
@@ -147,8 +147,8 @@ describe("Plotly.vue", () => {
     const evtName = evt.toLowerCase();
     const {
       on: {
-        mock: { calls },
-      },
+        mock: { calls }
+      }
     } = vm.$el;
     const call = calls.find(c => c[0] === `plotly_${evtName}`);
 
@@ -160,15 +160,15 @@ describe("Plotly.vue", () => {
     callBack(parameter);
 
     expect(wrapper.emitted()).toEqual({
-      [evtName]: [[parameter]],
+      [evtName]: [[parameter]]
     });
   });
 
   it(`register all the ${events.length} plotly events`, () => {
     const {
       on: {
-        mock: { calls },
-      },
+        mock: { calls }
+      }
     } = vm.$el;
     expect(calls.length).toBe(events.length);
   });
@@ -183,7 +183,7 @@ describe("Plotly.vue", () => {
 
   describe.each([
     ["data", wrapper => wrapper.setProps({ data: [{ data: "novo" }] })],
-    ["attr", wrapper => (wrapper.vm.$attrs = { displayModeBar: "hover" })],
+    ["attr", wrapper => (wrapper.vm.$attrs = { displayModeBar: "hover" })]
   ])("when %p changes", (_, changeData) => {
     describe.each([
       ["once", changeData],
@@ -192,8 +192,8 @@ describe("Plotly.vue", () => {
         wrapper => {
           changeData(wrapper);
           changeData(wrapper);
-        },
-      ],
+        }
+      ]
     ])("%s in the same tick", (_, update) => {
       const { error } = console;
 
@@ -277,8 +277,8 @@ describe("Plotly.vue", () => {
         () => {
           updateLayout();
           updateLayout();
-        },
-      ],
+        }
+      ]
     ])("%s in the same tick", (_, update) => {
       beforeEach(() => {
         jest.clearAllMocks();
@@ -288,7 +288,7 @@ describe("Plotly.vue", () => {
       it("calls plotly relayout once", async () => {
         await vm.$nextTick();
         expect(plotlyjs.relayout).toHaveBeenCalledWith(vm.$el, {
-          novo: "layout",
+          novo: "layout"
         });
         expect(plotlyjs.relayout.mock.calls.length).toBe(1);
       });
@@ -308,14 +308,14 @@ describe("Plotly.vue", () => {
       () => {
         changeData();
         changeLayout();
-      },
+      }
     ],
     [
       () => {
         changeLayout();
         changeData();
-      },
-    ],
+      }
+    ]
   ])("when layout changes and data changes", changes => {
     beforeEach(() => {
       jest.clearAllMocks();
@@ -330,8 +330,8 @@ describe("Plotly.vue", () => {
         { novo: "layout" },
         {
           displayModeBar: true,
-          responsive: false,
-        },
+          responsive: false
+        }
       );
       expect(plotlyjs.react.mock.calls.length).toBe(1);
     });
@@ -353,7 +353,7 @@ describe("Plotly.vue", () => {
         width,
         height,
         option: 1,
-        format: "png",
+        format: "png"
       });
     });
   });
@@ -369,8 +369,8 @@ describe("Plotly.vue", () => {
       expect(downloadImage).toHaveBeenCalled();
       const {
         mock: {
-          calls: [call],
-        },
+          calls: [call]
+        }
       } = downloadImage;
 
       expect(call.length).toBe(2);
@@ -379,7 +379,7 @@ describe("Plotly.vue", () => {
         width,
         height,
         option: 1,
-        format: "png",
+        format: "png"
       });
       expect(call[1].filename).not.toBeUndefined();
     });
@@ -402,8 +402,8 @@ describe("Plotly.vue", () => {
     it(`unlistens to all the ${events.length} plotly events`, () => {
       const {
         removeAllListeners: {
-          mock: { calls },
-        },
+          mock: { calls }
+        }
       } = vm.$el;
       expect(calls.length).toBe(events.length);
     });

@@ -25,7 +25,7 @@ const eventsName = [
   "SliderStart",
   "Transitioning",
   "TransitionInterrupted",
-  "Unhover",
+  "Unhover"
 ];
 
 const events = eventsName
@@ -34,7 +34,7 @@ const events = eventsName
     completeName: "plotly_" + eventName,
     handler: context => (...args) => {
       context.$emit.apply(context, [eventName, ...args]);
-    },
+    }
   }));
 
 export default events;

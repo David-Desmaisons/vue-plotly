@@ -7,5 +7,5 @@ module.exports = {
       .use("ify-loader")
       .loader("ify-loader")
       .end();
-  },
+  }
 };

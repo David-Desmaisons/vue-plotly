@@ -8,7 +8,7 @@ const Plotly = require("@/components/Plotly").default;
 Vue.component("plotly", Plotly);
 const app = new Vue({
   name: "test-app",
-  template: `<plotly></plotly>`,
+  template: `<plotly></plotly>`
 });
 let html;
 
