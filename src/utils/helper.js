@@ -7,8 +7,6 @@ function cached(fn) {
 }
 
 const regex = /-(\w)/g;
-const camelize = cached(str =>
-  str.replace(regex, (_, c) => (c ? c.toUpperCase() : ""))
-);
+const camelize = cached(str => str.replace(regex, (_, c) => (c ? c.toUpperCase() : '')));
 
 export { camelize };

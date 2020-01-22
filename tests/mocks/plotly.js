@@ -1,6 +1,6 @@
 export default {
   Plots: {
-    resize: jest.fn()
+    resize: jest.fn(),
   },
   plot: jest.fn(),
   newPlot: jest.fn(element => {
@@ -18,5 +18,5 @@ export default {
   extendTraces: jest.fn(),
   prependTraces: jest.fn(),
   toImage: jest.fn(),
-  downloadImage: jest.fn()
+  downloadImage: jest.fn(),
 };

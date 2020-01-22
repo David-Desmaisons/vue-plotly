@@ -2,36 +2,36 @@
   <div :id="id" v-resize:debounce.100="onResize" />
 </template>
 <script>
-import Plotly from "plotly.js";
-import events from "./events.js";
-import methods from "./methods.js";
-import { camelize } from "@/utils/helper";
+import Plotly from 'plotly.js';
+import events from './events.js';
+import methods from './methods.js';
+import { camelize } from '@/utils/helper';
 
 const directives = {};
-if (typeof window !== "undefined") {
-  directives.resize = require("vue-resize-directive");
+if (typeof window !== 'undefined') {
+  directives.resize = require('vue-resize-directive');
 }
 export default {
-  name: "plotly",
+  name: 'plotly',
   inheritAttrs: false,
   directives,
   props: {
     data: {
-      type: Array
+      type: Array,
     },
     layout: {
-      type: Object
+      type: Object,
     },
     id: {
       type: String,
       required: false,
-      default: null
-    }
+      default: null,
+    },
   },
   data() {
     return {
       scheduled: null,
-      innerLayout: { ...this.layout }
+      innerLayout: { ...this.layout },
     };
   },
   mounted() {
@@ -45,7 +45,7 @@ export default {
       handler() {
         this.schedule({ replot: true });
       },
-      deep: true
+      deep: true,
     },
     options: {
       handler(value, old) {
@@ -54,12 +54,12 @@ export default {
         }
         this.schedule({ replot: true });
       },
-      deep: true
+      deep: true,
     },
     layout(layout) {
       this.innerLayout = { ...layout };
       this.schedule({ replot: false });
-    }
+    },
   },
   computed: {
     options() {
@@ -67,9 +67,11 @@ export default {
         acc[camelize(key)] = this.$attrs[key];
         return acc;
       }, {});
-
-      return Object.assign(optionsFromAttrs, { responsive: false });
-    }
+      return {
+        responsive: false, // default
+        ...optionsFromAttrs, // overrides if specified
+      };
+    },
   },
   beforeDestroy() {
     events.forEach(event => this.$el.removeAllListeners(event.completeName));
@@ -89,7 +91,7 @@ export default {
       this.scheduled = context;
       this.$nextTick(() => {
         const {
-          scheduled: { replot }
+          scheduled: { replot },
         } = this;
         this.scheduled = null;
         if (replot) {
@@ -105,24 +107,20 @@ export default {
     },
     downloadImage(options) {
       const filename = `plot--${new Date().toISOString()}`;
-      const allOptions = Object.assign(
-        this.getPrintOptions(),
-        { filename },
-        options
-      );
+      const allOptions = Object.assign(this.getPrintOptions(), { filename }, options);
       return Plotly.downloadImage(this.$el, allOptions);
     },
     getPrintOptions() {
       const { $el } = this;
       return {
-        format: "png",
+        format: 'png',
         width: $el.clientWidth,
-        height: $el.clientHeight
+        height: $el.clientHeight,
       };
     },
     react() {
       Plotly.react(this.$el, this.data, this.innerLayout, this.options);
-    }
-  }
+    },
+  },
 };
 </script>
