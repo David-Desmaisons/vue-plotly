@@ -22,6 +22,9 @@ export default {
     layout: {
       type: Object
     },
+    config: {
+      type: Object
+    },
     id: {
       type: String,
       required: false,
@@ -69,6 +72,7 @@ export default {
       }, {});
       return {
         responsive: false,
+        ...(this.config || {}),
         ...optionsFromAttrs
       };
     }
