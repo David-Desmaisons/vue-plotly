@@ -1,14 +1,12 @@
 {
   "name": "vue-plotly-fork",
   "version": "1.0.0",
-  "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit --coverage",
     "lint": "vue-cli-service lint --fix",
     "build:doc": "vue-cli-service build --dest docs --mode development",
-    "prepublishOnly": "npm run lint && npm run build && npm run build:doc",
     "test:coverage": "vue-cli-service test:unit --coverage --verbose && codecov"
   },
   "files": [
@@ -21,6 +19,7 @@
     "core-js": "^3.6.4",
     "plotly.js": "^1.52.1",
     "vue": "^2.6.11",
+    "vue-plotly": "^1.1.0",
     "vue-resize-directive": "^1.2.0"
   },
   "devDependencies": {
@@ -31,9 +30,10 @@
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/test-utils": "1.0.0-beta.31",
     "@vuedoc/md": "^1.6.0",
-    "babel-core": "^7.0.0-bridge.0",
-    "babel-eslint": "^10.0.3",
-    "babel-jest": "^25.4.0",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.1.0",
+    "babel-preset-env": "^1.7.0",
     "bootstrap": "^4.4.1",
     "codecov": "^3.6.1",
     "eslint": "^6.8.0",

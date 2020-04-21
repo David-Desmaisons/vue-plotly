@@ -12,7 +12,7 @@
       />
     </a>
 
-    <div class="container ">
+    <div class="container">
       <div class="card">
         <div class="card-header">
           <div class="logo">
@@ -22,22 +22,19 @@
                 class="title-link"
                 href="https://github.com/David-Desmaisons/vue-plotly"
                 target="_blank"
-                ><span class="title">Vue.plotly</span></a
-              >a thin vue wrapper for
-              <a href="https://plot.ly/javascript/" target="_blank"
-                >plotly.js</a
               >
+                <span class="title">Vue.plotly</span>
+              </a>a thin vue wrapper for
+              <a href="https://plot.ly/javascript/" target="_blank">plotly.js</a>
             </p>
           </div>
 
           <div class="row justify-content-md-center">
-            <div
-              class="col-3 features"
-              v-for="(data, idx) in features"
-              :key="idx"
-            >
+            <div class="col-3 features" v-for="(data, idx) in features" :key="idx">
               <div>
-                <h4 class="big-icone"><i :class="`fa ${data.icon}`"></i></h4>
+                <h4 class="big-icone">
+                  <i :class="`fa ${data.icon}`"></i>
+                </h4>
                 <p class="card-text">{{ data.text }}</p>
               </div>
             </div>
@@ -52,9 +49,7 @@
 
     <footer class="footer fixed-bottom bg-dark">
       <div class="container">
-        <img
-          src="https://plot.ly/gh-pages/documentation/static/images/browser_support.png"
-        />
+        <img src="https://plot.ly/gh-pages/documentation/static/images/browser_support.png" />
       </div>
     </footer>
   </div>
