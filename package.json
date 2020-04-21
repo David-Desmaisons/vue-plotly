@@ -1,18 +1,16 @@
 {
-  "name": "vue-plotly",
-  "version": "1.1.0",
+  "name": "vue-plotly-fork",
+  "version": "1.0.0",
   "private": false,
   "scripts": {
-    "serve": "vue-cli-service serve ./example/main.js --open",
-    "build": "vue-cli-service build --name vue-plotly --entry ./src/index.js --target lib",
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit --coverage",
     "lint": "vue-cli-service lint --fix",
-    "build:doc": "vue-cli-service build --entry ./example/main.js --dest docs --mode development",
+    "build:doc": "vue-cli-service build --dest docs --mode development",
     "prepublishOnly": "npm run lint && npm run build && npm run build:doc",
     "test:coverage": "vue-cli-service test:unit --coverage --verbose && codecov"
   },
-  "main": "dist/vue-plotly.umd.js",
-  "module": "dist/vue-plotly.common.min.js",
   "files": [
     "dist/*.css",
     "dist/*.map",
@@ -29,13 +27,13 @@
     "@vue/cli-plugin-babel": "^4.1.2",
     "@vue/cli-plugin-eslint": "^4.1.2",
     "@vue/cli-plugin-unit-jest": "^4.1.2",
-    "@vue/cli-service": "^4.1.2",
+    "@vue/cli-service": "^4.3.1",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/test-utils": "1.0.0-beta.31",
     "@vuedoc/md": "^1.6.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.3",
-    "babel-jest": "^24.9.0",
+    "babel-jest": "^25.4.0",
     "bootstrap": "^4.4.1",
     "codecov": "^3.6.1",
     "eslint": "^6.8.0",
@@ -58,5 +56,6 @@
     "vue",
     "component"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "author": "Sebastien Blanchet"
 }
