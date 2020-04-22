@@ -1,58 +1,38 @@
 <template>
-  <div>
-    <div class="card-body">
-      <div class="row">
-        <div class="col-3">
-          <div class="col">
-            <form class="form-group">
-              <select v-model="selected" class="form-control col" id="selector">
-                <option
-                  v-for="(example, idx) in generics"
-                  :key="idx"
-                  :value="example"
-                  >{{ example.display }}</option
-                >
-              </select>
-            </form>
-          </div>
-
-          <div class="col descriptor">
-            <span>Layout:</span>
-            <editor
-              class="layout"
-              v-model="selected.data.layout"
-              :show-btns="false"
-            />
-          </div>
-
-          <div class="col descriptor">
-            <span>Data:</span>
-            <editor
-              class="data"
-              v-model="selected.data.data"
-              :show-btns="false"
-            />
-          </div>
-        </div>
-
-        <div class="col-9">
-          <div class="row">
-            <div class="col">
-              <highlight-code lang="javascript" :code="code" />
-            </div>
-          </div>
-
-          <plotly
-            class="graph"
-            v-bind="selected.data.attr"
-            :data="selected.data.data"
-            :layout="selected.data.layout"
-          />
-        </div>
-      </div>
-    </div>
-  </div>
+  <v-card>
+    <v-row>
+      <v-col cols="3">
+        <v-card elevation="0" class="mx-5">
+          <v-select v-model="selected" item-text="display" label="Display" :items="generics">
+          </v-select>
+        </v-card>
+        <v-card elevation="0" class="mx-5">
+          <v-card-tile>Layout</v-card-tile>
+          <editor class="layout" v-model="selected.data.layout" :show-btns="false" />
+        </v-card>
+        <v-card elevation="0" class="mx-5">
+          <v-card-tile>Data</v-card-tile>
+          <editor class="data" v-model="selected.data.data" :show-btns="false" />
+        </v-card>
+      </v-col>
+      <v-col cols="9">
+        <v-row>
+          <v-col>
+            <highlight-code lang="javascript" :code="code" />
+          </v-col>
+        </v-row>
+        <!-- wrapper -->
+        <plotly
+          class="graph"
+          v-bind="selected.data.attr"
+          :data="selected.data.data"
+          :layout="selected.data.layout"
+        />
+      </v-col>
+    </v-row>
+  </v-card>
 </template>
+
 <script>
 import editor from "vue-json-editor";
 import simple from "./simple.js";

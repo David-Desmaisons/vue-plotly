@@ -41,7 +41,17 @@ const events = [
   "Unhover"
 ];
 
-const methods = ["restyle", "relayout", "update", "addTraces", "deleteTraces", "moveTraces", "extendTraces", "prependTraces", "purge"];
+const methods = [
+  "restyle",
+  "relayout",
+  "update",
+  "addTraces",
+  "deleteTraces",
+  "moveTraces",
+  "extendTraces",
+  "prependTraces",
+  "purge"
+];
 
 function shallowMountPlotty() {
   jest.clearAllMocks();
@@ -143,26 +153,29 @@ describe("Plotly.vue", () => {
     expect(plotlyjs.Plots.resize).toHaveBeenCalledWith(vm.$el);
   });
 
-  test.each(events)("listens to plotly event %s and transform it in a vue event", evt => {
-    const evtName = evt.toLowerCase();
-    const {
-      on: {
-        mock: { calls }
-      }
-    } = vm.$el;
-    const call = calls.find(c => c[0] === `plotly_${evtName}`);
+  test.each(events)(
+    "listens to plotly event %s and transform it in a vue event",
+    evt => {
+      const evtName = evt.toLowerCase();
+      const {
+        on: {
+          mock: { calls }
+        }
+      } = vm.$el;
+      const call = calls.find(c => c[0] === `plotly_${evtName}`);
 
-    expect(call).not.toBeUndefined();
-    expect(call.length).toBe(2);
+      expect(call).not.toBeUndefined();
+      expect(call.length).toBe(2);
 
-    const callBack = call[1];
-    const parameter = { value: 25 };
-    callBack(parameter);
+      const callBack = call[1];
+      const parameter = { value: 25 };
+      callBack(parameter);
 
-    expect(wrapper.emitted()).toEqual({
-      [evtName]: [[parameter]]
-    });
-  });
+      expect(wrapper.emitted()).toEqual({
+        [evtName]: [[parameter]]
+      });
+    }
+  );
 
   it(`register all the ${events.length} plotly events`, () => {
     const {
@@ -208,7 +221,12 @@ describe("Plotly.vue", () => {
 
       it("calls plotly react once in the next tick", async () => {
         await vm.$nextTick();
-        expect(plotlyjs.react).toHaveBeenCalledWith(vm.$el, vm.data, vm.layout, vm.options);
+        expect(plotlyjs.react).toHaveBeenCalledWith(
+          vm.$el,
+          vm.data,
+          vm.layout,
+          vm.options
+        );
         expect(plotlyjs.react.mock.calls.length).toBe(1);
       });
 
@@ -234,7 +252,12 @@ describe("Plotly.vue", () => {
 
     it("calls plotly react once in the next tick", async () => {
       await vm.$nextTick();
-      expect(plotlyjs.react).toHaveBeenCalledWith(vm.$el, vm.data, vm.layout, vm.options);
+      expect(plotlyjs.react).toHaveBeenCalledWith(
+        vm.$el,
+        vm.data,
+        vm.layout,
+        vm.options
+      );
       expect(plotlyjs.react.mock.calls.length).toBe(1);
     });
 
@@ -396,7 +419,9 @@ describe("Plotly.vue", () => {
 
     test.each(events)("unlistens to plotly event %s", evtName => {
       const { removeAllListeners } = vm.$el;
-      expect(removeAllListeners).toHaveBeenCalledWith(`plotly_${evtName.toLowerCase()}`);
+      expect(removeAllListeners).toHaveBeenCalledWith(
+        `plotly_${evtName.toLowerCase()}`
+      );
     });
 
     it(`unlistens to all the ${events.length} plotly events`, () => {

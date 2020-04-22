@@ -1,6 +1,7 @@
 {
   "name": "vue-plotly-fork",
   "version": "1.0.0",
+  "author": "Sebastien Blanchet",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -20,7 +21,8 @@
     "plotly.js": "^1.52.1",
     "vue": "^2.6.11",
     "vue-plotly": "^1.1.0",
-    "vue-resize-directive": "^1.2.0"
+    "vue-resize-directive": "^1.2.0",
+    "vuetify": "^2.2.11"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.1.2",
@@ -34,28 +36,29 @@
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
     "babel-preset-env": "^1.7.0",
-    "bootstrap": "^4.4.1",
     "codecov": "^3.6.1",
     "eslint": "^6.8.0",
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-vue": "^6.1.2",
-    "font-awesome": "^4.7.0",
     "highlight.js": "^9.18.0",
     "ify-loader": "^1.1.0",
     "jest-canvas-mock": "^2.2.0",
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
+    "sass": "^1.19.0",
+    "sass-loader": "^8.0.0",
     "vue-cli-plugin-component": "^1.12.2",
+    "vue-cli-plugin-vuetify": "~2.0.5",
     "vue-draggable-resizable": "^2.1.0",
     "vue-highlight.js": "^3.1.0",
     "vue-json-editor": "^1.4.0",
     "vue-server-renderer": "^2.6.11",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.11",
+    "vuetify-loader": "^1.3.0"
   },
   "keywords": [
     "vue",
     "component"
   ],
-  "license": "MIT",
-  "author": "Sebastien Blanchet"
+  "license": "MIT"
 }

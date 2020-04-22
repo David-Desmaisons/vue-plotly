@@ -9,10 +9,9 @@ import VueDraggableResizable from "vue-draggable-resizable";
 import { Plotly } from "vue-plotly";
 
 import "vue-draggable-resizable/dist/VueDraggableResizable.css";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "font-awesome/css/font-awesome.css";
 import "highlight.js/styles/default.css";
 import "highlight.js/styles/mono-blue.css";
+import vuetify from "./plugins/vuetify";
 
 Vue.component("vue-draggable-resizable", VueDraggableResizable);
 Vue.component("plotly", Plotly);
@@ -28,5 +27,6 @@ Vue.use(VueHighlightJS, {
 Vue.config.productionTip = false;
 
 new Vue({
+  vuetify,
   render: h => h(App)
 }).$mount("#app");

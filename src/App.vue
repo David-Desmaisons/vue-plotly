@@ -1,58 +1,19 @@
 <template>
-  <div id="app">
-    <a href="https://github.com/David-Desmaisons/vue-plotly" target="_blank">
-      <img
-        style="position: fixed; top: 0; right: 0; border: 0; z-index:99999"
-        width="149"
-        height="149"
-        src="https://github.blog/wp-content/uploads/2008/12/forkme_right_gray_6d6d6d.png?resize=149%2C149"
-        class="attachment-full size-full"
-        alt="Fork me on GitHub"
-        data-recalc-dims="1"
-      />
-    </a>
-
-    <div class="container">
-      <div class="card">
-        <div class="card-header">
-          <div class="logo">
-            <img alt="Vue.draggable logo" src="./assets/logo.png" />
-            <p>
-              <a
-                class="title-link"
-                href="https://github.com/David-Desmaisons/vue-plotly"
-                target="_blank"
-              >
-                <span class="title">Vue.plotly</span>
-              </a>a thin vue wrapper for
-              <a href="https://plot.ly/javascript/" target="_blank">plotly.js</a>
-            </p>
-          </div>
-
-          <div class="row justify-content-md-center">
-            <div class="col-3 features" v-for="(data, idx) in features" :key="idx">
-              <div>
-                <h4 class="big-icone">
-                  <i :class="`fa ${data.icon}`"></i>
-                </h4>
-                <p class="card-text">{{ data.text }}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card main-card">
+  <v-app>
+    <v-app-bar app color="primary" dark>
+      <div class="d-flex align-center headline font-weight-bold">Vue-Plotly</div>
+      <v-spacer></v-spacer>
+      <v-btn href="https://github.com/vuetifyjs/vuetify/releases/latest" target="_blank" text>
+        <span class="mr-2">See on GitHub</span>
+        <v-icon>mdi-open-in-new</v-icon>
+      </v-btn>
+    </v-app-bar>
+    <v-content>
+      <v-container fluid>
         <graphpicker />
-      </div>
-    </div>
-
-    <footer class="footer fixed-bottom bg-dark">
-      <div class="container">
-        <img src="https://plot.ly/gh-pages/documentation/static/images/browser_support.png" />
-      </div>
-    </footer>
-  </div>
+      </v-container>
+    </v-content>
+  </v-app>
 </template>
 
 <script>
