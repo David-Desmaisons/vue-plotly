@@ -11,6 +11,10 @@
     "prepublishOnly": "npm run lint && npm run build && npm run build:doc",
     "test:coverage": "vue-cli-service test:unit --coverage --verbose && codecov"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/David-Desmaisons/vue-plotly.git"
+  },
   "main": "dist/vue-plotly.umd.js",
   "module": "dist/vue-plotly.common.min.js",
   "files": [
