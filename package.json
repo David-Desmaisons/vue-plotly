@@ -4,7 +4,7 @@
   "private": false,
   "scripts": {
     "serve": "vue-cli-service serve ./example/main.js --open",
-    "build": "vue-cli-service build --name vue-plotly --entry ./src/index.js --target lib",
+    "build": "vue-cli-service build --name VuePlotly --entry ./src/index.js --target lib",
     "test:unit": "vue-cli-service test:unit --coverage",
     "lint": "vue-cli-service lint --fix",
     "build:doc": "vue-cli-service build --entry ./example/main.js --dest docs --mode development",
