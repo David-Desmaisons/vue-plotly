@@ -32,9 +32,11 @@ const events = eventsName
   .map(evt => evt.toLocaleLowerCase())
   .map(eventName => ({
     completeName: "plotly_" + eventName,
-    handler: context => (...args) => {
-      context.$emit.apply(context, [eventName, ...args]);
-    }
+    handler:
+      context =>
+      (...args) => {
+        context.$emit.apply(context, [eventName, ...args]);
+      }
   }));
 
 export default events;
