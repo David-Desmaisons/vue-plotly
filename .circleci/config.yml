@@ -34,6 +34,6 @@ jobs:
           key: v1-dependencies-{{ checksum "package-lock.json" }}
         
       # run tests!
-      - run: yarn test:coverage
+      - run: npm run test:coverage
 
 
