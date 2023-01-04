@@ -16,7 +16,7 @@
     "url": "https://github.com/David-Desmaisons/vue-plotly.git"
   },
   "main": "dist/vue-plotly.umd.js",
-  "module": "dist/vue-plotly.common.min.js",
+  "module": "dist/vue-plotly.common.js",
   "files": [
     "dist/*.css",
     "dist/*.map",
