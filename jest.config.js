@@ -8,7 +8,7 @@ module.exports = {
   transformIgnorePatterns: ["/node_modules/"],
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1",
-    "^plotly.js$": "<rootDir>/tests/mocks/plotly.js"
+    "^plotly.js-dist$": "<rootDir>/tests/mocks/plotly.js-dist.js"
   },
   snapshotSerializers: ["jest-serializer-vue"],
   testMatch: ["**/tests/unit/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)"],
