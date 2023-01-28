@@ -52,7 +52,7 @@ function shallowMountPlotty() {
       id
     },
     attrs,
-    attachToDocument: true
+    attachTo: document.body
   });
 }
 
@@ -85,15 +85,11 @@ describe("Plotly.vue", () => {
   });
 
   it("renders a div", () => {
-    expect(wrapper.is("div")).toBe(true);
+    expect(wrapper.html()).toBe(`<div id="${id}"></div>`);
   });
 
   it("sets id on div", () => {
-    expect(wrapper.is(`#${id}`)).toBe(true);
-  });
-
-  it("sets id on div", () => {
-    expect(wrapper.is(`#${id}`)).toBe(true);
+    expect(wrapper.attributes("id")).toBe(id);
   });
 
   it("calls plotly newPlot", () => {
@@ -300,7 +296,7 @@ describe("Plotly.vue", () => {
     });
   });
 
-  const changeData = () => wrapper.setProps({ data: { novo: "data" } });
+  const changeData = () => wrapper.setProps({ data: [{ novo: "data" }] });
   const changeLayout = () => wrapper.setProps({ layout: { novo: "layout" } });
 
   describe.each([
@@ -326,7 +322,7 @@ describe("Plotly.vue", () => {
       await vm.$nextTick();
       expect(plotlyjs.react).toHaveBeenCalledWith(
         vm.$el,
-        { novo: "data" },
+        [{ novo: "data" }],
         { novo: "layout" },
         {
           displayModeBar: true,
