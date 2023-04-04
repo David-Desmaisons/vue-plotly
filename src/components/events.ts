@@ -1,5 +1,5 @@
 import Vue from "vue";
-import * as Plotly from "plotly.js";
+import * as Plotly from "plotly.js-dist-min";
 
 type TEventName = Parameters<Plotly.PlotlyHTMLElement["on"]>[0];
 

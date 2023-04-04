@@ -1,5 +1,5 @@
 import Vue from "vue";
-import * as Plotly from "plotly.js";
+import * as Plotly from "plotly.js-dist-min";
 
 type TPlotly = typeof Plotly;
 
@@ -18,7 +18,7 @@ const methods = plotlyFunctions.reduce((all, [fnName, fn]) => {
   all[newFnName] = function (...args: any[]) {
     const that = this as unknown as Vue;
     fn = fn as (el: Element, ...args: any[]) => any;
-    return fn(that.$el, ...args);
+    return fn(that.plotlyBaseEl, ...args);
   };
   return all;
 }, {} as TExportedMethods) as TExportedMethods;

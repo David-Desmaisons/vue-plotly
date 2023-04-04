@@ -16,29 +16,29 @@
             </form>
           </div>
 
-          <div class="col descriptor">
+          <label class="col descriptor json-editor layout">
             <span>Layout:</span>
-            <editor
-              class="layout"
-              v-model="selected.data.layout"
-              :show-btns="false"
+            <textarea
+              ref="jsonLayout"
+              :class="'json-'+jsonStatus.layout"
+              @keyup="updateLayoutJson"
             />
-          </div>
+          </label>
 
-          <div class="col descriptor">
+          <label class="col descriptor json-editor data">
             <span>Data:</span>
-            <editor
-              class="data"
-              v-model="selected.data.data"
-              :show-btns="false"
+            <textarea
+              ref="jsonData"
+              :class="'json-'+jsonStatus.data"
+              @keyup="updateDataJson"
             />
-          </div>
+          </label>
         </div>
 
         <div class="col-9">
           <div class="row">
             <div class="col">
-              <highlight-code lang="javascript" :code="code" />
+              <highlightjs language="xml" :code="code" />
             </div>
           </div>
 
@@ -54,23 +54,37 @@
   </div>
 </template>
 <script>
-import editor from "vue-json-editor";
 import simple from "./simple.js";
 import contour from "./contour.js";
 import histogram from "./histogram.js";
 import histogram2D from "./2D-histogram.js";
 import pie from "./pie.js";
+import xmlHighlight from "highlight.js/lib/languages/xml";
+import hljs from "highlight.js/lib/core";
+import hljsVuePlugin from "@highlightjs/vue-plugin";
+import "highlight.js/styles/stackoverflow-light.css";
+
+hljs.registerLanguage("xml", xmlHighlight);
 
 export default {
   name: "picker",
   components: {
-    editor
+    highlightjs: hljsVuePlugin.component
   },
   data() {
     return {
       generics: [simple, contour, histogram, pie, histogram2D],
-      selected: simple
+      selected: simple,
+      jsonStatus: { layout: 'ok', data: 'ok' }
     };
+  },
+  mounted() {
+    this.updateJsonEditors()
+  },
+  watch: {
+    selected() {
+      this.updateJsonEditors()
+    }
   },
   computed: {
     code() {
@@ -84,20 +98,54 @@ export default {
         .join(" ");
       return `<plotly :data="data" :layout="layout" ${fromAttr}/>`;
     }
+  },
+  methods: {
+    updateJsonEditors() {
+      this.$refs.jsonLayout.value = JSON.stringify(this.selected.data.layout, 0, '  ')
+      this.$refs.jsonData.value = JSON.stringify(this.selected.data.data, 0, '  ')
+    },
+    updateJson(key, input) {
+      try {
+        this.selected.data[key] = JSON.parse(input.value)
+        this.jsonStatus[key] = 'ok'
+      } catch(err) {
+        this.jsonStatus[key] = 'fail'
+      }
+    },
+    updateLayoutJson(ev) {
+      setTimeout(()=> this.updateJson('layout', ev.target), 1)
+    },
+    updateDataJson(ev) {
+      setTimeout(()=> this.updateJson('data', ev.target), 1)
+    }
   }
 };
 </script>
 <style>
-.layout .jsoneditor-vue {
-  height: 150px;
+.json-editor {
+  display: block;
+}
+.json-editor textarea {
+  width: 100%;
+  white-space: pre;
+  font-family: monospace;
+  border: none;
+  border-radius: .5em;
+  padding: .2em .5em;
 }
 
-.data .jsoneditor-vue {
-  height: 300px;
+.json-editor.layout textarea {
+  height: 110px;
+}
+.json-editor.data textarea {
+  height: 320px;
 }
 
-.jsoneditor-vue div.jsoneditor-tree {
-  min-height: 100px;
+.json-editor textarea.json-ok {
+  background: #A0D0A0;
+}
+.json-editor textarea.json-fail {
+  background: #E0B0B0;
 }
 
 .mark-up {
@@ -106,11 +154,6 @@ export default {
 
 .graph {
   height: 500px;
-}
-
-div.jsoneditor-menu {
-  background-color: #007bff;
-  border-bottom: 1px solid #007bff;
 }
 
 .descriptor > span {

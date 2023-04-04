@@ -1,17 +1,19 @@
 <template>
-  <div :id="id" v-resize:debounce.100="onResize" />
+  <div :id="id" ref="plotlyBaseEl" />
+  <!-- <div :id="id" v-resize:debounce.100="onResize" /> -->
 </template>
 <script lang="ts">
 import Vue from 'vue'
-import * as Plotly from "plotly.js";
+import * as Plotly from "plotly.js-dist-min";
 import events from "./events";
 import methods from "./methods";
 import { camelize } from "@/utils/helper";
 
-const directives = {} as { resize?: ()=>void };
-if (typeof window !== "undefined") {
-  directives.resize = require("vue-resize-directive");
-}
+// const directives = {} as { resize?: ()=>void };
+// if (typeof window !== "undefined") {
+//   directives.resize = require("vue-resize-directive");
+// }
+const directives = {}
 
 type TScheduled = { replot: boolean };
 
@@ -23,7 +25,7 @@ type TVuePlotly = Vue & (typeof methods) & {
   schedule(context: TScheduled): void;
   innerLayout: Partial<Plotly.Layout>;
   options: Record<string, any>;
-  $el: Plotly.PlotlyHTMLElement;
+  plotlyBaseEl: Plotly.PlotlyHTMLElement;
 };
 
 export default {
@@ -54,13 +56,13 @@ export default {
     const that = this as unknown as TVuePlotly;
     that.plotlyNewPlot(that.data, that.innerLayout, that.options);
     events.forEach(evt => {
-      that.$el.on(evt.eventName, evt.handler(that));
+      that.plotlyBaseEl.on(evt.eventName, evt.handler(that));
     });
   },
   beforeDestroy() {
     const that = this as unknown as TVuePlotly;
     events.forEach(event =>
-      that.$el.removeAllListeners(event.eventName)
+      plotlyBaseEl.removeAllListeners(event.eventName)
     );
     that.plotlyPurge();
   },
@@ -99,14 +101,17 @@ export default {
         responsive: false,
         ...optionsFromAttrs
       };
+    },
+    plotlyBaseEl() {
+      return this.$refs.plotlyBaseEl
     }
   },
   methods: {
     ...{} as TVuePlotly,
     ...methods,
-    onResize() {
-      Plotly.Plots.resize(this.$el);
-    },
+    // onResize() {
+    //   Plotly.Plots.resize(this.plotlyBaseEl);
+    // },
     schedule(context: TScheduled) {
       const { scheduled } = this;
       if (scheduled) {
@@ -115,9 +120,6 @@ export default {
       }
       this.scheduled = context;
       this.$nextTick(() => {
-        // const {
-        //   scheduled: { replot }
-        // } = this;
         const replot = this.scheduled?.replot;
         this.scheduled = null;
         if (replot) {
@@ -137,11 +139,10 @@ export default {
       return this.plotlyDownloadImage(allOptions);
     },
     getPrintOptions() {
-      const { $el } = this;
       return {
         format: "png",
-        width: $el.clientWidth,
-        height: $el.clientHeight
+        width: this.plotlyBaseEl.clientWidth,
+        height: this.plotlyBaseEl.clientHeight
       };
     },
     react() {
