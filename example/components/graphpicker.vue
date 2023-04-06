@@ -47,35 +47,62 @@
             v-bind="selected.data.attr"
             :data="selected.data.data"
             :layout="selected.data.layout"
+            ref="graph"
+            @plotly_afterplot="lastEvents.shift(); lastEvents.push('afterplot')"
+            @plotly_animated="lastEvents.shift(); lastEvents.push('animated')"
+            @plotly_animating="lastEvents.shift(); lastEvents.push('animating')"
+            @plotly_animatingframe="lastEvents.shift(); lastEvents.push('animatingframe')"
+            @plotly_beforeexport="lastEvents.shift(); lastEvents.push('beforeexport')"
+            @plotly_hover="lastEvents.shift(); lastEvents.push('hover')"
+            @plotly_relayout="lastEvents.shift(); lastEvents.push('relayout')"
+            @plotly_update="lastEvents.shift(); lastEvents.push('update')"
           />
+
+          <button @click="addLine()">
+            Add an "off state" line, using <code>plotlyAddTraces()</code>
+          </button>
+          <button @click="forceDownload()">
+            Force download using <code>downloadImage()</code>
+          </button>
+
+          <div>
+            <label v-if="lastEvents">Last events: &nbsp;</label>
+            <template v-for="(ev, i) of lastEvents.filter(v=>v)">
+              <template v-if="i > 0">, </template>
+              <code>{{ev}}</code>
+            </template>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
-<script>
-import simple from "./simple.js";
-import contour from "./contour.js";
-import histogram from "./histogram.js";
-import histogram2D from "./2D-histogram.js";
+<script lang="ts">
+import simple from "./simple";
+import contour from "./contour";
+import histogram from "./histogram";
+import histogram2D from "./2D-histogram";
 import pie from "./pie.js";
 import xmlHighlight from "highlight.js/lib/languages/xml";
 import hljs from "highlight.js/lib/core";
 import hljsVuePlugin from "@highlightjs/vue-plugin";
 import "highlight.js/styles/stackoverflow-light.css";
+import Plotly from "@/index";
 
 hljs.registerLanguage("xml", xmlHighlight);
 
 export default {
   name: "picker",
   components: {
-    highlightjs: hljsVuePlugin.component
+    highlightjs: hljsVuePlugin.component,
+    Plotly
   },
   data() {
     return {
       generics: [simple, contour, histogram, pie, histogram2D],
       selected: simple,
-      jsonStatus: { layout: 'ok', data: 'ok' }
+      jsonStatus: { layout: 'ok', data: 'ok' },
+      lastEvents: new Array(9)
     };
   },
   mounted() {
@@ -100,6 +127,18 @@ export default {
     }
   },
   methods: {
+    addLine() {
+      const rnd = ()=> Math.random()*10 + 5;
+      const plotly: InstanceType<typeof Plotly> = this.$refs.graph;
+      plotly.plotlyAddTraces({
+        x: [1, 2, 3, 4 ],
+        y: [rnd(), rnd(), rnd(), rnd()]
+      })
+    },
+    forceDownload() {
+      const plotly: InstanceType<typeof Plotly> = this.$refs.graph;
+      plotly.downloadImage()
+    },
     updateJsonEditors() {
       this.$refs.jsonLayout.value = JSON.stringify(this.selected.data.layout, 0, '  ')
       this.$refs.jsonData.value = JSON.stringify(this.selected.data.data, 0, '  ')

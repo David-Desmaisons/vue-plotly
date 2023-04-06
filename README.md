@@ -8,7 +8,7 @@
 [![Npm version](https://img.shields.io/npm/v/vue-plotly.svg)](https://www.npmjs.com/package/vue-plotly)
 [![MIT License](https://img.shields.io/github/license/David-Desmaisons/vue-plotly.svg)](https://github.com/David-Desmaisons/vue-plotly/blob/master/LICENSE)
 
-<h2>Thin vue wrapper for <a
+<h2>Thin Vue3 wrapper for <a
               href="https://plot.ly/javascript/"
               target="_blank"
             >plotly.js</a></h2>
@@ -19,7 +19,7 @@
   <li>Redraw on resizing</li>
 </ul>
 
-![example](./example/assets/demo.gif)
+![example](https://github.com/David-Desmaisons/vue-plotly/raw/master/example/assets/demo.gif)
 
 ## Live example
 https://david-desmaisons.github.io/vue-plotly/
@@ -29,7 +29,7 @@ https://david-desmaisons.github.io/vue-plotly/
 <Plotly :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
 ```
 ```javascript
-import { Plotly } from 'vue-plotly'
+import Plotly from 'vue-plotly'
 
 export default {
   components: {
@@ -51,7 +51,7 @@ export default {
 ```
 ## API
 
-#### Props 
+### Props
 
 - `data` ***Array*** (*optional*) 
 
@@ -68,6 +68,21 @@ export default {
 - Others:
 
   Plotly component implements the [transparent wrapper pattern](https://zendev.com/2018/05/31/transparent-wrapper-components-in-vue.html):<br>All other props will be passed as plotly graphic [option](https://plot.ly/javascript/configuration-options/).
+
+### Exposed methods
+
+All [Plotly.js instance methods](https://plotly.com/javascript/plotlyjs-function-reference) are exposed by the component instance with "`plotly`" prefix, plus the simplifyed `toImage()` and `downloadImage()`, that preset some options.
+See the usage example at [`graphpicker.vue`](./example/components/graphpicker.vue).
+
+### Events
+
+All [Plotly.js events](https://plotly.com/javascript/plotlyjs-events) are re-emited by the component instance and you can listen with the `v-on` directive.
+See the usage example at [`graphpicker.vue`](./example/components/graphpicker.vue).
+
+If you need, all event names are exported by this package:
+```javascript
+import { eventNames } from 'vue-plotly'
+```
 
 ## Installation
 ```
@@ -103,7 +118,3 @@ npm run lint
 ```
 npm run test:unit
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
-

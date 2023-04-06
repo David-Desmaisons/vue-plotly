@@ -1,53 +1,55 @@
-import Vue from "vue";
+import { ComponentInternalInstance } from "vue";
 import * as Plotly from "plotly.js-dist-min";
 
 type TEventName = Parameters<Plotly.PlotlyHTMLElement["on"]>[0];
 
 /*
  List of events extracted with
- $ grep "'plotly_" node_modules/@types/plotly.js/index.d.ts |
-   sed -r 's/(plotly_[a-z]+)/\n\1\n/g' |
-   grep plotly_
+ $ sed -r 's/([;{}])/\1\n/g' node_modules/plotly.js-dist-min/plotly.min.js |
+   egrep '\.emit\("plotly_[^"]+"' |
+   sed -r 's/.*\.emit\("(plotly_[^"]+)".*$/  "\1",/' |
+   sort | uniq
 */
 
-const eventNames: TEventName[] = [
-  // "plotly_click",
-  // "plotly_unhover",
-  // "plotly_hover",
-  // "plotly_selecting",
-  // "plotly_selected",
-  // "plotly_restyle",
-  // "plotly_relayout",
-  // "plotly_relayouting",
-  // "plotly_clickannotation",
-  // "plotly_animatingframe",
-  // "plotly_legendclick",
-  // "plotly_legenddoubleclick",
-  // "plotly_sliderchange",
-  // "plotly_sliderend",
-  // "plotly_sliderstart",
-  // "plotly_sunburstclick",
-  // "plotly_event",
-  // "plotly_beforeplot",
+export const eventNames = [
   "plotly_afterexport",
   "plotly_afterplot",
   "plotly_animated",
+  "plotly_animating",
+  "plotly_animatingframe",
   "plotly_animationinterrupted",
   "plotly_autosize",
   "plotly_beforeexport",
+  "plotly_buttonclicked",
+  "plotly_click",
+  "plotly_clickannotation",
   "plotly_deselect",
   "plotly_doubleclick",
   "plotly_framework",
+  "plotly_hover",
+  "plotly_react",
   "plotly_redraw",
+  "plotly_relayout",
+  "plotly_relayouting",
+  "plotly_restyle",
+  "plotly_selected",
+  "plotly_selecting",
+  "plotly_sliderchange",
+  "plotly_sliderend",
+  "plotly_sliderstart",
+  "plotly_transitioned",
   "plotly_transitioning",
-  "plotly_transitioninterrupted"
-];
+  "plotly_transitioninterrupted",
+  "plotly_unhover",
+  "plotly_update",
+  "plotly_webglcontextlost"
+] as TEventName[]; // We have more events then the @types know.
 
 const events = eventNames.map(eventName => ({
   eventName,
-  handler(context: Vue) {
+  handler(context: ComponentInternalInstance) {
     return (...args: any[]) => {
-      context.$emit.apply(context, [eventName, ...args]);
+      context.emit.apply(context, [eventName, ...args]);
     };
   }
 }));

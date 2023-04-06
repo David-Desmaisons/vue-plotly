@@ -1,4 +1,4 @@
-export * from "plotly.js-dist-min";
+import PlotlyComponent from "./components/Plotly.vue";
+export default PlotlyComponent;
 
-import Plotly from "./components/Plotly.vue";
-export { Plotly };
+export { eventNames } from "@/components/events"

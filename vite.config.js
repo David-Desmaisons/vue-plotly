@@ -1,10 +1,10 @@
-import path from 'path'
-import fs from 'fs'
+import path from "path"
+import fs from "fs"
 
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import { defineConfig } from "vite"
+import vue from "@vitejs/plugin-vue"
 
-const pkg = JSON.parse(fs.readFileSync('./package.json', 'utf8'))
+const pkg = JSON.parse(fs.readFileSync("./package.json", "utf8"))
 
 export default defineConfig({
   define: {
@@ -13,11 +13,15 @@ export default defineConfig({
   },
   plugins: [vue()],
   build: {
-    outDir: './dist/',
+    outDir: "./dist/",
+    lib: {
+      entry: "./src/index.ts",
+      formats: ["es"]
+    }
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      "@": path.resolve(__dirname, "./src"),
     },
   },
   server: {
