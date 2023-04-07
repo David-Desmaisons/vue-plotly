@@ -21,12 +21,11 @@
               <a
                 class="title-link"
                 href="https://github.com/David-Desmaisons/vue-plotly"
-                target="_blank"
-                ><span class="title">Vue.plotly</span></a
-              >a thin vue wrapper for
-              <a href="https://plot.ly/javascript/" target="_blank"
-                >plotly.js</a
-              >
+                target="_blank">
+                <span class="title">Vue.plotly</span>
+              </a>
+              a thin vue wrapper for
+              <a href="https://plot.ly/javascript/" target="_blank">plotly.js</a>
             </p>
           </div>
 

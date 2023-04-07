@@ -6,6 +6,23 @@ import vue from "@vitejs/plugin-vue"
 
 const pkg = JSON.parse(fs.readFileSync("./package.json", "utf8"))
 
+const buidDocConfig = {
+  rollupOptions: {
+    input: "example/index.html"
+  }
+}
+
+const buidLibConfig = {
+  rollupOptions: {
+    input: "src/index.ts"
+  },
+  lib: {
+    entry: "./src/index.ts",
+    formats: ["es"]
+  },
+  outDir: "./dist"
+}
+
 export default defineConfig({
   define: {
     PKG_NAME: JSON.stringify(pkg.name),
@@ -13,11 +30,7 @@ export default defineConfig({
   },
   plugins: [vue()],
   build: {
-    outDir: "./dist/",
-    lib: {
-      entry: "./src/index.ts",
-      formats: ["es"]
-    }
+    ...( process.env.BUILD_DOC === "true" ? buidDocConfig : buidLibConfig )
   },
   resolve: {
     alias: {

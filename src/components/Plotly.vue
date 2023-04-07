@@ -5,8 +5,8 @@
 <script setup lang="ts">
 import {
   ref, onMounted, onBeforeUnmount,
-  getCurrentInstance, computed, watch,
-  nextTick, PropType
+  getCurrentInstance, computed, ComputedRef,
+  watch, nextTick, PropType
 } from 'vue'
 import * as Plotly from "plotly.js-dist-min";
 import events from "./events";
@@ -64,7 +64,7 @@ onBeforeUnmount(()=> {
   plotlyPurge();
 });
 
-const options = computed(()=> {
+const options = computed((): Partial<Plotly.Config> => {
   const optionsFromAttrs = Object.keys(instance.attrs).reduce((acc, key) => {
     acc[camelize(key)] = instance.attrs[key];
     return acc;
@@ -81,8 +81,8 @@ watch(()=> props.data,
 );
 
 watch(()=> options,
-  (value: TScheduled, old: TScheduled)=> {
-    if (JSON.stringify(value) !== JSON.stringify(old)) {
+  (value, old)=> {
+    if (JSON.stringify(value.value) !== JSON.stringify(old.value)) {
       schedule({ replot: true });
     }
   },

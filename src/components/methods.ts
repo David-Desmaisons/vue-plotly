@@ -7,7 +7,7 @@ type ParamsExceptFirst<F> =
    F extends (arg0: any, ...rest: infer R) => any ? R : never;
 
 // Problematic or not usefull for vue-plotly context:
-const UnexportedMethods = ['register'];
+// const UnexportedMethods = ['register'];
 
 // To update the plotly exported modules, uncoment this console.log, run yarn dev,
 // copy the result in your console and past/replace the code below the DANGER line.

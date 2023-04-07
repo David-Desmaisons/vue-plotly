@@ -2,35 +2,34 @@
 // Sample from a normal distribution with mean 0, stddev 1.
 
 function normal() {
-  var x = 0,
+  let x = 0,
     y = 0,
-    rds,
-    c;
+    rds;
   do {
     x = Math.random() * 2 - 1;
     y = Math.random() * 2 - 1;
     rds = x * x + y * y;
   } while (rds == 0 || rds > 1);
-  c = Math.sqrt((-2 * Math.log(rds)) / rds); // Box-Muller transform
+  const c = Math.sqrt((-2 * Math.log(rds)) / rds); // Box-Muller transform
   return x * c; // throw away extra sample y * c
 }
 
-var N = 2000,
+const N = 2000,
   a = -1,
   b = 1.2;
 
-var step = (b - a) / (N - 1);
-var t = new Array(N),
+const step = (b - a) / (N - 1);
+const t = new Array(N),
   x = new Array(N),
   y = new Array(N);
 
-for (var i = 0; i < N; i++) {
+for (let i = 0; i < N; i++) {
   t[i] = a + step * i;
   x[i] = Math.pow(t[i], 3) + 0.3 * normal();
   y[i] = Math.pow(t[i], 6) + 0.3 * normal();
 }
 
-var trace1 = {
+const trace1 = {
   x: x,
   y: y,
   mode: "markers",
@@ -42,7 +41,7 @@ var trace1 = {
   },
   type: "scatter"
 };
-var trace2 = {
+const trace2 = {
   x: x,
   y: y,
   name: "density",
@@ -52,14 +51,14 @@ var trace2 = {
   showscale: false,
   type: "histogram2dcontour"
 };
-var trace3 = {
+const trace3 = {
   x: x,
   name: "x density",
   marker: { color: "rgb(102,0,0)" },
   yaxis: "y2",
   type: "histogram"
 };
-var trace4 = {
+const trace4 = {
   y: y,
   name: "y density",
   marker: { color: "rgb(102,0,0)" },
