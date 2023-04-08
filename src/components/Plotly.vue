@@ -1,8 +1,8 @@
 <template>
   <div :id="id" ref="plotlyRoot" />
-  <!-- <div :id="id" v-resize:debounce.100="onResize" /> -->
 </template>
 <script setup lang="ts">
+// TODO: Replace old v-resize <div :id="id" v-resize:debounce.100="onResize" />
 import {
   ref, onMounted, onBeforeUnmount,
   getCurrentInstance, computed, ComputedRef,

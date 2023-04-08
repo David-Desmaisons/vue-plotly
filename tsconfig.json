@@ -12,6 +12,9 @@
     "paths": {
       "@/*": [ "./src/*" ]
     },
+    "types": [
+      "vitest/importMeta"
+    ],
     "outDir": "./dist"
   }
 }

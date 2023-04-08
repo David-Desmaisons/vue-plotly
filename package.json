@@ -6,11 +6,11 @@
     "dev": "vite --open -c vite.config.js example",
     "build": "test -e dist && rm -r dist; NODE_ENV=production; $_ lint && $_ build:d.ts && vite build",
     "build:d.ts": "vue-tsc -p tsconfig.json --pretty --declaration --emitDeclarationOnly",
-    "test:unit": "vue-cli-service test:unit --coverage",
-    "lint": "eslint --fix src example",
     "build:doc": "test -e docs && rm -r docs; BUILD_DOC=true vite build -c vite.config.js --outDir ../docs example",
-    "prepublishOnly": "$_ build",
-    "test:coverage": "vue-cli-service test:unit --coverage --verbose && codecov"
+    "test": "$_ lint && vitest --run --coverage",
+    "test:watch": "$_ lint && vitest --watch --coverage",
+    "lint": "eslint --fix src example",
+    "prepublishOnly": "$_ build"
   },
   "repository": {
     "type": "git",
@@ -34,6 +34,9 @@
     "@typescript-eslint/eslint-plugin": "^5.57.1",
     "@typescript-eslint/parser": "^5.57.1",
     "@vitejs/plugin-vue": "^4.1.0",
+    "@vitest/coverage-istanbul": "^0.29.8",
+    "@vitest/ui": "^0.29.8",
+    "@vue/test-utils": "^2.3.2",
     "@vuedoc/md": "^4.0.0-beta8",
     "autoprefixer": "^10.4.14",
     "bootstrap": "^5.2.3",
@@ -42,10 +45,12 @@
     "eslint-plugin-vue": "^9.10.0",
     "font-awesome": "^4.7.0",
     "highlight.js": "^11.7.0",
+    "jsdom": "^21.1.1",
     "less": "^4.1.3",
     "stream": "^0.0.2",
     "typescript": "^5.0.3",
     "vite": "^4.2.1",
+    "vitest": "^0.29.8",
     "vue": "^3.2.47",
     "vue-server-renderer": "^2.7.14",
     "vue-tsc": "^1.2.0"
