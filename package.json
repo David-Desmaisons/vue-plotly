@@ -38,6 +38,7 @@
     "@vitest/ui": "^0.29.8",
     "@vue/test-utils": "^2.3.2",
     "@vuedoc/md": "^4.0.0-beta8",
+    "@vueuse/core": "^9.13.0",
     "autoprefixer": "^10.4.14",
     "bootstrap": "^5.2.3",
     "buffer": "^6.0.3",

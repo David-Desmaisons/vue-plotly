@@ -12,6 +12,7 @@ import * as Plotly from "plotly.js-dist-min";
 import events from "./events";
 import buildPlotlyMethods from "./methods";
 import { camelize } from "@/utils/helper";
+import { useResizeObserver } from "@vueuse/core";
 
 const instance = getCurrentInstance();
 if (!instance) throw Error('Bad component initialization');
@@ -19,11 +20,34 @@ if (!instance) throw Error('Bad component initialization');
 const plotlyRoot = ref<Plotly.PlotlyHTMLElement>({} as Plotly.PlotlyHTMLElement)
 
 const plotlyMethods = buildPlotlyMethods(plotlyRoot)
+
+// Local use and prevent tree-shaking.
+// egrep ' plotly[A-Za-z]+\(' src/components/methods.ts | cut -d'(' -f1 | sort
 const {
-  plotlyNewPlot, plotlyPurge,
-  plotlyReact, plotlyRelayout,
-  plotlyToImage, plotlyDownloadImage
+  plotlyAddFrames,
+  plotlyAddTraces,
+  plotlyAnimate,
+  plotlyDeleteFrames,
+  plotlyDeleteTraces,
+  plotlyDownloadImage,
+  plotlyExtendTraces,
+  plotlyMakeTemplate,
+  plotlyMoveTraces,
+  plotlyNewPlot,
+  plotlyPrependTraces,
+  plotlyPurge,
+  plotlyReact,
+  plotlyRedraw,
+  plotlyRelayout,
+  plotlyRestyle,
+  plotlySetPlotConfig,
+  plotlyToImage,
+  plotlyUpdate,
+  plotlyValidate,
+  plotlyValidateTemplate
 } = plotlyMethods
+
+Object.entries(plotlyMethods).forEach(([name, fn])=> plotlyMethods[name] = fn)
 
 defineExpose({ ...plotlyMethods, plotlyRoot, toImage, downloadImage })
 defineEmits(events.map(e => e.eventName))
@@ -48,12 +72,28 @@ const props = defineProps({
 
 const innerLayout = ref<Partial<Plotly.Layout>>({ ...props.layout })
 
+const throttleDelay = 100;
+let resizeTimeout: null | number = null; // Throttle
+let lastResize = 0;                      // Debounce Timestamp
+
+const onResize = ({force})=> {
+  if (resizeTimeout && !force) return; // Throttle
+  if ((lastResize + throttleDelay) > Date.now()) { // Debounce
+    resizeTimeout = setTimeout(onResize, throttleDelay, { force: true });
+    return;
+  }
+  resizeTimeout = null;
+  lastResize = Date.now();
+  Plotly.Plots.resize(plotlyRoot.value);
+}
+
 onMounted(function () {
   plotlyNewPlot(props.data || [], innerLayout.value, options.value);
   events.forEach(evt => {
     if (!plotlyRoot.value) return;
     plotlyRoot.value.on(evt.eventName, evt.handler(instance));
   });
+  useResizeObserver(plotlyRoot, onResize);
 });
 
 onBeforeUnmount(()=> {

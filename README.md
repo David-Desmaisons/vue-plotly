@@ -53,15 +53,15 @@ export default {
 
 ### Props
 
-- `data` ***Array*** (*optional*) 
+- `data` ***Array*** (*optional*)
 
   [Data](https://plot.ly/javascript/reference/) to be displayed
 
-- `layout` ***Object*** (*optional*) 
+- `layout` ***Object*** (*optional*)
 
   Graphic [layout](https://plot.ly/javascript/reference/#layout)
 
-- `id` ***String*** (*optional*) 
+- `id` ***String*** (*optional*)
 
   Id of the root HTML element of the component.
 
@@ -96,25 +96,25 @@ npm install
 
 ### Compiles and hot-reloads for development
 ```
-npm run serve
+yarn dev
 ```
 
 ### Compiles and minifies for production
 ```
-npm run build
+yarn build
 ```
 
 ### Run your tests
+One time:
 ```
-npm run test
+yarn test
+```
+Hacking:
+```
+yarn test:watch --open --ui
 ```
 
 ### Lints and fixes files
 ```
-npm run lint
-```
-
-### Run your unit tests
-```
-npm run test:unit
+yarn lint
 ```

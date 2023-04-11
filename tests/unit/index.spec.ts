@@ -10,6 +10,6 @@ describe("index.js", () => {
 
   test("expose eventNames as a property", () => {
     expect(eventNames).to.include("plotly_click");
-    expect(eventNames).toHaveLength(31);
+    expect(eventNames).toHaveLength(35);
   });
 });

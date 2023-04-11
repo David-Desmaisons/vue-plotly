@@ -6,8 +6,8 @@ type TEventName = Parameters<Plotly.PlotlyHTMLElement["on"]>[0];
 /*
  List of events extracted with
  $ sed -r 's/([;{}])/\1\n/g' node_modules/plotly.js-dist-min/plotly.min.js |
-   egrep '\.emit\("plotly_[^"]+"' |
-   sed -r 's/.*\.emit\("(plotly_[^"]+)".*$/  "\1",/' |
+   egrep '"plotly_[^"]+"' |
+   sed -r 's/.*"(plotly_[^"]+)".*$/  "\1",/' |
    sort | uniq
 */
 
@@ -20,6 +20,8 @@ export const eventNames = [
   "plotly_animationinterrupted",
   "plotly_autosize",
   "plotly_beforeexport",
+  "plotly_beforehover",
+  "plotly_beforeplot",
   "plotly_buttonclicked",
   "plotly_click",
   "plotly_clickannotation",
@@ -27,6 +29,8 @@ export const eventNames = [
   "plotly_doubleclick",
   "plotly_framework",
   "plotly_hover",
+  "plotly_legendclick",
+  "plotly_legenddoubleclick",
   "plotly_react",
   "plotly_redraw",
   "plotly_relayout",

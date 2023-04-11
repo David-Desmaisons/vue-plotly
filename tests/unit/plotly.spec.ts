@@ -3,8 +3,6 @@ import { describe, expect, beforeEach, afterEach, test, vi } from "vitest";
 import { shallowMount } from "@vue/test-utils";
 import Plotly from "@/components/Plotly.vue";
 import plotlyjs from "plotly.js-dist-min";
-// import resize from "vue-resize-directive";
-// jest.mock("vue-resize-directive");
 
 const resize = {}
 
@@ -45,10 +43,19 @@ const events = [
   "Unhover"
 ];
 
-const methods = ["restyle", "relayout", "update", "addTraces", "deleteTraces", "moveTraces", "extendTraces", "prependTraces", "purge"];
+const methods = [
+  "restyle",
+  "relayout",
+  "update",
+  "addTraces",
+  "deleteTraces",
+  "moveTraces",
+  "extendTraces",
+  "prependTraces",
+  "purge"
+];
 
 function shallowMountPlotty() {
-  //jest.clearAllMocks();
   return shallowMount(Plotly, {
     propsData: {
       layout,
@@ -84,9 +91,8 @@ describe("Plotly.vue", () => {
     expect(Plotly.props).toEqual(props);
   });
 
-  test("renders a div", () => {
-    //expect(wrapper.html()).toMatch(/^<div id="[^]"+" display-mode-bar="true" class="js-plotly-plot">.*<svg .*/sm);
-    expect(wrapper.html()).toMatch(/.*<svg .*/sm);
+  test("renders a div with a SVG", () => {
+    expect(wrapper.html()).toMatch(/<div.*<svg .*/sm);
   });
 
   test("sets id on div", () => {
@@ -94,11 +100,11 @@ describe("Plotly.vue", () => {
   });
 
   test("calls plotly newPlot", () => {
-    const spy = vi.spyOn(plotlyjs, "newPlot")
-    data = [{ x: [1, 2, 3], y: [2, 1, 2] }]
-    layout = { foo: "bar" }
-    shallowMountPlotty()
-    expect(spy).toHaveBeenCalledTimes(1)
+    const spy = vi.spyOn(plotlyjs, "newPlot");
+    data = [{ x: [1, 2, 3], y: [2, 1, 2] }];
+    layout = { foo: "bar" };
+    shallowMountPlotty();
+    expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith(
       expect.objectContaining({ tagName: 'DIV', id }),
       data,
@@ -107,87 +113,80 @@ describe("Plotly.vue", () => {
         displayModeBar: true,
         responsive: false
       }
-    )
+    );
   });
 
-  /*
   test("allows responsive to be overridden attribute", () => {
-    attrs = {
-      responsive: true
-    };
-    wrapper = shallowMountPlotty();
-
-    expect(plotlyjs.newPlot).toHaveBeenCalledWith(vm.$el, data, layout, {
-      responsive: true
-    });
-    expect(plotlyjs.newPlot.mock.calls.length).toBe(1);
-  });
-
-  test("calls resize directive", () => {
-    const {
-      mock: { calls }
-    } = resize.inserted;
-    expect(calls.length).toBe(1);
-    const [call] = calls;
-    expect(call[0]).toBe(vm.$el);
-    expect(call[1]).toMatchObject({
-      arg: "debounce",
-      name: "resize",
-      rawName: "v-resize:debounce.100",
-      expression: "onResize"
-    });
-  });
-
-  test("call plotly resize when resized", () => {
-    const {
-      mock: {
-        calls: [call]
+    const spy = vi.spyOn(plotlyjs, "newPlot");
+    attrs = { responsive: true };
+    shallowMountPlotty();
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining({ tagName: 'DIV', id }),
+      data,
+      expect.objectContaining(layout),
+      {
+        responsive: true
       }
-    } = resize.inserted;
-    const { value: callBackResize } = call[1];
-    callBackResize();
+    );
+  });
 
-    expect(plotlyjs.Plots.resize).toHaveBeenCalledWith(vm.$el);
+  describe("Plotly.vue responsiveness", () => {
+    let resizeCallback;
+    (window as any).ResizeObserver = class ResizeObserver {
+      constructor(cb) { resizeCallback = cb }
+      observe(el, ...args) { }
+    };
+
+    test("call plotly resize when resized", () => {
+      const spy = vi.spyOn(plotlyjs.Plots, "resize");
+      shallowMountPlotty();
+      expect(spy).toHaveBeenCalledTimes(0);
+      resizeCallback({/* dummy entries */});
+      expect(spy).toHaveBeenCalledTimes(1);
+    });
+
+    test("call plotly resize debounces", () => {
+      const spy = vi.spyOn(plotlyjs.Plots, "resize");
+      vi.useFakeTimers();
+      shallowMountPlotty();
+      resizeCallback({/* dummy entries */});
+      expect(spy).toHaveBeenCalledTimes(1);
+      resizeCallback({/* dummy entries */}); // Will Debounce
+      expect(spy).toHaveBeenCalledTimes(1);
+      vi.advanceTimersByTime(100)
+      expect(spy).toHaveBeenCalledTimes(2);
+      vi.advanceTimersByTime(100)
+      resizeCallback({/* dummy entries */}); // Will NOT Debounce
+      expect(spy).toHaveBeenCalledTimes(3);
+    });
   });
 
   test.each(events)("listens to plotly event %s and transform it in a vue event", evt => {
-    const evtName = evt.toLowerCase();
-    const {
-      on: {
-        mock: { calls }
-      }
-    } = vm.$el;
-    const call = calls.find(c => c[0] === `plotly_${evtName}`);
-
-    expect(call).not.toBeUndefined();
-    expect(call.length).toBe(2);
-
-    const callBack = call[1];
-    const parameter = { value: 25 };
-    callBack(parameter);
-
-    expect(wrapper.emitted()).toEqual({
-      [evtName]: [[parameter]]
-    });
+    const eventName = `plotly_${evt.toLowerCase()}`;
+    if (evt !== "AfterPlot") {
+      expect(wrapper.emitted()[eventName]).toBeUndefined();
+      vm.plotlyRoot.emit(eventName);
+    }
+    expect(wrapper.emitted()[eventName]).toBeTruthy();
+    expect(wrapper.emitted()[eventName].length).toBe(1);
   });
 
-  test(`register all the ${events.length} plotly events`, () => {
-    const {
-      on: {
-        mock: { calls }
-      }
-    } = vm.$el;
-    expect(calls.length).toBe(events.length);
-  });
-
-  test.each(methods)("defines plotly method %s", methodName => {
-    expect(methodName in vm).toBe(true);
+  test.each(methods)("defines plotly method %s", origName => {
+    const methodName = `plotly${origName[0].toUpperCase()+origName.substring(1)}`;
+    expect(vm[methodName]).toBeInstanceOf(Function);
+    const spy = vi.spyOn(plotlyjs, origName);
+    const plotlyRoot = expect.objectContaining({ tagName: 'DIV', id });
     const parameters = [1, 2, 3];
-    vm[methodName](...parameters);
-
-    expect(plotlyjs[methodName]).toHaveBeenCalledWith(vm.$el, 1, 2, 3);
+    try {
+      vm[methodName](...parameters);
+    } catch(err) {
+      console.log(`Ignoring bad args to "plotly.${origName}()".`, err);
+    }
+    expect(spy).toHaveBeenCalledWith(plotlyRoot, 1, 2, 3);
   });
 
+  /*
   describe.each([
     ["data", wrapper => wrapper.setProps({ data: [{ data: "novo" }] })],
     ["attr", wrapper => (wrapper.vm.$attrs = { displayModeBar: "hover" })]
@@ -415,5 +414,5 @@ describe("Plotly.vue", () => {
       expect(calls.length).toBe(events.length);
     });
   });
-  */
+*/
 });
