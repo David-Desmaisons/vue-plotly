@@ -83,6 +83,10 @@ describe("Plotly.vue", () => {
     vm = wrapper.vm;
   });
 
+  afterEach(() => {
+    vi.useRealTimers();
+  })
+
   test("defines props", () => {
     const props = {
       data: Array,
@@ -278,72 +282,50 @@ describe("Plotly.vue", () => {
     });
   });
 
-  /*
-  describe("when calling toImage", () => {
-    beforeEach(() => {
-      vm.toImage({ option: 1 });
-    });
-
-    test("calls Plotly toImage", () => {
-      const { clientWidth: width, clientHeight: height } = vm.$el;
-      expect(plotlyjs.toImage).toHaveBeenCalledWith(vm.$el, {
-        width,
-        height,
-        option: 1,
-        format: "png"
-      });
+  test("calls instance's toImage", () => {
+    const spy = vi.spyOn(plotlyjs, "toImage");
+    vm.$el.style.width = '200px'
+    vm.$el.style.height = '100px'
+    vm.toImage({ option: 1 })
+    expect(spy).toHaveBeenCalledWith(vm.$el, {
+      width: 200,
+      height: 100,
+      option: 1,
+      format: "png"
     });
   });
 
-  describe("when calling downloadImage", () => {
-    beforeEach(() => {
-      vm.downloadImage({ option: 1 });
+  test("calls instance's downloadImage", () => {
+    vi.useFakeTimers({
+      now: (new Date('2023-01-31T00:00:00.123Z')).getTime()
     });
-
-    test("calls Plotly toImage", () => {
-      const { clientWidth: width, clientHeight: height } = vm.$el;
-      const { downloadImage } = plotlyjs;
-      expect(downloadImage).toHaveBeenCalled();
-      const {
-        mock: {
-          calls: [call]
-        }
-      } = downloadImage;
-
-      expect(call.length).toBe(2);
-      expect(call[0]).toBe(vm.$el);
-      expect(call[1]).toMatchObject({
-        width,
-        height,
-        option: 1,
-        format: "png"
-      });
-      expect(call[1].filename).not.toBeUndefined();
+    const spy = vi.spyOn(plotlyjs, "downloadImage");
+    vm.$el.style.width = '200px'
+    vm.$el.style.height = '100px'
+    vm.downloadImage({ option: 1 })
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenNthCalledWith(1, vm.$el, {
+      width: 200,
+      height: 100,
+      option: 1,
+      imageDataOnly: true,
+      format: "png",
+      filename: "plot--2023-01-31T00:00:00Z"
     });
   });
 
   describe("when destroyed", () => {
-    beforeEach(() => {
-      wrapper.destroy();
-    });
-
     test("calls plotly purge", () => {
-      expect(plotlyjs.purge).toHaveBeenCalledWith(vm.$el);
+      const spy = vi.spyOn(plotlyjs, "purge");
+      ResizeObserver.prototype.disconnect = ()=> null
+      wrapper.unmount();
+      expect(spy).toHaveBeenCalledWith(vm.$el);
     });
 
     test.each(events)("unlistens to plotly event %s", evtName => {
-      const { removeAllListeners } = vm.$el;
-      expect(removeAllListeners).toHaveBeenCalledWith(`plotly_${evtName.toLowerCase()}`);
-    });
-
-    test(`unlistens to all the ${events.length} plotly events`, () => {
-      const {
-        removeAllListeners: {
-          mock: { calls }
-        }
-      } = vm.$el;
-      expect(calls.length).toBe(events.length);
+      const spy = vi.spyOn(vm.$el, "removeAllListeners");
+      wrapper.unmount();
+      expect(spy).toHaveBeenCalledWith(`plotly_${evtName.toLowerCase()}`);
     });
   });
-*/
 });

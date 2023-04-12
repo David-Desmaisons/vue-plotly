@@ -165,7 +165,7 @@ function toImage(options: Plotly.ToImgopts) {
 }
 
 function downloadImage(options: Plotly.DownloadImgopts) {
-  const filename = `plot--${new Date().toISOString()}`;
+  const filename = `plot--${new Date().toISOString().replace(/\.[0-9]+/, '')}`;
   const allOptions = Object.assign(getPrintOptions(), { filename }, options);
   return plotlyDownloadImage(allOptions);
 }
