@@ -2,16 +2,15 @@
   <div :id="id" ref="plotlyRoot" />
 </template>
 <script setup lang="ts">
-// TODO: Replace old v-resize <div :id="id" v-resize:debounce.100="onResize" />
 import {
-  ref, onMounted, onBeforeUnmount,
+  ref, onMounted, onBeforeUnmount, onUpdated,
   getCurrentInstance, computed, ComputedRef,
-  watch, nextTick, PropType
+  watch, nextTick, PropType, useAttrs
 } from 'vue'
 import * as Plotly from "plotly.js-dist-min";
 import events from "./events";
 import buildPlotlyMethods from "./methods";
-import { camelize } from "@/utils/helper";
+import { camelize, deepEqual } from "@/utils/helper";
 import { useResizeObserver } from "@vueuse/core";
 
 const instance = getCurrentInstance();
@@ -85,9 +84,24 @@ const onResize = ({force})=> {
   resizeTimeout = null;
   lastResize = Date.now();
   Plotly.Plots.resize(plotlyRoot.value);
-}
+};
 
-onMounted(function () {
+// Hey, attrs are not reactve. Sorry.
+const getOptions = ()=> {
+  const attrs = useAttrs();
+  const optionsFromAttrs = Object.keys(attrs).reduce((acc, key) => {
+    acc[camelize(key)] = attrs[key];
+    return acc;
+  }, {} as Record<string, any>) as Record<string, any>;
+  return {
+    responsive: false,
+    ...optionsFromAttrs
+  } as Partial<Plotly.Config>;
+};
+
+const options = ref<Partial<Plotly.Config>>(getOptions());
+
+onMounted(()=> {
   plotlyNewPlot(props.data || [], innerLayout.value, options.value);
   events.forEach(evt => {
     if (!plotlyRoot.value) return;
@@ -104,28 +118,20 @@ onBeforeUnmount(()=> {
   plotlyPurge();
 });
 
-const options = computed((): Partial<Plotly.Config> => {
-  const optionsFromAttrs = Object.keys(instance.attrs).reduce((acc, key) => {
-    acc[camelize(key)] = instance.attrs[key];
-    return acc;
-  }, {} as Record<string, any>) as Record<string, any>;
-  return {
-    responsive: false,
-    ...optionsFromAttrs
-  };
+// watch for attrs or a computed based on that wont work.
+// "the attrs object here always reflects the latest fallthrough attributes,
+// it isn't reactive [...] you can use onUpdated()."
+// https://vuejs.org/guide/components/attrs.html#accessing-fallthrough-attributes-in-javascript
+onUpdated(()=> {
+  const updatedOpts = getOptions();
+  if (!deepEqual(options.value, updatedOpts)) {
+    options.value = updatedOpts;
+    schedule({ replot: true });
+  }
 });
 
 watch(()=> props.data,
   ()=> schedule({ replot: true }),
-  { deep: true }
-);
-
-watch(()=> options,
-  (value, old)=> {
-    if (JSON.stringify(value.value) !== JSON.stringify(old.value)) {
-      schedule({ replot: true });
-    }
-  },
   { deep: true }
 );
 

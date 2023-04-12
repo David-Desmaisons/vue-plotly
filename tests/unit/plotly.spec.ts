@@ -55,6 +55,11 @@ const methods = [
   "purge"
 ];
 
+async function doubleTick() {
+  await vm.$nextTick()
+  await vm.$nextTick()
+}
+
 function shallowMountPlotty() {
   return shallowMount(Plotly, {
     propsData: {
@@ -181,96 +186,41 @@ describe("Plotly.vue", () => {
     try {
       vm[methodName](...parameters);
     } catch(err) {
-      console.log(`Ignoring bad args to "plotly.${origName}()".`, err);
+      // `Ignoring bad args to "plotly.${origName}()".`
     }
     expect(spy).toHaveBeenCalledWith(plotlyRoot, 1, 2, 3);
   });
 
-  /*
   describe.each([
     ["data", wrapper => wrapper.setProps({ data: [{ data: "novo" }] })],
-    ["attr", wrapper => (wrapper.vm.$attrs = { displayModeBar: "hover" })]
-  ])("when %p changes", (_, changeData) => {
+    ["attr", wrapper => wrapper.setProps({ displayModeBar: "hover" })]
+  ])("when %s changes", (_, changeData) => {
     describe.each([
       ["once", changeData],
-      [
-        "twice",
-        wrapper => {
-          changeData(wrapper);
-          changeData(wrapper);
-        }
-      ]
+      ["twice", wrapper => { changeData(wrapper); changeData(wrapper) }]
     ])("%s in the same tick", (_, update) => {
-      const { error } = console;
-
-      beforeEach(() => {
-        console.error = () => {};
-        jest.clearAllMocks();
+      test("calls plotly react after double tick", async () => {
+        const spy = vi.spyOn(plotlyjs, "react");
         update(wrapper);
-      });
-      afterEach(() => {
-        console.error = error;
-      });
-
-      test("calls plotly react once in the next tick", async () => {
-        await vm.$nextTick();
-        expect(plotlyjs.react).toHaveBeenCalledWith(vm.$el, vm.data, vm.layout, vm.options);
-        expect(plotlyjs.react.mock.calls.length).toBe(1);
+        await doubleTick();
+        expect(spy).toHaveBeenCalledTimes(1);
       });
 
       test("does not calls plotly relayout", async () => {
-        await vm.$nextTick();
-        expect(plotlyjs.relayout).not.toHaveBeenCalled();
+        const spy = vi.spyOn(plotlyjs, "relayout");
+        update(wrapper);
+        await doubleTick();
+        expect(spy).not.toHaveBeenCalled();
       });
-    });
-  });
-
-  describe("when attrs and props changes in the same tick", () => {
-    const { error } = console;
-
-    beforeEach(() => {
-      console.error = () => {};
-      jest.clearAllMocks();
-      wrapper.setProps({ data: [{ data: "novo" }] });
-      wrapper.vm.$attrs = { displayModeBar: "hover" };
-    });
-    afterEach(() => {
-      console.error = error;
-    });
-
-    test("calls plotly react once in the next tick", async () => {
-      await vm.$nextTick();
-      expect(plotlyjs.react).toHaveBeenCalledWith(vm.$el, vm.data, vm.layout, vm.options);
-      expect(plotlyjs.react.mock.calls.length).toBe(1);
-    });
-
-    test("does not calls plotly relayout", async () => {
-      await vm.$nextTick();
-      expect(plotlyjs.relayout).not.toHaveBeenCalled();
     });
   });
 
   describe("when attrs changes to same value", () => {
-    const { error } = console;
-
-    beforeEach(() => {
-      console.error = () => {};
-      jest.clearAllMocks();
-      const attrs = Object.assign({}, vm.$attrs);
-      vm.$attrs = attrs;
-    });
-    afterEach(() => {
-      console.error = error;
-    });
-
-    test("does not calls plotly react", async () => {
-      await vm.$nextTick();
-      expect(plotlyjs.react).not.toHaveBeenCalled();
-    });
-
-    test("does not calls plotly relayout", async () => {
-      await vm.$nextTick();
-      expect(plotlyjs.relayout).not.toHaveBeenCalled();
+    test.each(["react", "relayout"])("does not calls plotly %s", async (method) => {
+      const spy = vi.spyOn(plotlyjs, method);
+      wrapper.setProps(Object.assign({}, vm.$attrs));
+      await doubleTick();
+      expect(spy).not.toHaveBeenCalled();
     });
   });
 
@@ -278,30 +228,21 @@ describe("Plotly.vue", () => {
     const updateLayout = () => wrapper.setProps({ layout: { novo: "layout" } });
     describe.each([
       ["once", updateLayout],
-      [
-        "twice",
-        () => {
-          updateLayout();
-          updateLayout();
-        }
-      ]
+      ["twice", ()=> { updateLayout(); updateLayout() }]
     ])("%s in the same tick", (_, update) => {
-      beforeEach(() => {
-        jest.clearAllMocks();
-        update(wrapper);
-      });
-
       test("calls plotly relayout once", async () => {
-        await vm.$nextTick();
-        expect(plotlyjs.relayout).toHaveBeenCalledWith(vm.$el, {
-          novo: "layout"
-        });
-        expect(plotlyjs.relayout.mock.calls.length).toBe(1);
+        const spy = vi.spyOn(plotlyjs, "relayout");
+        update();
+        await doubleTick();
+        expect(spy).toHaveBeenCalledTimes(1);
+        expect(spy).toHaveBeenCalledWith(vm.$el, { novo: "layout" });
       });
 
       test("does not calls plotly react", async () => {
-        await vm.$nextTick();
-        expect(plotlyjs.react).not.toHaveBeenCalled();
+        const spy = vi.spyOn(plotlyjs, "react");
+        update();
+        await doubleTick();
+        expect(spy).not.toHaveBeenCalled();
       });
     });
   });
@@ -310,44 +251,34 @@ describe("Plotly.vue", () => {
   const changeLayout = () => wrapper.setProps({ layout: { novo: "layout" } });
 
   describe.each([
-    [
-      () => {
-        changeData();
-        changeLayout();
-      }
-    ],
-    [
-      () => {
-        changeLayout();
-        changeData();
-      }
-    ]
+    ()=> { changeData(); changeLayout() },
+    ()=> { changeLayout(); changeData() }
   ])("when layout changes and data changes", changes => {
-    beforeEach(() => {
-      jest.clearAllMocks();
-      changes();
-    });
-
     test("calls plotly react once", async () => {
-      await vm.$nextTick();
-      expect(plotlyjs.react).toHaveBeenCalledWith(
+      const spy = vi.spyOn(plotlyjs, "react");
+      changes();
+      await doubleTick();
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledWith(
         vm.$el,
         [{ novo: "data" }],
-        { novo: "layout" },
+        expect.objectContaining({ novo: "layout" }),
         {
           displayModeBar: true,
           responsive: false
         }
       );
-      expect(plotlyjs.react.mock.calls.length).toBe(1);
     });
 
     test("does not calls plotly relayout", async () => {
-      await vm.$nextTick();
-      expect(plotlyjs.relayout).not.toHaveBeenCalled();
+      const spy = vi.spyOn(plotlyjs, "relayout");
+      changes();
+      await doubleTick();
+      expect(spy).not.toHaveBeenCalled();
     });
   });
 
+  /*
   describe("when calling toImage", () => {
     beforeEach(() => {
       vm.toImage({ option: 1 });
