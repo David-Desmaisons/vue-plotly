@@ -9,13 +9,7 @@ function cached<T>(fn: (str: string) => T) {
 const regex = /-(\w)/g;
 const camelize = cached<string>(str => str.replace(regex, (_, c) => (c ? c.toUpperCase() : "")));
 
-function valType(val): string {
-  return Array.isArray(val) ? 'arr' : typeof val
-}
-
-
-function deepEqual(objA: any, objB: any) {
-  //const ok = Object.keys, tA = valType(objA), tB = valType(objB);
+function deepEqual(objA: any, objB: any): boolean {
   const ok = Object.keys, arr = Array.isArray;
   const tA = typeof objA, tB = typeof objB;
   const bothArray = objA && objB && arr(objA) && arr(objB);

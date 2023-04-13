@@ -147,26 +147,30 @@ describe("Plotly.vue", () => {
       observe(el, ...args) { }
     };
 
-    test("call plotly resize when resized", () => {
+    test("call plotly resize when resized", async () => {
       const spy = vi.spyOn(plotlyjs.Plots, "resize");
       shallowMountPlotty();
       expect(spy).toHaveBeenCalledTimes(0);
       resizeCallback({/* dummy entries */});
+      await doubleTick();
       expect(spy).toHaveBeenCalledTimes(1);
     });
 
-    test("call plotly resize debounces", () => {
+    test("call plotly resize debounces", async () => {
       const spy = vi.spyOn(plotlyjs.Plots, "resize");
       vi.useFakeTimers();
       shallowMountPlotty();
       resizeCallback({/* dummy entries */});
+      await doubleTick();
       expect(spy).toHaveBeenCalledTimes(1);
       resizeCallback({/* dummy entries */}); // Will Debounce
+      await doubleTick();
       expect(spy).toHaveBeenCalledTimes(1);
       vi.advanceTimersByTime(100)
       expect(spy).toHaveBeenCalledTimes(2);
       vi.advanceTimersByTime(100)
       resizeCallback({/* dummy entries */}); // Will NOT Debounce
+      await doubleTick();
       expect(spy).toHaveBeenCalledTimes(3);
     });
   });

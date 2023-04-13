@@ -46,15 +46,11 @@ const {
   plotlyValidateTemplate
 } = plotlyMethods
 
-Object.entries(plotlyMethods).forEach(([name, fn])=> plotlyMethods[name] = fn)
+// Prevent tree-shakink removal of local unused methods:
+Object.entries(plotlyMethods).forEach(([name, fn])=> 0)
 
 defineExpose({ ...plotlyMethods, plotlyRoot, toImage, downloadImage })
 defineEmits(events.map(e => e.eventName))
-
-// const directives = {} as { resize?: ()=>void };
-// if (typeof window !== "undefined") {
-//   directives.resize = require("vue-resize-directive");
-// }
 
 type TScheduled = { replot: boolean };
 const scheduled = ref<null | TScheduled>(null);
@@ -72,19 +68,18 @@ const props = defineProps({
 const innerLayout = ref<Partial<Plotly.Layout>>({ ...props.layout })
 
 const throttleDelay = 100;
-let resizeTimeout: null | number = null; // Throttle
-let lastResize = 0;                      // Debounce Timestamp
+let lastResize = 0; // Timestamp
 
-const onResize = ({force})=> {
-  if (resizeTimeout && !force) return; // Throttle
-  if ((lastResize + throttleDelay) > Date.now()) { // Debounce
-    resizeTimeout = setTimeout(onResize, throttleDelay, { force: true });
-    return;
-  }
-  resizeTimeout = null;
+const onResize = ()=> {
+  const next = lastResize + throttleDelay - Date.now();
+  if (next <= 0) doResize();
+  else setTimeout(doResize, next);
+};
+
+const doResize = ()=> {
   lastResize = Date.now();
   Plotly.Plots.resize(plotlyRoot.value);
-};
+}
 
 // Hey, attrs are not reactve. Sorry.
 const getOptions = ()=> {
