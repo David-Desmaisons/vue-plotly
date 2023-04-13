@@ -6,7 +6,7 @@ import {
   ref, onMounted, onBeforeUnmount, onUpdated,
   getCurrentInstance, computed, ComputedRef,
   watch, nextTick, PropType, useAttrs
-} from 'vue'
+} from 'vue';
 import * as Plotly from "plotly.js-dist-min";
 import events from "./events";
 import buildPlotlyMethods from "./methods";
@@ -16,9 +16,9 @@ import { useResizeObserver } from "@vueuse/core";
 const instance = getCurrentInstance();
 if (!instance) throw Error('Bad component initialization');
 
-const plotlyRoot = ref<Plotly.PlotlyHTMLElement>({} as Plotly.PlotlyHTMLElement)
+const plotlyRoot = ref<Plotly.PlotlyHTMLElement>({} as Plotly.PlotlyHTMLElement);
 
-const plotlyMethods = buildPlotlyMethods(plotlyRoot)
+const plotlyMethods = buildPlotlyMethods(plotlyRoot);
 
 // Local use and prevent tree-shaking.
 // egrep ' plotly[A-Za-z]+\(' src/components/methods.ts | cut -d'(' -f1 | sort
@@ -44,10 +44,10 @@ const {
   plotlyUpdate,
   plotlyValidate,
   plotlyValidateTemplate
-} = plotlyMethods
+} = plotlyMethods;
 
-defineExpose({ ...plotlyMethods, plotlyRoot, toImage, downloadImage })
-defineEmits(events.map(e => e.eventName))
+defineExpose({ ...plotlyMethods, plotlyRoot, toImage, downloadImage });
+defineEmits(events.map(e => e.eventName));
 
 type TScheduled = { replot: boolean };
 const scheduled = ref<null | TScheduled>(null);
@@ -62,7 +62,7 @@ const props = defineProps({
   }
 });
 
-const innerLayout = ref<Partial<Plotly.Layout>>({ ...props.layout })
+const innerLayout = ref<Partial<Plotly.Layout>>({ ...props.layout });
 
 const throttleDelay = 100;
 let lastResize = 0; // Timestamp
