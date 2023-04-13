@@ -16,9 +16,6 @@ const buidDocConfig = {
 }
 
 const buidLibConfig = {
-  rollupOptions: {
-    input: "src/index.ts"
-  },
   lib: {
     entry: "./src/index.ts",
     formats: ["es"]
@@ -37,7 +34,8 @@ if (BUILD_LIB) plugins.push(
 
 export default defineConfig({
   define: {
-    "$PKG": `{ name: "${pkg.name}", version: "${pkg.version}" };//`
+    "$PKG_NAME": JSON.stringify(pkg.name),
+    "$PKG_VERSION": JSON.stringify(pkg.version)
   },
   plugins,
   build: {
