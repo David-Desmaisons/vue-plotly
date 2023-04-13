@@ -185,18 +185,20 @@ describe("Plotly.vue", () => {
     expect(wrapper.emitted()[eventName].length).toBe(1);
   });
 
-  test.each(methods)("defines plotly method %s", origName => {
+  test.each(methods)("defines plotly method %s", async (origName) => {
     const methodName = `plotly${origName[0].toUpperCase()+origName.substring(1)}`;
     expect(vm[methodName]).toBeInstanceOf(Function);
+
+    const origFn = plotlyjs[origName];
+    plotlyjs[origName] = ()=> null; // prevent VITEST_AFTER_ENV_TEARDOWN error.
+
     const spy = vi.spyOn(plotlyjs, origName);
     const plotlyRoot = expect.objectContaining({ tagName: 'DIV', id });
     const parameters = [1, 2, 3];
-    try {
-      vm[methodName](...parameters);
-    } catch(err) {
-      // `Ignoring bad args to "plotly.${origName}()".`
-    }
+    vm[methodName](...parameters);
     expect(spy).toHaveBeenCalledWith(plotlyRoot, 1, 2, 3);
+
+    plotlyjs[origName] = origFn;
   });
 
   describe.each([
