@@ -46,9 +46,6 @@ const {
   plotlyValidateTemplate
 } = plotlyMethods
 
-// Prevent tree-shakink removal of local unused methods:
-Object.entries(plotlyMethods).forEach(([name, fn])=> 0)
-
 defineExpose({ ...plotlyMethods, plotlyRoot, toImage, downloadImage })
 defineEmits(events.map(e => e.eventName))
 
