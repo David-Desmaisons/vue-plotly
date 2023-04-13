@@ -26,7 +26,7 @@ https://david-desmaisons.github.io/vue-plotly/
 
 ## Usage
 ```HTML
-<Plotly :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
+<plotly :data="data" :layout="layout" :display-mode-bar="false"/>
 ```
 ```javascript
 import Plotly from 'vue-plotly'
@@ -86,12 +86,12 @@ import { eventNames } from 'vue-plotly'
 
 ## Installation
 ```
-npm install vue-plotly
+yarn add vue-plotly
 ```
 
 ## Project setup
 ```
-npm install
+yarn
 ```
 
 ### Compiles and hot-reloads for development
@@ -111,7 +111,7 @@ yarn test
 ```
 Hacking:
 ```
-yarn test:watch --open --ui
+yarn test:watch --open
 ```
 
 ### Lints and fixes files

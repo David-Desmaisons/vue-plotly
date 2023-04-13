@@ -1,8 +1,7 @@
 import PlotlyComponent from "./components/Plotly.vue";
 export default PlotlyComponent;
 
-const PKG: Record<string, string> = {};
-export const PKG_NAME: string = PKG.NAME;
-export const PKG_VERSION: string = PKG.VERSION;
+const $PKG = {} as Record<string, string>; // vitest ignores TS's declare.
+export const PACKAGE = $PKG;
 
-export { eventNames } from "@/components/events"
+export { eventNames } from "@/components/events";

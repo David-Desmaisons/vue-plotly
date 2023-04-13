@@ -37,7 +37,7 @@ if (BUILD_LIB) plugins.push(
 
 export default defineConfig({
   define: {
-    "PKG": `PKG = { name: "${pkg.name}", version: "${pkg.version}" } //`
+    "$PKG": `{ name: "${pkg.name}", version: "${pkg.version}" };//`
   },
   plugins,
   build: {
