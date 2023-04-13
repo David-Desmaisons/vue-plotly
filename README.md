@@ -8,7 +8,7 @@
 [![Npm version](https://img.shields.io/npm/v/vue-plotly.svg)](https://www.npmjs.com/package/vue-plotly)
 [![MIT License](https://img.shields.io/github/license/David-Desmaisons/vue-plotly.svg)](https://github.com/David-Desmaisons/vue-plotly/blob/master/LICENSE)
 
-<h2>Thin vue wrapper for <a
+<h2>Thin Vue3 wrapper for <a
               href="https://plot.ly/javascript/"
               target="_blank"
             >plotly.js</a></h2>
@@ -19,17 +19,17 @@
   <li>Redraw on resizing</li>
 </ul>
 
-![example](./example/assets/demo.gif)
+![example](https://github.com/David-Desmaisons/vue-plotly/raw/master/example/assets/demo.gif)
 
 ## Live example
 https://david-desmaisons.github.io/vue-plotly/
 
 ## Usage
 ```HTML
-<Plotly :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
+<plotly :data="data" :layout="layout" :display-mode-bar="false"/>
 ```
 ```javascript
-import { Plotly } from 'vue-plotly'
+import Plotly from 'vue-plotly'
 
 export default {
   components: {
@@ -51,17 +51,17 @@ export default {
 ```
 ## API
 
-#### Props 
+### Props
 
-- `data` ***Array*** (*optional*) 
+- `data` ***Array*** (*optional*)
 
   [Data](https://plot.ly/javascript/reference/) to be displayed
 
-- `layout` ***Object*** (*optional*) 
+- `layout` ***Object*** (*optional*)
 
   Graphic [layout](https://plot.ly/javascript/reference/#layout)
 
-- `id` ***String*** (*optional*) 
+- `id` ***String*** (*optional*)
 
   Id of the root HTML element of the component.
 
@@ -69,41 +69,52 @@ export default {
 
   Plotly component implements the [transparent wrapper pattern](https://zendev.com/2018/05/31/transparent-wrapper-components-in-vue.html):<br>All other props will be passed as plotly graphic [option](https://plot.ly/javascript/configuration-options/).
 
+### Exposed methods
+
+All [Plotly.js instance methods](https://plotly.com/javascript/plotlyjs-function-reference) are exposed by the component instance with "`plotly`" prefix, plus the simplifyed `toImage()` and `downloadImage()`, that preset some options.
+See the usage example at [`graphpicker.vue`](./example/components/graphpicker.vue).
+
+### Events
+
+All [Plotly.js events](https://plotly.com/javascript/plotlyjs-events) are re-emited by the component instance and you can listen with the `v-on` directive.
+See the usage example at [`graphpicker.vue`](./example/components/graphpicker.vue).
+
+If you need, all event names are exported by this package:
+```javascript
+import { eventNames } from 'vue-plotly'
+```
+
 ## Installation
 ```
-npm install vue-plotly
+yarn add vue-plotly
 ```
 
 ## Project setup
 ```
-npm install
+yarn
 ```
 
 ### Compiles and hot-reloads for development
 ```
-npm run serve
+yarn dev
 ```
 
 ### Compiles and minifies for production
 ```
-npm run build
+yarn build
 ```
 
 ### Run your tests
+One time:
 ```
-npm run test
+yarn test
+```
+Hacking:
+```
+yarn test:watch --open
 ```
 
 ### Lints and fixes files
 ```
-npm run lint
+yarn lint
 ```
-
-### Run your unit tests
-```
-npm run test:unit
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
-

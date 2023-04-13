@@ -1,0 +1,23 @@
+{
+  "files": ["./src/index.ts"],
+  "exclude": ["./tests/"],
+  "compilerOptions": {
+    // this aligns with Vue's browser support
+    "target": "es2017",
+    // this enables stricter inference for data properties on `this`
+    "strict": true,
+    // if using webpack 2+ or rollup, to leverage tree shaking:
+    "module": "es2020",
+    "moduleResolution": "node",
+    "declaration": true,
+    "paths": {
+      "@/*": [ "./src/*" ]
+    },
+    "types": [
+      "vitest/importMeta",
+      "web-bluetooth"
+    ],
+    "skipLibCheck": true,
+    "outDir": "./dist"
+  }
+}

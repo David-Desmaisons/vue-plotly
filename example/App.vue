@@ -21,12 +21,11 @@
               <a
                 class="title-link"
                 href="https://github.com/David-Desmaisons/vue-plotly"
-                target="_blank"
-                ><span class="title">Vue.plotly</span></a
-              >a thin vue wrapper for
-              <a href="https://plot.ly/javascript/" target="_blank"
-                >plotly.js</a
-              >
+                target="_blank">
+                <span class="title">Vue.plotly</span>
+              </a>
+              a thin vue wrapper for
+              <a href="https://plot.ly/javascript/" target="_blank">plotly.js</a>
             </p>
           </div>
 
@@ -60,32 +59,15 @@
   </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref, getCurrentInstance, computed } from 'vue'
 import graphpicker from "./components/graphpicker.vue";
 
-export default {
-  name: "app",
-  components: {
-    graphpicker
-  },
-  data() {
-    return {
-      features: [
-        { text: "plotly.js methods and events", icon: "fa-bar-chart" },
-        { text: "Data reactivity", icon: "fa-bolt" },
-        { text: "Redraw on resizing", icon: "fa-arrows-alt" }
-      ]
-    };
-  },
-  computed: {
-    code() {
-      const fromAttr = Object.keys(this.data.attr)
-        .map(key => `:${key}="${this.data.attr[key]}"`)
-        .join(" ");
-      return `<plotly :data="data" :layout="layout" ${fromAttr}/>`;
-    }
-  }
-};
+const features = [
+  { text: "plotly.js methods and events", icon: "fa-bar-chart" },
+  { text: "Data reactivity", icon: "fa-bolt" },
+  { text: "Redraw on resizing", icon: "fa-arrows-alt" }
+];
 </script>
 
 <style lang="less">
