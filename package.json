@@ -17,7 +17,7 @@
     "url": "https://github.com/David-Desmaisons/vue-plotly.git"
   },
   "main": "./dist/vue-plotly.mjs",
-  "files": [ "./dist/**/*" ],
+  "files": [ "./dist" ],
   "types": "./dist/index.d.ts",
   "dependencies": {
     "@vueuse/core": "^9.13.0",
